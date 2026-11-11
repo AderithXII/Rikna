@@ -9,21 +9,22 @@
 const INITIAL_STATE = {
   currentUser: null,
   accounts: [
-    { email: 'rikna.resident.demo@gmail.com', password: 'Resident123!', role: 'resident', name: 'Maria Santos', id: 'RES-2024-001', contact: '09171234567', barangay: 'Barangay San Isidro', municipality: 'Quezon City', registeredDate: '2024-03-15' },
-    { email: 'rikna.collector.demo@gmail.com', password: 'Collector123!', role: 'collector', name: 'Rodel Aguila', id: 'COL-2024-007', contact: '09281234567', barangay: 'Barangay San Isidro', registeredDate: '2024-01-10', status: 'active', restrictionReason: null, restrictionDate: null },
-    { email: 'rikna.admin.demo@gmail.com', password: 'Admin123!', role: 'admin', name: 'Engr. Josefina Reyes', id: 'ADM-2024-001', contact: '09391234567', barangay: 'LGU Quezon City', registeredDate: '2024-01-01' }
+    { email: 'rikna.resident.demo@gmail.com', password: 'Resident123!', role: 'resident', name: 'Maria Santos', id: 'RES-2024-001', contact: '09171234567', barangay: 'Barangay San Gabriel', municipality: 'Tuguegarao City', registeredDate: '2024-03-15' },
+    { email: 'rikna.collector.demo@gmail.com', password: 'Collector123!', role: 'collector', name: 'Rodel Aguila', id: 'COL-2024-007', contact: '09281234567', barangay: 'Barangay San Gabriel', registeredDate: '2024-01-10', status: 'active', restrictionReason: null, restrictionDate: null },
+    { email: 'rikna.admin.demo@gmail.com', password: 'Admin123!', role: 'admin', name: 'Engr. Josefina Reyes', id: 'ADM-2024-001', contact: '09391234567', barangay: 'LGU Tuguegarao City', registeredDate: '2024-01-01' }
   ],
   resident: {
     points: 500, pendingPoints: 0, lifetimePoints: 1240, kgRecycled: 18.5, deposits: 12,
+    registeredEvents: [],
     transactions: [
-      { id: 'TXN001', type: 'earned', label: 'PET Plastic Deposit', points: 90, date: '2026-11-05', kg: 3.0, material: 'PET Plastic', collector: 'Rodel Aguila', barangay: 'Barangay San Isidro', status: 'verified', photo: null, remarks: 'Clean and sorted' },
-      { id: 'TXN002', type: 'earned', label: 'Aluminum Deposit', points: 120, date: '2026-11-02', kg: 2.0, material: 'Aluminum', collector: 'Rodel Aguila', barangay: 'Barangay San Isidro', status: 'verified', photo: null, remarks: 'Crushed soda cans' },
+      { id: 'TXN001', type: 'earned', label: 'PET Plastic Deposit', points: 90, date: '2026-11-05', kg: 3.0, material: 'PET Plastic', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Clean and sorted' },
+      { id: 'TXN002', type: 'earned', label: 'Aluminum Deposit', points: 120, date: '2026-11-02', kg: 2.0, material: 'Aluminum', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Crushed soda cans' },
       { id: 'TXN003', type: 'spent', label: 'SM Supermarket ₱50 Voucher', points: -100, date: '2026-10-30', status: 'redeemed', merchant: 'SM Supermarket' },
-      { id: 'TXN004', type: 'earned', label: 'Paper Deposit', points: 50, date: '2026-10-25', kg: 5.0, material: 'Paper/Cardboard', collector: 'Rodel Aguila', barangay: 'Barangay San Isidro', status: 'verified', photo: null, remarks: 'Folded cartons' },
+      { id: 'TXN004', type: 'earned', label: 'Paper Deposit', points: 50, date: '2026-10-25', kg: 5.0, material: 'Paper/Cardboard', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Folded cartons' },
       { id: 'TXN005', type: 'spent', label: 'Jollibee ₱30 Discount', points: -80, date: '2026-10-20', status: 'redeemed', merchant: 'Jollibee' },
-      { id: 'TXN006', type: 'earned', label: 'Glass Deposit', points: 15, date: '2026-10-15', kg: 3.0, material: 'Glass', collector: 'Rodel Aguila', barangay: 'Barangay San Isidro', status: 'verified', photo: null, remarks: 'Bottles uncracked' },
-      { id: 'TXN007', type: 'earned', label: 'Tin/Steel Deposit', points: 24, date: '2026-10-10', kg: 2.0, material: 'Tin/Steel', collector: 'Rodel Aguila', barangay: 'Barangay San Isidro', status: 'verified', photo: null, remarks: 'Washed food tins' },
-      { id: 'TXN008', type: 'earned', label: 'PET Plastic Deposit', points: 60, date: '2026-10-05', kg: 2.0, material: 'PET Plastic', collector: 'Rodel Aguila', barangay: 'Barangay San Isidro', status: 'verified', photo: null, remarks: 'Standard drop' }
+      { id: 'TXN006', type: 'earned', label: 'Glass Deposit', points: 15, date: '2026-10-15', kg: 3.0, material: 'Glass', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Bottles uncracked' },
+      { id: 'TXN007', type: 'earned', label: 'Tin/Steel Deposit', points: 24, date: '2026-10-10', kg: 2.0, material: 'Tin/Steel', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Washed food tins' },
+      { id: 'TXN008', type: 'earned', label: 'PET Plastic Deposit', points: 60, date: '2026-10-05', kg: 2.0, material: 'PET Plastic', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Standard drop' }
     ],
     vouchers: [
       { id: 'VCH001', name: 'SM Supermarket ₱50 Voucher', code: 'SM-RKN-5839', status: 'used', pointsSpent: 100, expiry: '2026-12-31', merchant: 'SM Supermarket', redeemedDate: '2026-10-30' },
@@ -51,43 +52,46 @@ const INITIAL_STATE = {
     { id: 'RWD006', name: '7-Eleven ₱20 Credit', merchant: '7-Eleven', points: 50, category: 'grocery', available: true, qty: 50, description: '₱20 CLiQQ wallet credit redeemable at all 7-Eleven stores.' }
   ],
   collectionRecords: [
-    { id: 'DEP001', residentName: 'Maria Santos', residentId: 'RES-2024-001', material: 'PET Plastic', weight: 3.0, points: 90, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Isidro', status: 'verified', photoDataUrl: null, remarks: 'Verified by officer', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP002', residentName: 'Jose Reyes', residentId: 'RES-2024-002', material: 'Aluminum', weight: 1.5, points: 90, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Isidro', status: 'verified', photoDataUrl: null, remarks: 'Batch collection', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP003', residentName: 'Ana Dela Cruz', residentId: 'RES-2024-003', material: 'Paper/Cardboard', weight: 4.2, points: 42, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Isidro', status: 'verified', photoDataUrl: null, remarks: 'Folded paper bundles', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP004', residentName: 'Pedro Lim', residentId: 'RES-2024-004', material: 'Glass', weight: 2.8, points: 14, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Isidro', status: 'flagged', photoDataUrl: null, remarks: 'Frequent dropoffs', flagged: true, flagReason: 'Multiple deposits within 1 hour window', reviewStatus: 'pending', reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', material: 'Tin/Steel', weight: 1.0, points: 12, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Isidro', status: 'verified', photoDataUrl: null, remarks: '', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP006', residentName: 'Rodrigo Mendoza', residentId: 'RES-2024-006', material: 'PET Plastic', weight: 25.0, points: 750, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Isidro', status: 'flagged', photoDataUrl: null, remarks: 'Bulk commercial drop', flagged: true, flagReason: 'Unusually high weight (25.0 kg) exceeds 15 kg threshold', reviewStatus: 'pending', reviewNotes: null, reviewOutcome: null }
+    { id: 'DEP001', residentName: 'Maria Santos', residentId: 'RES-2024-001', material: 'PET Plastic', weight: 3.0, points: 90, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Verified by officer', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
+    { id: 'DEP002', residentName: 'Jose Reyes', residentId: 'RES-2024-002', material: 'Aluminum', weight: 1.5, points: 90, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Batch collection', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
+    { id: 'DEP003', residentName: 'Ana Dela Cruz', residentId: 'RES-2024-003', material: 'Paper/Cardboard', weight: 4.2, points: 42, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Folded paper bundles', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
+    { id: 'DEP004', residentName: 'Pedro Lim', residentId: 'RES-2024-004', material: 'Glass', weight: 2.8, points: 14, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'flagged', photoDataUrl: null, remarks: 'Frequent dropoffs', flagged: true, flagReason: 'Multiple deposits within 1 hour window', reviewStatus: 'pending', reviewNotes: null, reviewOutcome: null },
+    { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', material: 'Tin/Steel', weight: 1.0, points: 12, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: '', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
+    { id: 'DEP006', residentName: 'Rodrigo Mendoza', residentId: 'RES-2024-006', material: 'PET Plastic', weight: 25.0, points: 750, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'flagged', photoDataUrl: null, remarks: 'Bulk commercial drop', flagged: true, flagReason: 'Unusually high weight (25.0 kg) exceeds 15 kg threshold', reviewStatus: 'pending', reviewNotes: null, reviewOutcome: null }
   ],
   collectors: [
-    { id: 'COL-2024-007', name: 'Rodel Aguila', barangay: 'Barangay San Isidro', email: 'rikna.collector.demo@gmail.com', contact: '09281234567', phone: '09281234567', status: 'active', registeredDate: '2024-01-10', totalWaste: 124.5, totalDeposits: 48, totalPoints: 3240, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
-    { id: 'COL-2024-008', name: 'Ligaya Santos', barangay: 'Barangay Pinyahan', email: 'ligaya.santos@brgy.gov.ph', contact: '09191234567', phone: '09191234567', status: 'active', registeredDate: '2024-02-20', totalWaste: 98.2, totalDeposits: 36, totalPoints: 2450, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
-    { id: 'COL-2024-009', name: 'Ernesto Flores', barangay: 'Barangay Ugong', email: 'ernesto.flores@brgy.gov.ph', contact: '09301234567', phone: '09301234567', status: 'restricted', registeredDate: '2024-03-05', totalWaste: 56.7, totalDeposits: 22, totalPoints: 1120, restrictionReason: 'Suspicious deposit activity under review', restrictionDate: '2026-10-28', restrictionHistory: [{ date: '2026-10-28', reason: 'Suspicious deposit activity under review', admin: 'Engr. Josefina Reyes' }] }
+    { id: 'COL-2024-007', name: 'Rodel Aguila', barangay: 'Barangay San Gabriel', email: 'rikna.collector.demo@gmail.com', contact: '09281234567', phone: '09281234567', status: 'active', registeredDate: '2024-01-10', totalWaste: 124.5, totalDeposits: 48, totalPoints: 3240, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
+    { id: 'COL-2024-008', name: 'Ligaya Santos', barangay: 'Barangay Pengue Ruyu', email: 'ligaya.santos@brgy.gov.ph', contact: '09191234567', phone: '09191234567', status: 'active', registeredDate: '2024-02-20', totalWaste: 98.2, totalDeposits: 36, totalPoints: 2450, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
+    { id: 'COL-2024-009', name: 'Ernesto Flores', barangay: 'Barangay Caritan Norte', email: 'ernesto.flores@brgy.gov.ph', contact: '09301234567', phone: '09301234567', status: 'restricted', registeredDate: '2024-03-05', totalWaste: 56.7, totalDeposits: 22, totalPoints: 1120, restrictionReason: 'Suspicious deposit activity under review', restrictionDate: '2026-10-28', restrictionHistory: [{ date: '2026-10-28', reason: 'Suspicious deposit activity under review', admin: 'Engr. Josefina Reyes' }] }
   ],
   collectionCenters: [
-    { id: 'CC001', name: 'Barangay San Isidro Eco Center', address: '123 Eco Street, Barangay San Isidro, Quezon City', hours: 'Mon–Sat 7:00 AM – 5:00 PM', contact: '(02) 1234-5678', materials: ['PET Plastic', 'Paper/Cardboard', 'Aluminum', 'Tin/Steel', 'Glass'] },
-    { id: 'CC002', name: 'Barangay Pinyahan Drop-off Hub', address: '45 Green Avenue, Barangay Pinyahan, Quezon City', hours: 'Mon–Fri 8:00 AM – 4:00 PM', contact: '(02) 2345-6789', materials: ['PET Plastic', 'Paper/Cardboard', 'Glass'] }
+    { id: 'CC001', name: 'San Gabriel Eco Center', address: '21 Bonifacio St, Barangay San Gabriel, Tuguegarao City', hours: 'Mon–Sat 7:00 AM – 5:00 PM', contact: '(078) 392-1145', materials: ['PET Plastic', 'Paper/Cardboard', 'Aluminum', 'Tin/Steel', 'Glass'], lat: 17.6171, lng: 121.7317 },
+    { id: 'CC002', name: 'Pengue Ruyu Drop-off Hub', address: '88 Rizal St, Barangay Pengue Ruyu, Tuguegarao City', hours: 'Mon–Fri 8:00 AM – 4:00 PM', contact: '(078) 392-2378', materials: ['PET Plastic', 'Paper/Cardboard', 'Glass'], lat: 17.6103, lng: 121.7209 },
+    { id: 'CC003', name: 'Caritan Sur MRF Station', address: '12 Mabini St, Barangay Caritan Sur, Tuguegarao City', hours: 'Daily 6:00 AM – 6:00 PM', contact: '(078) 392-4410', materials: ['PET Plastic', 'Aluminum', 'Tin/Steel'], lat: 17.6222, lng: 121.7244 },
+    { id: 'CC004', name: 'Buntun Riverside Recycling Point', address: 'Riverside Rd, Barangay Buntun, Tuguegarao City', hours: 'Sat–Sun 7:00 AM – 3:00 PM', contact: '(078) 392-5521', materials: ['Paper/Cardboard', 'Glass'], lat: 17.6416, lng: 121.7225 },
+    { id: 'CC005', name: 'Cataggaman Collection Hub', address: '3 Dela Cruz St, Barangay Cataggaman Viejo, Tuguegarao City', hours: 'Mon–Sat 8:00 AM – 5:00 PM', contact: '(078) 392-6634', materials: ['PET Plastic', 'Paper/Cardboard', 'Aluminum', 'Glass'], lat: 17.6308, lng: 121.7369 }
   ],
   activities: [
-    { id: 'ACT001', name: 'Barangay Clean-Up Drive', type: 'cleanup', date: '2026-11-15', location: 'Barangay San Isidro Plaza', description: 'Community cleanup of main streets and waterways. Bring gloves and eco bags.', participationPts: 50, status: 'approved', proposedBy: null },
-    { id: 'ACT002', name: 'Tree Planting Initiative', type: 'planting', date: '2026-11-22', location: 'Barangay San Isidro Park', description: 'Plant 200 native trees in our barangay park. Seedlings provided.', participationPts: 75, status: 'approved', proposedBy: null }
+    { id: 'ACT001', name: 'Barangay Clean-Up Drive', type: 'cleanup', date: '2026-11-15', location: 'Barangay San Gabriel Plaza', description: 'Community cleanup of main streets and waterways. Bring gloves and eco bags.', participationPts: 50, status: 'approved', proposedBy: null },
+    { id: 'ACT002', name: 'Tree Planting Initiative', type: 'planting', date: '2026-11-22', location: 'Barangay San Gabriel Park', description: 'Plant 200 native trees in our barangay park. Seedlings provided.', participationPts: 75, status: 'approved', proposedBy: null }
   ],
   eventProposals: [
-    { id: 'PROP001', title: 'Community Recycling Campaign', category: 'Recycling Campaign', description: 'A one-day recycling drive targeting households in Sitio Masagana.', barangay: 'Barangay San Isidro', location: 'Sitio Masagana Covered Court', date: '2026-12-05', startTime: '8:00 AM', endTime: '3:00 PM', participants: 50, ecoPointReward: 30, remarks: 'Please provide sorting bins.', proposedBy: 'Rodel Aguila', proposedById: 'COL-2024-007', status: 'pending', submittedDate: '2026-11-01', rejectionReason: null }
+    { id: 'PROP001', title: 'Community Recycling Campaign', category: 'Recycling Campaign', description: 'A one-day recycling drive targeting households in Sitio Masagana.', barangay: 'Barangay San Gabriel', location: 'Sitio Masagana Covered Court', date: '2026-12-05', startTime: '8:00 AM', endTime: '3:00 PM', participants: 50, ecoPointReward: 30, remarks: 'Please provide sorting bins.', proposedBy: 'Rodel Aguila', proposedById: 'COL-2024-007', status: 'pending', submittedDate: '2026-11-01', rejectionReason: null }
   ],
   notifications: {
     resident: [
-      { id: 'RNOTIF001', title: 'EcoPoints Credited', body: 'You earned 90 EcoPoints for your PET Plastic deposit on Nov 5.', time: '2026-11-05 14:32', read: false, link: 'wallet' },
+      { id: 'RNOTIF001', title: 'EcoToken Credited', body: 'You earned 90 EcoToken for your PET Plastic deposit on Nov 5.', time: '2026-11-05 14:32', read: false, link: 'wallet' },
       { id: 'RNOTIF002', title: 'Deposit Verified', body: 'Your deposit DEP001 has been verified by Rodel Aguila.', time: '2026-11-05 14:33', read: false, link: 'wallet' },
-      { id: 'RNOTIF003', title: 'Upcoming Event', body: 'Barangay Clean-Up Drive is on Nov 15. Earn 50 EcoPoints!', time: '2026-11-04 09:00', read: true, link: 'home' },
+      { id: 'RNOTIF003', title: 'Upcoming Event', body: 'Barangay Clean-Up Drive is on Nov 15. Earn 50 EcoToken!', time: '2026-11-04 09:00', read: true, link: 'home' },
       { id: 'RNOTIF004', title: 'Voucher Expiring Soon', body: 'Your SM Supermarket ₱50 Voucher expires on Dec 31, 2026.', time: '2026-11-03 10:00', read: true, link: 'rewards' }
     ],
     collector: [
       { id: 'CNOTIF001', title: 'Deposit Recorded Successfully', body: 'Deposit DEP001 for Maria Santos (3.0 kg PET Plastic) has been confirmed.', time: '2026-11-05 14:32', read: false, link: 'records' },
-      { id: 'CNOTIF002', title: 'New Environmental Program', body: 'LGU Quezon City launches the Green Barangay Challenge. Submit proposals by Nov 30.', time: '2026-11-04 08:00', read: true, link: null },
+      { id: 'CNOTIF002', title: 'New Environmental Program', body: 'LGU Tuguegarao City launches the Green Barangay Challenge. Submit proposals by Nov 30.', time: '2026-11-04 08:00', read: true, link: null },
       { id: 'CNOTIF003', title: 'Event Proposal Under Review', body: 'Your Community Recycling Campaign proposal is currently under LGU review.', time: '2026-11-01 15:00', read: true, link: null }
     ],
     admin: [
-      { id: 'ANOTIF001', title: 'New Event Proposal', body: 'Rodel Aguila submitted: Community Recycling Campaign (Barangay San Isidro).', time: '2026-11-01 15:00', read: false, link: 'manage' },
+      { id: 'ANOTIF001', title: 'New Event Proposal', body: 'Rodel Aguila submitted: Community Recycling Campaign (Barangay San Gabriel).', time: '2026-11-01 15:00', read: false, link: 'manage' },
       { id: 'ANOTIF002', title: 'Correction Request', body: 'A correction request was filed for deposit DEP003 by Rodel Aguila.', time: '2026-11-04 11:00', read: false, link: 'reports' },
       { id: 'ANOTIF003', title: 'Suspicious Deposit Flagged', body: 'Deposit DEP006 (25 kg PET Plastic) auto-flagged for review.', time: '2026-11-03 09:00', read: true, link: 'reports' }
     ]
@@ -125,7 +129,8 @@ let currentRecordFilter = { material: 'all', date: 'all', search: '' };
 // --- PERSISTENCE ---
 function saveState() {
   try {
-    localStorage.setItem('riknaAppState_v2', JSON.stringify(AppState));
+    // v3: demo world moved to Tuguegarao — old v2 saves are deliberately ignored
+    localStorage.setItem('riknaAppState_v3', JSON.stringify(AppState));
   } catch(e) {
     console.warn('LocalStorage save error:', e);
   }
@@ -133,10 +138,14 @@ function saveState() {
 
 function loadState() {
   try {
-    const s = localStorage.getItem('riknaAppState_v2');
+    const s = localStorage.getItem('riknaAppState_v3');
     if (s) {
       const parsed = JSON.parse(s);
       AppState = Object.assign({}, INITIAL_STATE, parsed);
+      // Defensive: saved centers missing coordinates would shadow the defaults
+      if (!Array.isArray(AppState.collectionCenters) || !AppState.collectionCenters.every(c => typeof c.lat === 'number' && typeof c.lng === 'number')) {
+        AppState.collectionCenters = JSON.parse(JSON.stringify(INITIAL_STATE.collectionCenters));
+      }
     }
   } catch(e) {
     console.warn('LocalStorage load error, using default state:', e);
@@ -146,7 +155,7 @@ function loadState() {
 
 function resetDemoData() {
   AppState = JSON.parse(JSON.stringify(INITIAL_STATE));
-  try { localStorage.removeItem('riknaAppState_v2'); } catch(e) {}
+  try { localStorage.removeItem('riknaAppState_v3'); localStorage.removeItem('riknaAppState_v2'); } catch(e) {}
   clearVerifiedResident();
   selectedMaterial = null;
   depositPhotoDataUrl = null;
@@ -804,6 +813,8 @@ function onSwipeStart(e) {
     if (ox === 'auto' || ox === 'scroll') return;
     n = n.parentElement;
   }
+  // The collection centers map owns its own pan gestures
+  if (e.target.closest && e.target.closest('.cc-map')) return;
   const t = e.touches[0];
   swipe.el = screen; swipe.ctx = ctx;
   swipe.x0 = t.clientX; swipe.y0 = t.clientY;
@@ -941,7 +952,7 @@ function doLogin() {
 
   showToast(`Welcome back, ${account.name}!`, 'success');
 
-  // Arm the EcoPoints count-up for exactly this render, then disarm —
+  // Arm the EcoToken count-up for exactly this render, then disarm —
   // the count plays once, on login, and never on returning to Home.
   countUpArmed = true;
   const route = () => {
@@ -1015,8 +1026,8 @@ function doRegister(event) {
     name,
     id: newId,
     contact: contact || '09170000000',
-    barangay: barangay || 'Barangay San Isidro',
-    municipality: 'Quezon City',
+    barangay: barangay || 'Barangay San Gabriel',
+    municipality: 'Tuguegarao City',
     registeredDate: new Date().toISOString().split('T')[0]
   };
 
@@ -1272,6 +1283,8 @@ function updateResidentUI() {
   renderQRScreen();
   renderProfileScreen();
   renderHomeActivities();
+  renderEventPasses();
+  renderCollectionCenters();
 }
 
 function updateResidentHomeUI() {
@@ -1285,6 +1298,8 @@ function updateResidentHomeUI() {
   updateNotifBadge('resident');
   renderHomeRecentTransactions();
   renderHomeActivities();
+  renderEventPasses();
+  renderCollectionCenters();
 }
 
 function renderHomeRecentTransactions() {
@@ -1306,7 +1321,7 @@ function createActivityRow(tx) {
     row.className = `activity-row activity-${state}`;
     row.innerHTML = `${homeMaterialIcon(tx.material, tx.type)}
       <span class="activity-copy"><strong></strong><span class="activity-meta"></span><span class="activity-status"></span></span>
-      <span class="activity-amount"><strong></strong><small>EcoPoints</small></span>`;
+      <span class="activity-amount"><strong></strong><small>EcoToken</small></span>`;
     row.querySelector('.activity-copy strong').textContent = tx.label;
     row.querySelector('.activity-meta').textContent = formatDate(tx.date) + (tx.kg != null ? ' · ' + tx.kg + ' kg' : '');
     row.querySelector('.activity-status').textContent = tx.status || 'Status unavailable';
@@ -1345,7 +1360,7 @@ function renderHomeActivities() {
     card.className = 'home-event';
     card.innerHTML = `<span class="home-event-date"><span class="home-event-month"></span><strong></strong><span class="home-event-year"></span></span>
       <span class="home-event-copy"><strong></strong><span class="home-event-location"></span><span class="home-event-time"></span>
-      <span class="home-event-footer"><span class="home-event-reward"></span><span class="home-event-link">Details <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span></span></span>`;
+      <span class="home-event-footer"><span class="home-event-reward"></span><button type="button" class="home-event-register"></button></span></span>`;
     const date = new Date(a.date + 'T00:00:00');
     const validDate = !Number.isNaN(date.getTime());
     card.querySelector('.home-event-month').textContent = validDate ? date.toLocaleDateString('en-US', { month: 'short' }) : 'Date';
@@ -1355,7 +1370,19 @@ function renderHomeActivities() {
     card.querySelector('.home-event-location').textContent = a.location;
     card.querySelector('.home-event-time').textContent = a.startTime || a.time || '';
     const reward = card.querySelector('.home-event-reward');
-    reward.textContent = a.participationPts > 0 ? '+' + a.participationPts.toLocaleString() + ' EcoPoints' : '';
+    reward.textContent = a.participationPts > 0 ? '+' + a.participationPts.toLocaleString() + ' EcoToken' : '';
+    const regBtn = card.querySelector('.home-event-register');
+    if (isEventRegistered(a.id)) {
+      regBtn.textContent = 'Registered ✓';
+      regBtn.classList.add('registered');
+      regBtn.disabled = true;
+    } else {
+      regBtn.textContent = 'Register';
+      regBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // don't open the detail modal behind the button
+        toggleEventRegistration(a.id);
+      });
+    }
     card.addEventListener('click', () => openActivityDetail(a.id));
     return card;
   });
@@ -1367,9 +1394,206 @@ function openActivityDetail(actId) {
   if (!a) return;
   setText('event-detail-name', a.name);
   setText('event-detail-date', formatDate(a.date) + ' • ' + a.location);
+  setText('event-detail-location', a.location);
   setText('event-detail-desc', a.description);
-  setText('event-detail-pts', '+' + a.participationPts + ' EcoPoints for participation');
+  setText('event-detail-pts', '+' + a.participationPts + ' EcoToken for participation');
+  const regBtn = el('event-detail-register');
+  if (regBtn) {
+    if (isEventRegistered(actId)) {
+      regBtn.textContent = 'Registered ✓ — pass is in Home';
+      regBtn.disabled = true;
+    } else {
+      regBtn.textContent = "I'm Interested — Register";
+      regBtn.disabled = false;
+      regBtn.onclick = () => {
+        toggleEventRegistration(actId);
+        openActivityDetail(actId); // refresh the button state inside the open modal
+      };
+    }
+  }
   openModal('modal-event-detail');
+}
+
+// --- EVENT REGISTRATION & ATTENDANCE PASSES ---
+function isEventRegistered(actId) {
+  return (AppState.resident.registeredEvents || []).includes(actId);
+}
+
+function toggleEventRegistration(actId) {
+  const a = AppState.activities.find(x => x.id === actId);
+  if (!a) return;
+  const list = AppState.resident.registeredEvents || (AppState.resident.registeredEvents = []);
+  if (list.includes(actId)) return;
+  list.push(actId);
+  saveState();
+  renderHomeActivities();
+  renderEventPasses();
+  showToast('Registered! Your attendance pass is ready in Home.', 'success');
+}
+
+function renderEventPasses() {
+  const slot = el('event-passes-slot');
+  if (!slot) return;
+  const regs = (AppState.resident.registeredEvents || [])
+    .map(id => AppState.activities.find(a => a.id === id))
+    .filter(Boolean);
+  slot.replaceChildren();
+  if (!regs.length) return; // hidden until the resident registers
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'card event-passes-card';
+  btn.innerHTML = `<span class="event-passes-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg></span>
+    <span class="event-passes-copy"><strong>Event Passes</strong><span class="event-passes-sub"></span></span>
+    <svg class="event-passes-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>`;
+  btn.querySelector('.event-passes-sub').textContent =
+    regs.length + (regs.length === 1 ? ' event registered — tap to view your attendance pass' : ' events registered — tap to view your passes');
+  btn.addEventListener('click', openEventPasses);
+  slot.appendChild(btn);
+}
+
+function openEventPasses() {
+  const regs = (AppState.resident.registeredEvents || [])
+    .map(id => AppState.activities.find(a => a.id === id))
+    .filter(Boolean);
+  const user = AppState.currentUser || AppState.accounts[0];
+  const list = el('event-pass-list');
+  if (!list) return;
+  if (!regs.length) { openModal('modal-event-pass'); return; }
+  list.replaceChildren(...regs.map(a => {
+    const pass = document.createElement('div');
+    pass.className = 'event-pass';
+    const head = document.createElement('div');
+    head.className = 'event-pass-head';
+    const name = document.createElement('strong');
+    name.textContent = a.name;
+    const meta = document.createElement('span');
+    meta.textContent = formatDate(a.date) + ' • ' + a.location;
+    head.append(name, meta);
+    const bcWrap = document.createElement('div');
+    bcWrap.className = 'barcode-wrap';
+    bcWrap.appendChild(buildBarcodeSvg((user.id || 'RES') + '|' + a.id));
+    const caption = document.createElement('p');
+    caption.className = 'event-pass-caption';
+    caption.textContent = 'Present this barcode at event check-in';
+    pass.append(head, bcWrap, caption);
+    return pass;
+  }));
+  openModal('modal-event-pass');
+}
+
+// Deterministic attendance barcode: hash-driven bar/gap widths from the seed,
+// same one-way trick as generateQRPattern (demo pattern, not a retail barcode).
+function buildBarcodeSvg(seed) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', 'Attendance barcode');
+  const src = seed + '|' + seed;
+  const runs = [];
+  for (let i = 0; i < src.length; i++) {
+    const c = src.charCodeAt(i);
+    runs.push([1 + (c % 3), 1 + ((c >> 3) % 3)]);
+  }
+  let width = 4; // quiet zone
+  for (const [bar, gap] of runs) width += bar + gap;
+  width += 3;
+  svg.setAttribute('viewBox', '0 0 ' + width + ' 40');
+  let x = 2;
+  for (const [bar, gap] of runs) {
+    const r = document.createElementNS(NS, 'rect');
+    r.setAttribute('x', x);
+    r.setAttribute('y', '0');
+    r.setAttribute('width', bar);
+    r.setAttribute('height', '40');
+    r.setAttribute('fill', '#1A2332');
+    svg.appendChild(r);
+    x += bar + gap;
+  }
+  return svg;
+}
+
+// Self-check: identical seeds must render identical barcodes.
+(function barcodeSelfCheck() {
+  const a = buildBarcodeSvg('SEED');
+  const b = buildBarcodeSvg('SEED');
+  console.assert(a.isEqualNode(b), 'barcode generator must be deterministic');
+})();
+
+// --- COLLECTION CENTERS NEAR YOU (Leaflet + OpenStreetMap) ---
+let ccMap = null;
+let ccMarkers = [];
+
+function renderCollectionCenters() {
+  const list = el('cc-list');
+  if (!list) return;
+  const q = (el('cc-search')?.value || '').trim().toLowerCase();
+  const centers = AppState.collectionCenters.filter(c =>
+    !q || c.name.toLowerCase().includes(q) || c.address.toLowerCase().includes(q));
+  if (!centers.length) {
+    const p = document.createElement('p');
+    p.className = 'home-empty';
+    p.textContent = 'No collection centers match your search.';
+    list.replaceChildren(p);
+  } else {
+    list.replaceChildren(...centers.map(c => {
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'cc-list-item';
+      row.innerHTML = `<span class="cc-list-copy"><strong></strong><span class="cc-list-sub"></span><span class="cc-list-hours"></span></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>`;
+      row.querySelector('.cc-list-copy > strong').textContent = c.name;
+      row.querySelector('.cc-list-sub').textContent = c.address;
+      row.querySelector('.cc-list-hours').textContent = c.hours;
+      row.addEventListener('click', () => openCollectionCenter(c.id));
+      return row;
+    }));
+  }
+  syncCollectionMap(centers, q);
+}
+
+function syncCollectionMap(centers, q) {
+  const mapEl = el('cc-map');
+  if (!mapEl) return;
+  if (typeof L === 'undefined') { mapEl.style.display = 'none'; return; } // offline: list still works
+  const locatable = AppState.collectionCenters.filter(c => typeof c.lat === 'number' && typeof c.lng === 'number');
+  if (!locatable.length) { mapEl.style.display = 'none'; return; } // no coordinates: list still works
+  if (!ccMap) {
+    ccMap = L.map('cc-map', { scrollWheelZoom: false }).setView([17.6133, 121.7269], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(ccMap);
+    ccMarkers = locatable.map(c => {
+      const m = L.marker([c.lat, c.lng], {
+        icon: L.divIcon({ className: 'cc-pin', html: '<span class="cc-pin-dot"></span>', iconSize: [20, 20], iconAnchor: [10, 10] })
+      }).addTo(ccMap);
+      m._ccId = c.id;
+      m.on('click', () => openCollectionCenter(c.id));
+      return m;
+    });
+  }
+  // Dim pins that don't match the current search
+  ccMarkers.forEach(m => m.setOpacity(!q || centers.some(c => c.id === m._ccId) ? 1 : 0.2));
+  ccMap.invalidateSize(); // the tab may have been hidden when this first rendered
+}
+
+function openCollectionCenter(id) {
+  const c = AppState.collectionCenters.find(x => x.id === id) || AppState.collectionCenters[0];
+  if (!c) return;
+  setText('cc-detail-name', c.name);
+  setText('cc-detail-address', c.address);
+  setText('cc-detail-hours', 'Hours: ' + c.hours);
+  setText('cc-detail-contact', 'Hotline: ' + c.contact);
+  const mats = el('cc-detail-materials');
+  if (mats) {
+    mats.replaceChildren(...c.materials.map(m => {
+      const chip = document.createElement('span');
+      chip.className = 'cc-chip';
+      chip.textContent = m;
+      return chip;
+    }));
+  }
+  openModal('modal-collection-center');
 }
 
 function renderProfileScreen() {
@@ -1386,7 +1610,7 @@ function renderProfileScreen() {
   setText('profile-display-phone', user.contact);
   setText('profile-barangay', user.barangay);
   setText('profile-barangay-detail', user.barangay);
-  setText('profile-municipality', user.municipality || 'Quezon City');
+  setText('profile-municipality', user.municipality || 'Tuguegarao City');
   setText('profile-total-kg', r.kgRecycled.toFixed(1));
   setText('profile-total-deposits', String(r.deposits));
   setText('profile-lifetime-pts', r.lifetimePoints.toLocaleString());
@@ -1641,7 +1865,7 @@ function openTransactionDetail(txId) {
           ${tx.weight ? detailRow('Measured Weight', tx.weight + ' kg') : ''}
           ${tx.collector ? detailRow('Collector Officer', tx.collector) : ''}
           ${tx.barangay ? detailRow('Barangay Drop-off', tx.barangay) : ''}
-          ${detailRow('EcoPoints Impact', (tx.points > 0 ? '+' : '') + tx.points + ' pts')}
+          ${detailRow('EcoToken Impact', (tx.points > 0 ? '+' : '') + tx.points + ' pts')}
           ${detailRow('Verification Status', tx.status || 'Verified')}
           ${tx.remarks ? detailRow('Officer Remarks', tx.remarks) : ''}
         </div>
@@ -1727,7 +1951,7 @@ function buildRewardTicket(reward, userPts) {
   ticket.className = 'reward-ticket' + (canRedeem ? '' : ' is-locked');
   ticket.tabIndex = 0;
   ticket.setAttribute('role', 'button');
-  ticket.setAttribute('aria-label', 'View ' + reward.name + ' — ' + reward.points.toLocaleString() + ' EcoPoints' +
+  ticket.setAttribute('aria-label', 'View ' + reward.name + ' — ' + reward.points.toLocaleString() + ' EcoToken' +
     (canRedeem ? '' : ', ' + needed.toLocaleString() + ' more needed'));
   ticket.addEventListener('click', e => {
     if (e.target.closest('.reward-redeem')) return;
@@ -1788,7 +2012,7 @@ function buildRewardTicket(reward, userPts) {
   } else {
     redeem.textContent = 'Need ' + needed.toLocaleString();
     redeem.disabled = true;
-    redeem.setAttribute('aria-label', 'Need ' + needed.toLocaleString() + ' more EcoPoints');
+    redeem.setAttribute('aria-label', 'Need ' + needed.toLocaleString() + ' more EcoToken');
   }
   bottom.append(offerRow, redeem);
 
@@ -1901,8 +2125,8 @@ function openRewardDetail(rewardId) {
   setText('vd-name', r.name);
   setText('vd-merchant', r.merchant);
   setText('vd-desc', r.description);
-  setText('vd-pts-required', r.points.toLocaleString() + ' EcoPoints');
-  setText('vd-user-pts', userPts.toLocaleString() + ' EcoPoints');
+  setText('vd-pts-required', r.points.toLocaleString() + ' EcoToken');
+  setText('vd-user-pts', userPts.toLocaleString() + ' EcoToken');
 
   const statusEl = el('vd-pts-status');
   if (statusEl) {
@@ -1929,8 +2153,8 @@ function confirmRedemptionOpen() {
   if (confirmBtn) confirmBtn.disabled = false;
   const after = AppState.resident.points - r.points;
   setText('vc-reward-name', r.name);
-  setText('vc-pts-deduct', r.points + ' EcoPoints');
-  setText('vc-pts-after', after.toLocaleString() + ' EcoPoints');
+  setText('vc-pts-deduct', r.points + ' EcoToken');
+  setText('vc-pts-after', after.toLocaleString() + ' EcoToken');
   closeModal('modal-voucher-detail');
   openModal('modal-voucher-confirm');
 }
@@ -1977,7 +2201,7 @@ function confirmRedemption() {
   AppState.notifications.resident.unshift({
     id: 'RNOTIF' + uid(),
     title: 'Voucher Redeemed!',
-    body: `You redeemed ${r.name} for ${r.points} EcoPoints. Claim Code: ${code}`,
+    body: `You redeemed ${r.name} for ${r.points} EcoToken. Claim Code: ${code}`,
     time: nowStr(),
     read: false,
     link: 'rewards'
@@ -2185,7 +2409,7 @@ const WIZARD_STEP_LABELS = [
   'Resident verified',
   'Select waste material',
   'Weight and documentation',
-  'Calculated EcoPoints',
+  'Calculated EcoToken',
   'Confirm deposit'
 ];
 
@@ -2811,8 +3035,8 @@ function confirmDeposit() {
   // Add notification alerts
   AppState.notifications.resident.unshift({
     id: 'RNOTIF' + uid(),
-    title: 'EcoPoints Credited',
-    body: `You earned ${pts} EcoPoints for your ${d.material.name} deposit (${d.weight.toFixed(2)} kg).`,
+    title: 'EcoToken Credited',
+    body: `You earned ${pts} EcoToken for your ${d.material.name} deposit (${d.weight.toFixed(2)} kg).`,
     time: nowStr(),
     read: false,
     link: 'wallet'
@@ -3001,7 +3225,7 @@ function updateCollectorUI() {
 function updateCollectorHomeUI() {
   const colAccount = currentCollectorAccount();
   const name = colAccount?.name || 'Rodel Aguila';
-  const barangay = colAccount?.barangay || 'Barangay San Isidro';
+  const barangay = colAccount?.barangay || 'Barangay San Gabriel';
 
   setText('collector-officer-name', 'Officer ' + name);
   setText('collector-officer-barangay', barangay);
@@ -3148,7 +3372,7 @@ function updateAdminUI() {
   setText('admin-points-dist', AppState.admin.pointsDistributed.toLocaleString());
   setText('admin-vouchers-redeemed', AppState.admin.vouchersRedeemed);
   setText('admin-barangay-count', AppState.admin.barangays);
-  setText('admin-home-office', ((user && user.barangay) || 'Quezon City').replace(/^LGU\s+/i, ''));
+  setText('admin-home-office', ((user && user.barangay) || 'Tuguegarao City').replace(/^LGU\s+/i, ''));
   const avatar = el('admin-home-avatar');
   if (avatar) {
     const initials = (user && user.name || '')
@@ -4261,7 +4485,7 @@ function openCollectorEdit(id) {
 
   if (nameInp) nameInp.value = c?.name || '';
   if (idInp) idInp.value = c?.id || '';
-  if (brgyInp) brgyInp.value = c?.barangay || 'Barangay San Isidro';
+  if (brgyInp) brgyInp.value = c?.barangay || 'Barangay San Gabriel';
   if (emailInp) emailInp.value = c?.email || '';
   if (phoneInp) phoneInp.value = c?.contact || c?.phone || '';
   if (statusInp) statusInp.checked = c?.status === 'active';
@@ -4335,7 +4559,7 @@ function renderActivitiesManage() {
       </div>
       <div class="manage-card-sub">${formatDate(a.date)} • ${esc(a.location)}</div>
       <div class="manage-card-desc">${esc(a.description)}</div>
-      <div class="manage-card-meta">+${a.participationPts} EcoPoints attendance reward</div>
+      <div class="manage-card-meta">+${a.participationPts} EcoToken attendance reward</div>
     </div>
   `).join('') + `</div>`;
 }
@@ -4440,7 +4664,7 @@ function openEventProposalForm() {
   const form = el('modal-event-proposal')?.querySelector('form');
   if (form) form.reset();
   const brgyInp = el('prop-barangay');
-  if (brgyInp) brgyInp.value = 'Barangay San Isidro';
+  if (brgyInp) brgyInp.value = 'Barangay San Gabriel';
   openModal('modal-event-proposal');
 }
 
@@ -4469,7 +4693,7 @@ function submitEventProposal(event) {
     title,
     category,
     description: desc,
-    barangay: colAcc?.barangay || 'Barangay San Isidro',
+    barangay: colAcc?.barangay || 'Barangay San Gabriel',
     location,
     date,
     startTime: start,
@@ -4612,7 +4836,7 @@ function approveEventProposal(proposalId) {
   AppState.notifications.collector.unshift({
     id: 'CNOTIF' + uid(),
     title: 'Event Proposal Approved!',
-    body: `Your proposal "${p.title}" was approved by LGU Admin. EcoPoint budget has been allocated.`,
+    body: `Your proposal "${p.title}" was approved by LGU Admin. EcoToken budget has been allocated.`,
     time: nowStr(),
     read: false,
     link: null
@@ -4621,7 +4845,7 @@ function approveEventProposal(proposalId) {
   AppState.notifications.resident.unshift({
     id: 'RNOTIF' + uid(),
     title: 'New Community Event',
-    body: `${p.title} scheduled on ${formatDate(p.date)} at ${p.location}. Earn ${p.ecoPointReward || 50} EcoPoints!`,
+    body: `${p.title} scheduled on ${formatDate(p.date)} at ${p.location}. Earn ${p.ecoPointReward || 50} EcoToken!`,
     time: nowStr(),
     read: false,
     link: 'home'
@@ -4641,7 +4865,7 @@ function approveEventProposal(proposalId) {
   updateNotifBadge('collector');
   updateNotifBadge('resident');
 
-  showToast('Event proposal approved! EcoPoint budget allocated.', 'success');
+  showToast('Event proposal approved! EcoToken budget allocated.', 'success');
   proposalActionInFlight = false;
 }
 
@@ -4697,7 +4921,7 @@ function renderCollectorProposals() {
 
 // --- CSV EXPORT ---
 function exportCSV() {
-  const headers = ['Transaction_ID', 'Resident_Name', 'Resident_ID', 'Waste_Material', 'Weight_kg', 'EcoPoints', 'Date', 'Collector_Officer', 'Barangay', 'Audit_Status'];
+  const headers = ['Transaction_ID', 'Resident_Name', 'Resident_ID', 'Waste_Material', 'Weight_kg', 'EcoToken', 'Date', 'Collector_Officer', 'Barangay', 'Audit_Status'];
   const rows = AppState.collectionRecords.map(r => [
     `"${r.id}"`,
     `"${r.residentName}"`,

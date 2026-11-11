@@ -1,6 +1,6 @@
 # Rikna
 
-A community recycling-rewards mobile web app. Residents earn EcoPoints for recyclable deposits, track their impact, redeem rewards, and show a QR pass at barangay drop-offs. Collector and Admin roles manage deposits, events, materials, and reports.
+A community recycling-rewards mobile web app. Residents earn EcoToken for recyclable deposits, track their impact, redeem rewards, and show a QR pass at barangay drop-offs. Collector and Admin roles manage deposits, events, materials, and reports.
 
 Built with vanilla HTML/CSS/JS — no framework, no build step, no backend. State is a local demo model persisted to `localStorage`.
 

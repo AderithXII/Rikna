@@ -20,6 +20,9 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <!-- Leaflet + OpenStreetMap tiles for the collection centers map (CDN; app degrades to the list if offline) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 </head>
 
 <body>
@@ -113,7 +116,7 @@
               <span class="wlc-line"><span class="wlc-line-in">Turn recyclables</span></span>
               <span class="wlc-line"><span class="wlc-line-in wlc-em">into rewards.</span></span>
             </h2>
-            <p class="welcome-desc">Exchange recyclable waste for EcoPoints at your barangay drop-off, then redeem them for local rewards.</p>
+            <p class="welcome-desc">Exchange recyclable waste for EcoToken at your barangay drop-off, then redeem them for local rewards.</p>
           </div>
 
           <!-- Actions -->
@@ -282,7 +285,7 @@
 
           <div class="reg-intro">
             <h2 class="reg-title" tabindex="-1">Join the community</h2>
-            <p class="reg-subtitle">Start earning EcoPoints for every recycling deposit.</p>
+            <p class="reg-subtitle">Start earning EcoToken for every recycling deposit.</p>
           </div>
 
           <form onsubmit="doRegister(event)" class="reg-form" novalidate>
@@ -309,16 +312,16 @@
                 <svg class="reg-field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 <select id="reg-barangay" required>
                   <option value="">Select your barangay</option>
-                  <option value="Barangay San Isidro">Barangay San Isidro</option>
-                  <option value="Barangay Pinyahan">Barangay Pinyahan</option>
-                  <option value="Barangay Ugong">Barangay Ugong</option>
-                  <option value="Barangay Bagong Silang">Barangay Bagong Silang</option>
-                  <option value="Barangay Sta. Cruz">Barangay Sta. Cruz</option>
-                  <option value="Barangay Poblacion">Barangay Poblacion</option>
-                  <option value="Barangay Mapayapa">Barangay Mapayapa</option>
-                  <option value="Barangay Dalisay">Barangay Dalisay</option>
-                  <option value="Barangay Lumangbayan">Barangay Lumangbayan</option>
-                  <option value="Barangay Lubi">Barangay Lubi</option>
+                  <option value="Barangay San Gabriel">Barangay San Gabriel</option>
+                  <option value="Barangay Pengue Ruyu">Barangay Pengue Ruyu</option>
+                  <option value="Barangay Caritan Norte">Barangay Caritan Norte</option>
+                  <option value="Barangay Caritan Sur">Barangay Caritan Sur</option>
+                  <option value="Barangay Buntun">Barangay Buntun</option>
+                  <option value="Barangay Cataggaman Viejo">Barangay Cataggaman Viejo</option>
+                  <option value="Barangay Ugac Norte">Barangay Ugac Norte</option>
+                  <option value="Barangay Pallua Sur">Barangay Pallua Sur</option>
+                  <option value="Barangay Atulayan">Barangay Atulayan</option>
+                  <option value="Barangay Tagum">Barangay Tagum</option>
                 </select>
                 <svg class="reg-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </div>
@@ -398,7 +401,7 @@
 
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
 
-            <span id="resident-barangay-text">Barangay San Isidro • Eco Member</span>
+            <span id="resident-barangay-text">Barangay San Gabriel • Eco Member</span>
 
           </div>
 
@@ -420,7 +423,7 @@
 
           <span class="points-label">
 
-            <span>YOUR ECOPOINTS</span>
+            <span>YOUR ECOTOKEN</span>
 
             <span class="home-wallet-tag">EcoWallet</span>
 
@@ -445,24 +448,9 @@
 
 
 
-        <nav class="home-actions" aria-label="Quick actions">
-          <button class="home-action home-action-primary" type="button" onclick="showResidentTab('qr')">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 8V3h5m8 0h5v5m0 8v5h-5M8 21H3v-5"/><rect x="7" y="7" width="4" height="4"/><path d="M15 7h2v4h-2m-8 4h4v2H7m8-2v2h2"/></svg>
-            <span>My QR<small>Ready for drop-off</small></span>
-          </button>
-          <button class="home-action" type="button" onclick="showResidentTab('wallet')">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 8h18m-5 4h5v5h-5z"/></svg>
-            <span>EcoWallet</span>
-          </button>
-          <button class="home-action" type="button" onclick="showResidentTab('rewards')">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 11v10h16V11M12 7v14"/><rect x="2" y="7" width="20" height="4" rx="1"/><path d="M12 7C3 7 5 0 9 3l3 4Zm0 0c9 0 7-7 3-4l-3 4Z"/></svg>
-            <span>Rewards</span>
-          </button>
-        </nav>
-
         <section class="home-impact" aria-labelledby="home-impact-title">
           <div class="home-section-heading">
-            <h2 id="home-impact-title">Small acts. Real impact.</h2>
+            <h2 id="home-impact-title">Lifetime Contributions</h2>
             <span class="home-eyebrow">ALL TIME</span>
           </div>
           <div class="home-impact-values">
@@ -479,6 +467,9 @@
           </div>
           <p class="home-impact-note">Your recorded contributions to a cleaner barangay.</p>
         </section>
+
+        <!-- Event Passes slot (only rendered when the resident registered for events) -->
+        <div id="event-passes-slot"></div>
 
 
 
@@ -512,37 +503,23 @@
 
 
 
-        <!-- Collection Center Card -->
+        <!-- Collection Centers Near You -->
 
         <div class="section-header" style="margin-top: 6px;">
 
-          <span class="section-title">Barangay Drop-Off Center</span>
+          <span class="section-title">Collection Centers Near You</span>
 
         </div>
 
         <div style="padding: 0 20px 20px;">
 
-          <div class="card" onclick="openModal('modal-collection-center')" style="cursor: pointer; background: #F8FAFC; border: 1.5px solid var(--border-base);">
+          <div class="card cc-nearby">
 
-            <div style="display: flex; gap: 12px; align-items: center;">
+            <input type="search" id="cc-search" class="cc-search-input" placeholder="Search centers or barangays" autocomplete="off" oninput="renderCollectionCenters()">
 
-              <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--color-forest-light); color: var(--color-forest); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <div id="cc-map" class="cc-map" aria-label="Map of nearby collection centers"></div>
 
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-
-              </div>
-
-              <div style="flex: 1;">
-
-                <div style="font-weight: 700; font-size: 14px; color: #1A2332;">San Isidro Eco Hub</div>
-
-                <div style="font-size: 12px; color: #6B7280;">123 Rizal Ave • Mon-Sat 7:00 AM - 5:00 PM</div>
-
-              </div>
-
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-
-            </div>
+            <div id="cc-list" class="cc-list"></div>
 
           </div>
 
@@ -700,7 +677,7 @@
             <div class="qr-identity">
               <div class="qr-identity-main">
                 <strong class="qr-resident-name" id="qr-resident-name">Maria Santos</strong>
-                <span class="qr-resident-meta">Barangay San Isidro</span>
+                <span class="qr-resident-meta">Barangay San Gabriel</span>
               </div>
               <div class="qr-identity-side">
                 <span class="qr-identity-label">Resident ID</span>
@@ -726,7 +703,7 @@
 
           <aside class="qr-info">
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 11.5 2 2 4-4"/></svg>
-            <p>Show this pass to an <strong>authorized collector</strong> at any barangay drop-off. Your EcoPoints are recorded after verification.</p>
+            <p>Show this pass to an <strong>authorized collector</strong> at any barangay drop-off. Your EcoToken is recorded after verification.</p>
           </aside>
 
         </div>
@@ -749,8 +726,8 @@
 
         </div>
 
-        <!-- EcoPoints balance -->
-        <section class="rw-balance" aria-label="EcoPoints balance">
+        <!-- EcoToken balance -->
+        <section class="rw-balance" aria-label="EcoToken balance">
           <span class="rw-balance-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 16.2c-2.9 0-4.7-1.9-4.7-4.7 2.9 0 4.7 1.9 4.7 4.7Z"></path><path d="M12 16.2c0-2.8 1.8-4.7 4.7-4.7 0 2.8-1.8 4.7-4.7 4.7Z"></path></svg>
           </span>
@@ -831,7 +808,7 @@
           <div class="pf-meta">
             <span class="pf-meta-chip">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-              <span id="profile-barangay">Barangay San Isidro</span>
+              <span id="profile-barangay">Barangay San Gabriel</span>
             </span>
             <span class="pf-meta-chip">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
@@ -903,7 +880,7 @@
                 <svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/></svg>
               </span>
               <p class="pf-impact-value"><strong id="profile-lifetime-pts">1,240</strong><span>pts</span></p>
-              <p class="pf-impact-label">Lifetime EcoPoints</p>
+              <p class="pf-impact-label">Lifetime EcoToken</p>
             </div>
 
             <div class="pf-impact-item">
@@ -937,11 +914,11 @@
             </div>
             <div class="pf-detail">
               <dt>Barangay</dt>
-              <dd id="profile-barangay-detail">Barangay San Isidro</dd>
+              <dd id="profile-barangay-detail">Barangay San Gabriel</dd>
             </div>
             <div class="pf-detail">
               <dt>Municipality</dt>
-              <dd id="profile-municipality">Quezon City</dd>
+              <dd id="profile-municipality">Tuguegarao City</dd>
             </div>
           </dl>
         </section>
@@ -1059,7 +1036,7 @@
 
               <div class="notif-title">Barangay Clean-Up Drive Announced</div>
 
-              <div class="notif-body">Join us this coming Nov 15 at Barangay San Isidro Plaza. Earn 50 EcoPoints for participating.</div>
+              <div class="notif-body">Join us this coming Nov 15 at Barangay San Gabriel Plaza. Earn 50 EcoToken for participating.</div>
 
               <div class="notif-time">Nov 4, 2026</div>
 
@@ -1075,7 +1052,7 @@
 
               <div class="notif-title">Voucher Redeemed Successfully</div>
 
-              <div class="notif-body">SM Supermarket ₱50 Voucher was redeemed for 100 EcoPoints. Present the barcode at checkout.</div>
+              <div class="notif-body">SM Supermarket ₱50 Voucher was redeemed for 100 EcoToken. Present the barcode at checkout.</div>
 
               <div class="notif-time">Oct 30, 2026</div>
 
@@ -1116,7 +1093,7 @@
               Authorized collector
             </div>
             <div class="col-officer-meta">
-              <span id="collector-officer-barangay">Barangay San Isidro</span>
+              <span id="collector-officer-barangay">Barangay San Gabriel</span>
               <span class="col-meta-dot" aria-hidden="true"></span>
               <span id="collector-officer-id">COL-2024-007</span>
             </div>
@@ -1226,7 +1203,7 @@
             <div class="resident-verified-foot">
               <span class="resident-verified-place">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span id="scan-resident-barangay">Barangay San Isidro</span>
+                <span id="scan-resident-barangay">Barangay San Gabriel</span>
               </span>
               <button class="text-action" type="button" onclick="resetResidentScan()">Scan Different Resident</button>
             </div>
@@ -1288,7 +1265,7 @@
             <div class="resident-verified-foot">
               <span class="resident-verified-place">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span id="wiz-resident-barangay">Barangay San Isidro</span>
+                <span id="wiz-resident-barangay">Barangay San Gabriel</span>
               </span>
               <button class="text-action" type="button" onclick="resetResidentScan()">Scan Different Resident</button>
             </div>
@@ -1413,9 +1390,9 @@
           </div>
         </div>
 
-        <!-- Step 4: Calculated EcoPoints -->
+        <!-- Step 4: Calculated EcoToken -->
         <div class="step-content" id="step-4-content">
-          <h3 class="step-heading" tabindex="-1">Calculated EcoPoints</h3>
+          <h3 class="step-heading" tabindex="-1">Calculated EcoToken</h3>
           <p class="step-sub">Review the conversion before continuing.</p>
 
           <div class="calc-card">
@@ -1425,7 +1402,7 @@
               <div class="calc-line"><span>Rate</span><strong class="num" id="calc-rate">30 pts/kg</strong></div>
             </div>
             <div class="calc-total">
-              <div class="calc-total-label">Calculated EcoPoints</div>
+              <div class="calc-total-label">Calculated EcoToken</div>
               <div class="calc-total-value"><span id="calc-points-val">75</span><span class="calc-unit">pts</span></div>
               <div class="calc-formula" id="calc-formula">2.50 kg &times; 30 pts/kg</div>
             </div>
@@ -1443,7 +1420,7 @@
         <!-- Step 5: Confirm Deposit -->
         <div class="step-content" id="step-5-content">
           <h3 class="step-heading" tabindex="-1">Confirm deposit</h3>
-          <p class="step-sub">Check the details before crediting EcoPoints.</p>
+          <p class="step-sub">Check the details before crediting EcoToken.</p>
 
           <div class="review-card">
             <div class="review-section">
@@ -1470,7 +1447,7 @@
               </div>
             </div>
             <div class="review-total">
-              <span>Total EcoPoints</span>
+              <span>Total EcoToken</span>
               <strong id="summary-total-pts">+75 pts</strong>
             </div>
           </div>
@@ -1612,7 +1589,7 @@
 
               <div class="notif-title">LGU Weekly Collection Target Updated</div>
 
-              <div class="notif-body">Barangay San Isidro MRF has set a 150 kg weekly target for high-density PET.</div>
+              <div class="notif-body">Barangay San Gabriel MRF has set a 150 kg weekly target for high-density PET.</div>
 
               <div class="notif-time">Today at 8:00 AM</div>
 
@@ -1628,7 +1605,7 @@
 
               <div class="notif-title">MRF Logistics Center Notice</div>
 
-              <div class="notif-body">San Isidro MRF drop-off truck arrival scheduled at 4:30 PM today.</div>
+              <div class="notif-body">San Gabriel MRF drop-off truck arrival scheduled at 4:30 PM today.</div>
 
               <div class="notif-time">Yesterday</div>
 
@@ -1683,7 +1660,7 @@
 
             <p class="admin-identity-line">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-              <span id="admin-home-office">Quezon City</span>
+              <span id="admin-home-office">Tuguegarao City</span>
             </p>
 
           </div>
@@ -1741,7 +1718,7 @@
 
           </button>
 
-          <div class="admin-coverage-list" id="admin-barangay-list" hidden>San Isidro, Pinyahan, Ugong, Bagong Silang, Sta. Cruz</div>
+          <div class="admin-coverage-list" id="admin-barangay-list" hidden>San Gabriel, Pengue Ruyu, Caritan Norte, Caritan Sur, Buntun</div>
 
         </div>
 
@@ -1935,11 +1912,11 @@
 
               <option value="all">All Barangays</option>
 
-              <option value="San Isidro">San Isidro</option>
+              <option value="San Gabriel">San Gabriel</option>
 
-              <option value="Pinyahan">Pinyahan</option>
+              <option value="Pengue Ruyu">Pengue Ruyu</option>
 
-              <option value="Ugong">Ugong</option>
+              <option value="Caritan Norte">Caritan Norte</option>
 
             </select>
 
@@ -1968,7 +1945,7 @@
                     <span class="collector-row-name">Rodel Aguila</span>
                     <span class="manage-status-pill">Active</span>
                   </div>
-                  <div class="collector-row-sub">Barangay San Isidro • COL-2024-007</div>
+                  <div class="collector-row-sub">Barangay San Gabriel • COL-2024-007</div>
                   <div class="collector-row-action-bar">
                     <button class="btn-manage-action" onclick="openCollectorDetails('COL-2024-007')">View Details</button>
                   </div>
@@ -1981,7 +1958,7 @@
                     <span class="collector-row-name">Eduardo Ramos</span>
                     <span class="manage-status-pill">Active</span>
                   </div>
-                  <div class="collector-row-sub">Barangay Pinyahan • COL-2024-012</div>
+                  <div class="collector-row-sub">Barangay Pengue Ruyu • COL-2024-012</div>
                   <div class="collector-row-action-bar">
                     <button class="btn-manage-action" onclick="openCollectorDetails('COL-2024-012')">View Details</button>
                   </div>
@@ -1994,7 +1971,7 @@
                     <span class="collector-row-name">Danilo Cruz</span>
                     <span class="manage-status-pill inactive">Restricted</span>
                   </div>
-                  <div class="collector-row-sub">Barangay Ugong • COL-2024-019</div>
+                  <div class="collector-row-sub">Barangay Caritan Norte • COL-2024-019</div>
                   <div class="collector-row-action-bar">
                     <button class="btn-manage-action" onclick="openCollectorDetails('COL-2024-019')">View Details</button>
                   </div>
@@ -2015,19 +1992,19 @@
 
           <div style="padding: 0 20px 24px;">
 
-            <div class="card" onclick="openModal('modal-collection-center')" style="cursor:pointer; margin-bottom: 8px;">
+            <div class="card" onclick="openCollectionCenter('CC001')" style="cursor:pointer; margin-bottom: 8px;">
 
-              <div style="font-weight: 700; font-size: 14px;">San Isidro Eco Hub</div>
+              <div style="font-weight: 700; font-size: 14px;">San Gabriel Eco Center</div>
 
-              <div style="font-size: 12px; color: #6B7280;">123 Rizal Ave, Brgy San Isidro • Mon-Sat 7:00 AM - 5:00 PM</div>
+              <div style="font-size: 12px; color: #6B7280;">21 Bonifacio St, Brgy San Gabriel • Mon-Sat 7:00 AM - 5:00 PM</div>
 
             </div>
 
-            <div class="card" onclick="openModal('modal-collection-center')" style="cursor:pointer;">
+            <div class="card" onclick="openCollectionCenter('CC002')" style="cursor:pointer;">
 
-              <div style="font-weight: 700; font-size: 14px;">Pinyahan MRF Center</div>
+              <div style="font-weight: 700; font-size: 14px;">Pengue Ruyu Drop-off Hub</div>
 
-              <div style="font-size: 12px; color: #6B7280;">45 Kalayaan Rd, Brgy Pinyahan • Mon-Fri 8:00 AM - 4:00 PM</div>
+              <div style="font-size: 12px; color: #6B7280;">88 Rizal St, Brgy Pengue Ruyu • Mon-Fri 8:00 AM - 4:00 PM</div>
 
             </div>
 
@@ -2059,9 +2036,9 @@
                   <div class="manage-card-title">Riverside Eco Cleanup Campaign</div>
                   <span class="manage-status-pill">Pending</span>
                 </div>
-                <div class="manage-card-sub">Barangay San Isidro • Dec 5, 2026</div>
+                <div class="manage-card-sub">Barangay San Gabriel • Dec 5, 2026</div>
                 <div class="manage-card-sub">Proposed by: Rodel Aguila</div>
-                <div class="manage-card-desc">Organized riverbank cleanup targeting accumulated single-use plastics along the San Isidro water channel prior to the rainy season.</div>
+                <div class="manage-card-desc">Organized riverbank cleanup targeting accumulated single-use plastics along the San Gabriel water channel prior to the rainy season.</div>
                 <div class="manage-card-footer">
                   <button class="btn-manage-action" onclick="openEventProposalReview('PROP001')">Review Proposal</button>
                 </div>
@@ -2089,9 +2066,9 @@
                     </button>
                   </div>
                 </div>
-                <div class="manage-card-sub">Nov 15, 2026 • Barangay San Isidro Plaza</div>
+                <div class="manage-card-sub">Nov 15, 2026 • Barangay San Gabriel Plaza</div>
                 <div class="manage-card-desc">Community cleanup of main streets and waterways. Bring gloves and eco bags.</div>
-                <div class="manage-card-meta">+50 EcoPoints attendance reward</div>
+                <div class="manage-card-meta">+50 EcoToken attendance reward</div>
               </div>
               <div class="manage-card-row">
                 <div class="manage-card-header">
@@ -2103,9 +2080,9 @@
                     </button>
                   </div>
                 </div>
-                <div class="manage-card-sub">Nov 22, 2026 • Barangay San Isidro Park</div>
+                <div class="manage-card-sub">Nov 22, 2026 • Barangay San Gabriel Park</div>
                 <div class="manage-card-desc">Plant 200 native trees in our barangay park. Seedlings provided.</div>
-                <div class="manage-card-meta">+75 EcoPoints attendance reward</div>
+                <div class="manage-card-meta">+75 EcoToken attendance reward</div>
               </div>
             </div>
           </div>
@@ -2323,7 +2300,7 @@
             <div class="pf-impact-item">
               <span class="pf-impact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/></svg></span>
               <p class="pf-impact-value"><strong id="collector-profile-total-points">—</strong><span>pts</span></p>
-              <p class="pf-impact-label">Total EcoPoints awarded</p>
+              <p class="pf-impact-label">Total EcoToken awarded</p>
             </div>
             <div class="pf-impact-item" id="collector-profile-types-item" hidden>
               <span class="pf-impact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5ZM3 12l9 5 9-5M3 16l9 5 9-5"/></svg></span>
@@ -2405,7 +2382,7 @@
             </div>
             <div class="pf-impact-item">
               <span class="pf-impact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/></svg></span>
-              <p class="pf-impact-value"><strong id="ap-points-distributed">—</strong><span>pts</span></p><p class="pf-impact-label">EcoPoints distributed</p>
+              <p class="pf-impact-value"><strong id="ap-points-distributed">—</strong><span>pts</span></p><p class="pf-impact-label">EcoToken distributed</p>
             </div>
             <div class="pf-impact-item">
               <span class="pf-impact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8V5h18v3a3 3 0 0 0 0 6v5H3v-5a3 3 0 0 0 0-6ZM15 5v2m0 3v2m0 3v4"/></svg></span>
@@ -2570,7 +2547,7 @@
 
         </button>
 
-      
+
 
         <button class="nav-item" id="navbtn-admin-profile" onclick="showAdminTab('profile')">
 
@@ -2698,7 +2675,7 @@
 
                 <span class="label">Barangay</span>
 
-                <span class="value" id="tx-detail-barangay">Barangay San Isidro</span>
+                <span class="value" id="tx-detail-barangay">Barangay San Gabriel</span>
 
               </div>
 
@@ -2730,7 +2707,7 @@
 
           <div class="modal-header">
 
-            <h3>San Isidro Eco Hub</h3>
+            <h3 id="cc-detail-name">Collection Center</h3>
 
             <button class="modal-close" onclick="closeModal('modal-collection-center')">✕</button>
 
@@ -2740,27 +2717,17 @@
 
             <div class="card" style="margin-bottom: 16px;">
 
-              <div style="font-weight: 700; font-size: 15px; color: #1A2332;">Barangay San Isidro MRF Center</div>
+              <div style="font-size: 13px; color: #6B7280;" id="cc-detail-address"></div>
 
-              <div style="font-size: 13px; color: #6B7280; margin-top: 4px;">123 Rizal Ave, Brgy San Isidro, Pasig City</div>
+              <div style="font-size: 13px; color: var(--color-forest); font-weight: 600; margin-top: 6px;" id="cc-detail-hours"></div>
 
-              <div style="font-size: 13px; color: var(--color-forest); font-weight: 600; margin-top: 6px;">Hours: Monday - Saturday, 7:00 AM - 5:00 PM</div>
-
-              <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Hotline: (02) 8921-4321</div>
+              <div style="font-size: 13px; color: #6B7280; margin-top: 2px;" id="cc-detail-contact"></div>
 
             </div>
 
-            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Available Services</h4>
+            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Accepted Materials</h4>
 
-            <ul style="font-size: 13px; color: #4A5568; line-height: 1.8; padding-left: 20px; margin-bottom: 16px;">
-
-              <li>Bulk recyclable drop-off and live certified weighing</li>
-
-              <li>EcoPoint voucher redemption merchant verification</li>
-
-              <li>Community composting and e-waste collection drives</li>
-
-            </ul>
+            <div id="cc-detail-materials" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;"></div>
 
             <button class="btn-primary" onclick="closeModal('modal-collection-center')">Done</button>
 
@@ -2788,21 +2755,44 @@
 
           <div class="modal-body">
 
-            <span class="badge badge-success" style="margin-bottom: 12px;" id="event-detail-pts">+50 EcoPoints</span>
+            <span class="badge badge-success" style="margin-bottom: 12px;" id="event-detail-pts">+50 EcoToken</span>
 
             <div style="font-size: 14px; font-weight: 600; color: #1A2332; margin-bottom: 4px;" id="event-detail-date">Saturday, November 15, 2026 • 7:00 AM</div>
 
-            <div style="font-size: 13px; color: #6B7280; margin-bottom: 16px;">Location: Barangay San Isidro Plaza</div>
+            <div style="font-size: 13px; color: #6B7280; margin-bottom: 16px;">Location: <span id="event-detail-location">Barangay San Gabriel Plaza</span></div>
 
             <p style="font-size: 14px; color: #4A5568; line-height: 1.6; margin-bottom: 20px;" id="event-detail-desc">
 
-              Community cleanup of waterways and main streets in celebration of National Clean Air Month. Gloves and trash sacks will be provided. Earn 50 EcoPoints credited upon sign-in with your QR code.
+              Community cleanup of waterways and main streets in celebration of National Clean Air Month. Gloves and trash sacks will be provided. Earn 50 EcoToken credited upon sign-in with your QR code.
 
             </p>
 
-            <button class="btn-primary" onclick="showToast('Registered! You will be reminded 1 day before the event.', 'success'); closeModal('modal-event-detail');">I'm Interested</button>
+            <button class="btn-primary" id="event-detail-register">I'm Interested</button>
 
           </div>
+
+        </div>
+
+      </div>
+
+
+
+
+      <!-- 4b. modal-event-pass -->
+
+      <div class="modal-overlay" id="modal-event-pass" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Event Passes</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-event-pass')">✕</button>
+
+          </div>
+
+          <div class="modal-body" id="event-pass-list"></div>
 
         </div>
 
@@ -2854,7 +2844,7 @@
 
             <div id="vd-pts-status" style="font-size: 13px; font-weight: 600; color: var(--color-forest); margin-bottom: 16px; text-align: center;">
 
-              You have enough EcoPoints for this reward!
+              You have enough EcoToken for this reward!
 
             </div>
 
@@ -2886,7 +2876,7 @@
 
             <p style="font-size: 14px; color: #4A5568; margin-bottom: 16px;">
 
-              Are you sure you want to redeem your EcoPoints for <strong id="vc-reward-name">SM Supermarket ₱50 Voucher</strong>?
+              Are you sure you want to redeem your EcoToken for <strong id="vc-reward-name">SM Supermarket ₱50 Voucher</strong>?
 
             </p>
 
@@ -3044,9 +3034,9 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             <h3 class="success-title" id="deposit-success-title" tabindex="-1">Deposit confirmed</h3>
-            <p class="success-sub">EcoPoints credited to the resident</p>
+            <p class="success-sub">EcoToken credited to the resident</p>
 
-            <div class="success-points"><span id="ds-points">+75</span><span>EcoPoints</span></div>
+            <div class="success-points"><span id="ds-points">+75</span><span>EcoToken</span></div>
 
             <div class="success-meta">
               <div class="success-line"><span>Deposit ID</span><strong id="ds-txid">DEP007</strong></div>
@@ -3109,7 +3099,7 @@
 
                 <span class="label">Barangay</span>
 
-                <span class="value" id="fr-barangay">Barangay San Isidro</span>
+                <span class="value" id="fr-barangay">Barangay San Gabriel</span>
 
               </div>
 
@@ -3437,11 +3427,11 @@
 
               <select id="edit-col-barangay">
 
-                <option value="Barangay San Isidro">Barangay San Isidro</option>
+                <option value="Barangay San Gabriel">Barangay San Gabriel</option>
 
-                <option value="Barangay Pinyahan">Barangay Pinyahan</option>
+                <option value="Barangay Pengue Ruyu">Barangay Pengue Ruyu</option>
 
-                <option value="Barangay Ugong">Barangay Ugong</option>
+                <option value="Barangay Caritan Norte">Barangay Caritan Norte</option>
 
               </select>
 
@@ -3539,7 +3529,7 @@
 
                 <span class="profile-info-label">Assigned Barangay</span>
 
-                <span class="profile-info-value" id="cd-barangay">Barangay San Isidro</span>
+                <span class="profile-info-value" id="cd-barangay">Barangay San Gabriel</span>
 
               </div>
 
@@ -3547,7 +3537,7 @@
 
                 <span class="profile-info-label">Email</span>
 
-                <span class="profile-info-value" id="cd-email">rodel.aguila@sanisidro.gov.ph</span>
+                <span class="profile-info-value" id="cd-email">rodel.aguila@sangabriel.gov.ph</span>
 
               </div>
 
@@ -3841,7 +3831,7 @@
 
             <p style="font-size: 13px; color: #6B7280; margin-bottom: 14px;">
 
-              Submit an environmental initiative proposal to LGU Admin for budget, logistics, and EcoPoint allocation approval.
+              Submit an environmental initiative proposal to LGU Admin for budget, logistics, and EcoToken allocation approval.
 
             </p>
 
@@ -3879,7 +3869,7 @@
 
                 <label>Barangay</label>
 
-                <input type="text" id="prop-barangay" value="Barangay San Isidro" readonly style="background:#EDF2F7;">
+                <input type="text" id="prop-barangay" value="Barangay San Gabriel" readonly style="background:#EDF2F7;">
 
               </div>
 
@@ -3929,7 +3919,7 @@
 
               <div class="form-group">
 
-                <label>Proposed EcoPoint Reward (per attendee)</label>
+                <label>Proposed EcoToken Reward (per attendee)</label>
 
                 <input type="number" id="prop-points" placeholder="e.g. 50" min="10" value="50">
 
@@ -3951,7 +3941,7 @@
 
               </div>
 
-              
+
               <!-- Supporting Documents Upload Section -->
               <div class="form-group">
                 <label>Supporting Documents (Optional)</label>
@@ -3992,16 +3982,16 @@
               <span class="manage-status-pill" id="epr-category" style="font-size:11.5px;">Barangay Clean-Up</span>
             </div>
             <h4 style="font-size: 17px; font-weight: 800; color: var(--text-dark); margin: 0 0 4px; line-height: 1.3;" id="epr-title">Riverside Eco Cleanup Campaign</h4>
-            <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;" id="epr-proposer">Proposed by Officer Rodel Aguila (Barangay San Isidro)</div>
+            <div style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;" id="epr-proposer">Proposed by Officer Rodel Aguila (Barangay San Gabriel)</div>
 
             <div class="card" style="padding: 10px 14px; margin-bottom: 12px;">
               <div class="deposit-row">
                 <span class="label">Barangay</span>
-                <span class="value" id="epr-barangay">Barangay San Isidro</span>
+                <span class="value" id="epr-barangay">Barangay San Gabriel</span>
               </div>
               <div class="deposit-row">
                 <span class="label">Proposed Location</span>
-                <span class="value" id="epr-location">San Isidro Riverside Path</span>
+                <span class="value" id="epr-location">San Gabriel Riverside Path</span>
               </div>
               <div class="deposit-row">
                 <span class="label">Date & Time</span>
@@ -4012,21 +4002,21 @@
                 <span class="value" id="epr-participants">50 Residents</span>
               </div>
               <div class="deposit-row" style="border-bottom: none;">
-                <span class="label">EcoPoint Allocation</span>
+                <span class="label">EcoToken Allocation</span>
                 <span class="value text-forest" id="epr-pts">50 pts / participant</span>
               </div>
             </div>
 
-            <!-- EcoPoint Allocation Clarification -->
+            <!-- EcoToken Allocation Clarification -->
             <div class="epr-budget-notice">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              <div><strong>Community Reserve Allocation:</strong> Approving will allocate <span id="epr-budget-total">2,500</span> EcoPoints for attendee rewards and immediately publish this initiative to resident calendars.</div>
+              <div><strong>Community Reserve Allocation:</strong> Approving will allocate <span id="epr-budget-total">2,500</span> EcoToken for attendee rewards and immediately publish this initiative to resident calendars.</div>
             </div>
 
             <div style="margin-bottom: 10px;">
               <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform:uppercase; display:block; margin-bottom: 4px; letter-spacing:0.4px;">Description</label>
               <div class="epr-section-box" id="epr-desc">
-                Organized riverbank cleanup targeting accumulated single-use plastics along the San Isidro water channel prior to the rainy season.
+                Organized riverbank cleanup targeting accumulated single-use plastics along the San Gabriel water channel prior to the rainy season.
               </div>
             </div>
 
@@ -4176,7 +4166,7 @@
 
             <p style="font-size: 14px; color: #4A5568; line-height: 1.6; margin-bottom: 20px;" id="notif-detail-body">
 
-              Your deposit of 3.0 kg PET Plastic has been successfully recorded and verified by Rodel Aguila. 90 EcoPoints have been added to your balance.
+              Your deposit of 3.0 kg PET Plastic has been successfully recorded and verified by Rodel Aguila. 90 EcoToken has been added to your balance.
 
             </p>
 
@@ -4229,6 +4219,8 @@
 
 
   <!-- Load Main JavaScript -->
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script src="script.js"></script>
 
@@ -4288,7 +4280,7 @@
 
       if (passInput) passInput.value = pass;
 
-      
+
 
       const err = document.getElementById('login-error');
 
@@ -4710,9 +4702,9 @@
 
         id: 'COL-2024-007',
 
-        barangay: 'Barangay San Isidro',
+        barangay: 'Barangay San Gabriel',
 
-        email: 'rodel.aguila@sanisidro.gov.ph',
+        email: 'rodel.aguila@sangabriel.gov.ph',
 
         phone: '0918 234 5678',
 
@@ -4734,9 +4726,9 @@
 
         id: 'COL-2024-012',
 
-        barangay: 'Barangay Pinyahan',
+        barangay: 'Barangay Pengue Ruyu',
 
-        email: 'eduardo.ramos@pinyahan.gov.ph',
+        email: 'eduardo.ramos@pengueruyu.gov.ph',
 
         phone: '0922 456 7890',
 
@@ -4758,9 +4750,9 @@
 
         id: 'COL-2024-019',
 
-        barangay: 'Barangay Ugong',
+        barangay: 'Barangay Caritan Norte',
 
-        email: 'danilo.cruz@ugong.gov.ph',
+        email: 'danilo.cruz@caritannorte.gov.ph',
 
         phone: '0935 678 9012',
 
@@ -5046,7 +5038,7 @@
 
       closeModal('modal-event-proposal-review');
 
-      showToast('Event proposal approved! EcoPoint budget allocated.', 'success');
+      showToast('Event proposal approved! EcoToken budget allocated.', 'success');
 
     }
 
@@ -5229,4 +5221,3 @@
 </body>
 
 </html>
-
