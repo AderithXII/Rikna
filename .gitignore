@@ -1,2 +1,21 @@
+# Dependencies
 node_modules/
+
+# AI assistant / agent tooling
+AGENTS.md
 graphify-out/
+.agents/
+.opencode/
+.codex/
+.21st/
+opencode.json
+skills-lock.json
+
+# Docs, tests, backups
+docs/
+tests/
+backups/
+
+# OS junk
+Thumbs.db
+.DS_Store
