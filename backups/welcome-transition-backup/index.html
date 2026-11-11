@@ -1,0 +1,5826 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Rikna - Recycling Rewards Platform</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+  <div id="app-wrapper">
+
+    <div id="app">
+
+
+
+      <!-- =====================================================================
+
+           1. SCREEN: WELCOME (Onboarding / Hero)
+
+           ===================================================================== -->
+
+      <div class="screen active" id="screen-welcome">
+
+        <div class="welcome-wrap">
+
+          <!-- Ambient drifting leaves (decorative; static under reduced motion) -->
+
+          <svg class="welcome-leaf welcome-leaf-a" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 19C5 11 10 6 19 5c-1 9-5 14-14 14Z"/></svg>
+
+          <svg class="welcome-leaf welcome-leaf-b" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 19C5 11 10 6 19 5c-1 9-5 14-14 14Z"/></svg>
+
+          <!-- Top decorative area: abstract shapes & recycling symbol -->
+
+          <div class="welcome-visual">
+
+            <div class="welcome-disc"></div>
+
+            <div class="welcome-circle-1"></div>
+
+            <div class="welcome-circle-2"></div>
+
+            <div class="welcome-circle-3"></div>
+
+            <div class="welcome-icon-wrap">
+
+              <img src="assets/logo.png" alt="Rikna logo" class="welcome-logo">
+
+            </div>
+
+          </div>
+
+          <div class="welcome-text">
+
+            <h1 class="welcome-brand">rikna</h1>
+
+            <h2 class="welcome-headline">Turn recyclables into rewards.</h2>
+
+            <p class="welcome-desc">Join your community in building a cleaner, greener future. Exchange recyclable waste for EcoPoints and redeem them for local rewards.</p>
+
+          </div>
+
+          <div class="welcome-actions">
+
+            <button class="btn-primary" onclick="showScreen('screen-login')">
+
+              Get Started
+
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+
+            </button>
+
+            <p class="welcome-reset-link">
+
+              <button class="btn-text" onclick="resetDemoData()">Reset Demo Data</button>
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           2. SCREEN: LOGIN
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-login">
+
+        <div class="login-wrap">
+
+          <button class="btn-back-top" onclick="showScreen('screen-welcome')" aria-label="Back">
+
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+          </button>
+
+          <div class="login-brand">
+
+            <img src="assets/logo.png" alt="Rikna logo" class="brand-logo login-logo">
+
+            <span class="brand-name">rikna</span>
+
+          </div>
+
+          <h2 class="login-title">Welcome back</h2>
+
+          <p class="login-sub">Sign in to your account</p>
+
+          <div class="login-form">
+
+            <div class="form-group">
+
+              <label for="login-email">Email address</label>
+
+              <input type="email" id="login-email" placeholder="you@email.com" autocomplete="email" value="rikna.resident.demo@gmail.com">
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="login-password">Password</label>
+
+              <div class="input-icon-wrap">
+
+                <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" value="Resident123!">
+
+                <button class="btn-icon-inline" onclick="togglePassword()" type="button" aria-label="Toggle password">
+
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+
+                </button>
+
+              </div>
+
+            </div>
+
+            <div id="login-error" class="login-error" style="display:none">Invalid email or password. Please try again.</div>
+
+            <button class="btn-link-sm" onclick="openModal('modal-forgot-password')" type="button">Forgot password?</button>
+
+            <button class="btn-primary" onclick="doLogin()" id="btn-login">Log In</button>
+
+            <div class="divider"><span>or</span></div>
+
+            <button class="btn-secondary" onclick="showScreen('screen-register')">Create Account</button>
+
+          </div>
+
+
+
+          <!-- Demo accounts panel (collapsible) -->
+
+          <div class="demo-panel">
+
+            <button class="demo-panel-toggle" onclick="toggleDemoPanel()" type="button">
+
+              <span style="display:inline-flex; align-items:center; gap:6px;">
+
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+
+                Demo Accounts
+
+              </span>
+
+              <svg class="chevron" id="demo-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+
+            </button>
+
+            <div class="demo-panel-body" id="demo-panel-body" style="display:none">
+
+              <div class="demo-account" onclick="fillDemo('rikna.resident.demo@gmail.com','Resident123!')">
+
+                <div class="demo-role-badge resident">Resident</div>
+
+                <div>
+
+                  <div class="demo-email">rikna.resident.demo@gmail.com</div>
+
+                  <div class="demo-pass">Resident123!</div>
+
+                </div>
+
+              </div>
+
+              <div class="demo-account" onclick="fillDemo('rikna.collector.demo@gmail.com','Collector123!')">
+
+                <div class="demo-role-badge collector">Collector</div>
+
+                <div>
+
+                  <div class="demo-email">rikna.collector.demo@gmail.com</div>
+
+                  <div class="demo-pass">Collector123!</div>
+
+                </div>
+
+              </div>
+
+              <div class="demo-account" onclick="fillDemo('rikna.admin.demo@gmail.com','Admin123!')">
+
+                <div class="demo-role-badge admin">Admin</div>
+
+                <div>
+
+                  <div class="demo-email">rikna.admin.demo@gmail.com</div>
+
+                  <div class="demo-pass">Admin123!</div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           3. SCREEN: REGISTER
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-register">
+
+        <div class="screen-subnav-header">
+
+          <button class="btn-back" onclick="showScreen('screen-login')">
+
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+          </button>
+
+          <h2>Create Account</h2>
+
+          <div style="width: 28px;"></div>
+
+        </div>
+
+        <div style="padding: 20px 24px;">
+
+          <form onsubmit="doRegister(event)">
+
+            <div class="form-group">
+
+              <label>Full Name</label>
+
+              <input type="text" id="reg-name" placeholder="e.g. Maria Santos" required>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Contact Number</label>
+
+              <input type="tel" id="reg-contact" placeholder="09XX XXX XXXX" required>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Barangay</label>
+
+              <select id="reg-barangay" required>
+
+                <option value="">Select your barangay</option>
+
+                <option value="Barangay San Isidro">Barangay San Isidro</option>
+
+                <option value="Barangay Pinyahan">Barangay Pinyahan</option>
+
+                <option value="Barangay Ugong">Barangay Ugong</option>
+
+                <option value="Barangay Bagong Silang">Barangay Bagong Silang</option>
+
+                <option value="Barangay Sta. Cruz">Barangay Sta. Cruz</option>
+
+                <option value="Barangay Poblacion">Barangay Poblacion</option>
+
+                <option value="Barangay Mapayapa">Barangay Mapayapa</option>
+
+                <option value="Barangay Dalisay">Barangay Dalisay</option>
+
+                <option value="Barangay Lumangbayan">Barangay Lumangbayan</option>
+
+                <option value="Barangay Lubi">Barangay Lubi</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Email address</label>
+
+              <input type="email" id="reg-email" placeholder="you@email.com" required>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Password</label>
+
+              <input type="password" id="reg-password" placeholder="At least 8 characters" required>
+
+            </div>
+
+            <p style="font-size: 12px; color: #6B7280; margin-bottom: 18px; line-height: 1.5;">
+
+              By creating an account, you agree to the Rikna Barangay Recycling Terms of Service & Privacy Policy.
+
+            </p>
+
+            <button class="btn-primary" type="submit">Sign Up as Resident</button>
+
+            <button class="btn-ghost" style="width: 100%; margin-top: 10px;" type="button" onclick="showScreen('screen-login')">Already have an account? Log In</button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           4. SCREEN: RESIDENT HOME
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-home">
+
+        <!-- Header -->
+
+        <header class="app-header home-masthead">
+
+          <span class="header-brand"><img src="assets/logo.png" alt="" class="brand-logo">rikna<span class="home-brand-note">Your local<br>recycling circle</span></span>
+
+          <div class="header-right">
+
+            <button class="btn-notif" onclick="showResidentTab('notifications')" aria-label="Notifications">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+
+              <span class="notif-badge" id="resident-notif-badge">2</span>
+
+            </button>
+
+          </div>
+
+        </header>
+
+
+
+        <!-- Greeting -->
+
+        <div class="greeting-card home-greeting">
+
+          <h1 class="greeting-name" id="resident-greeting">Good morning, Maria!</h1>
+
+          <div class="greeting-sub" id="resident-barangay-label">
+
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+
+            <span id="resident-barangay-text">Barangay San Isidro • Eco Member</span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Points Balance Card -->
+
+        <button class="points-card home-points" type="button" onclick="showResidentTab('wallet')" aria-label="Open EcoWallet and points breakdown">
+
+          <svg class="home-material-art" viewBox="0 0 112 120" fill="none" aria-hidden="true">
+            <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 53V41h14v12l8 11v39H13V64l8-11ZM21 46h14M14 76h28M14 91h28"/>
+              <path d="m54 74 19-10 23 10v29H54V74Zm0 0 20 10 22-10M74 84v19M65 69l21 10v9"/>
+              <path d="M58 47c-4-17 4-28 25-29 3 20-4 32-25 29Zm0 0 18-20M48 18a45 45 0 0 1 48 23M96 31v10H86M51 109a46 46 0 0 1-44-31M7 88V78h10"/>
+            </g>
+          </svg>
+
+          <span class="points-label">
+
+            <span>YOUR ECOPOINTS</span>
+
+            <span class="home-wallet-tag">EcoWallet</span>
+
+          </span>
+
+          <span class="points-value-row">
+
+            <span class="points-value" id="resident-points-display">500</span>
+
+            <span class="points-unit">PTS</span>
+
+          </span>
+
+          <span class="points-hint">
+
+            View points breakdown
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16m-6-6 6 6-6 6"/></svg>
+
+          </span>
+
+        </button>
+
+
+
+        <nav class="home-actions" aria-label="Quick actions">
+          <button class="home-action home-action-primary" type="button" onclick="showResidentTab('qr')">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 8V3h5m8 0h5v5m0 8v5h-5M8 21H3v-5"/><rect x="7" y="7" width="4" height="4"/><path d="M15 7h2v4h-2m-8 4h4v2H7m8-2v2h2"/></svg>
+            <span>My QR<small>Ready for drop-off</small></span>
+          </button>
+          <button class="home-action" type="button" onclick="showResidentTab('wallet')">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 8h18m-5 4h5v5h-5z"/></svg>
+            <span>EcoWallet</span>
+          </button>
+          <button class="home-action" type="button" onclick="showResidentTab('rewards')">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 11v10h16V11M12 7v14"/><rect x="2" y="7" width="20" height="4" rx="1"/><path d="M12 7C3 7 5 0 9 3l3 4Zm0 0c9 0 7-7 3-4l-3 4Z"/></svg>
+            <span>Rewards</span>
+          </button>
+        </nav>
+
+        <section class="home-impact" aria-labelledby="home-impact-title">
+          <div class="home-section-heading">
+            <h2 id="home-impact-title">Small acts. Real impact.</h2>
+            <span class="home-eyebrow">ALL TIME</span>
+          </div>
+          <div class="home-impact-values">
+            <div class="home-impact-main">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3h8v4l3 4v10H5V11l3-4V3Zm0 4h8M5 13h14M5 17h14"/></svg>
+              <strong id="resident-kg-display">18.5 kg</strong>
+              <span>Materials recycled</span>
+            </div>
+            <div class="home-impact-secondary">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 0v10l9 4 9-4V7M12 11v10m-5-4 2 2 4-4"/></svg>
+              <strong id="resident-deposits-display">12</strong>
+              <span>Recycling deposits</span>
+            </div>
+          </div>
+          <p class="home-impact-note">Your recorded contributions to a cleaner barangay.</p>
+        </section>
+
+
+
+        <!-- Recent Transactions -->
+
+        <div class="section-header">
+
+          <h2 class="section-title">Your recent activity</h2>
+
+          <button class="section-link" onclick="showResidentTab('wallet')">View All</button>
+
+        </div>
+
+        <div class="tx-list" id="resident-recent-tx-list">
+          <!-- Filled from the resident's transactions when Home is rendered. -->
+        </div>
+
+
+
+        <!-- Upcoming Barangay Events -->
+
+        <div class="section-header" style="margin-top: 10px;">
+
+          <h2 class="section-title">In your barangay</h2>
+
+        </div>
+
+        <div id="home-activities-list" class="home-events">
+          <!-- Filled from approved AppState.activities when Home is rendered. -->
+        </div>
+
+
+
+        <!-- Collection Center Card -->
+
+        <div class="section-header" style="margin-top: 6px;">
+
+          <span class="section-title">Barangay Drop-Off Center</span>
+
+        </div>
+
+        <div style="padding: 0 20px 20px;">
+
+          <div class="card" onclick="openModal('modal-collection-center')" style="cursor: pointer; background: #F8FAFC; border: 1.5px solid var(--border-base);">
+
+            <div style="display: flex; gap: 12px; align-items: center;">
+
+              <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--color-forest-light); color: var(--color-forest); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+
+              </div>
+
+              <div style="flex: 1;">
+
+                <div style="font-weight: 700; font-size: 14px; color: #1A2332;">San Isidro Eco Hub</div>
+
+                <div style="font-size: 12px; color: #6B7280;">123 Rizal Ave • Mon-Sat 7:00 AM - 5:00 PM</div>
+
+              </div>
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Waste Guidelines Section -->
+
+        <div class="section-header">
+
+          <span class="section-title">Accepted Materials & Rates</span>
+
+        </div>
+
+        <div style="padding: 0 20px 24px;">
+
+          <div class="card" style="padding: 12px 16px;">
+
+            <div class="deposit-row">
+
+              <span class="label">PET Plastic Bottles</span>
+
+              <span class="value text-forest">30 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Paper & Cardboard</span>
+
+              <span class="value text-forest">10 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Aluminum Cans</span>
+
+              <span class="value text-forest">60 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Tin & Steel Cans</span>
+
+              <span class="value text-forest">12 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row" style="border-bottom: none;">
+
+              <span class="label">Glass Bottles & Jars</span>
+
+              <span class="value text-forest">5 pts / kg</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           5. SCREEN: RESIDENT WALLET
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-wallet">
+
+        <div class="page-title-block">
+
+          <h1>EcoWallet</h1>
+
+        </div>
+
+
+
+        <section class="wallet-hero" aria-labelledby="wallet-balance-label">
+          <h2 id="wallet-balance-label">Available points</h2>
+          <svg class="wallet-eco-mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+            <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="32"/>
+              <path d="M38 62c-7-22 6-33 28-31 2 23-8 36-28 31Zm0 0 20-22M34 69l10-17M15 35l-4 14 14-4m60 20 4-14-14 4"/>
+            </g>
+          </svg>
+          <p class="wallet-balance"><strong id="wallet-available">500</strong><span>PTS</span></p>
+          <button class="wallet-redeem" type="button" onclick="showResidentTab('rewards')">Explore rewards <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
+          <dl class="wallet-supporting">
+            <div><dt>Pending verification</dt><dd><strong id="wallet-pending">0</strong> <span>pts</span></dd></div>
+            <div><dt>Lifetime earned</dt><dd><strong id="wallet-lifetime">1,240</strong> <span>pts</span></dd></div>
+          </dl>
+        </section>
+
+        <aside class="wallet-insight" aria-label="Monthly recycling points insight">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 20V10m7 10V4m7 16v-7M3 20h18"/></svg>
+          <div><strong id="wallet-insight-title">Your recycling, rewarded</strong><p id="wallet-insight-detail">Earnings from your recorded activity.</p></div>
+        </aside>
+
+
+
+        <!-- Wallet Tab Bar -->
+
+        <div class="tab-bar wallet-filters" id="wallet-tab-bar" role="group" aria-label="Filter points activity">
+
+          <button class="tab-btn active" id="wallet-tab-all" type="button" aria-pressed="true" aria-controls="wallet-tx-list" onclick="switchWalletTab('all')">All</button>
+
+          <button class="tab-btn" id="wallet-tab-earned" type="button" aria-pressed="false" aria-controls="wallet-tx-list" onclick="switchWalletTab('earned')">Earned</button>
+
+          <button class="tab-btn" id="wallet-tab-spent" type="button" aria-pressed="false" aria-controls="wallet-tx-list" onclick="switchWalletTab('spent')">Spent</button>
+
+        </div>
+
+
+
+        <!-- Transaction List -->
+
+        <div class="wallet-feed-heading"><h2>Points activity</h2><span id="wallet-tx-count" role="status" aria-live="polite" aria-atomic="true"></span></div>
+        <div class="tx-list" id="wallet-tx-list"></div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           6. SCREEN: RESIDENT QR (Dedicated QR Screen)
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-qr">
+
+        <div class="qr-screen-wrap">
+
+          <div class="page-title-block">
+            <h1>My Resident QR</h1>
+          </div>
+
+          <section class="qr-pass" aria-label="Resident eco-pass">
+            <div class="qr-pass-top">
+              <span class="qr-pass-brand"><img src="assets/logo.png" alt="" class="brand-logo">Resident Eco-Pass</span>
+            </div>
+
+            <div class="qr-pass-frame">
+              <div class="qr-code-display" id="qr-code-display" role="img" aria-label="Resident QR code"></div>
+            </div>
+
+            <div class="qr-perforation" aria-hidden="true"></div>
+
+            <div class="qr-identity">
+              <div class="qr-identity-main">
+                <strong class="qr-resident-name" id="qr-resident-name">Maria Santos</strong>
+                <span class="qr-resident-meta">Barangay San Isidro</span>
+              </div>
+              <div class="qr-identity-side">
+                <span class="qr-identity-label">Resident ID</span>
+                <strong class="qr-resident-id" id="qr-resident-id">RES-2024-001</strong>
+              </div>
+            </div>
+
+            <div class="qr-actions">
+              <button class="qr-action" id="btn-copy-qr-id" type="button" onclick="copyResidentId()">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span id="btn-copy-qr-id-label">Copy ID</span>
+              </button>
+              <button class="qr-action" type="button" onclick="downloadResidentQr()">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg>
+                <span>Download</span>
+              </button>
+              <button class="qr-action" type="button" onclick="shareResidentQr()">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+                <span>Share</span>
+              </button>
+            </div>
+          </section>
+
+          <aside class="qr-info">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 11.5 2 2 4-4"/></svg>
+            <p>Show this pass to an <strong>authorized collector</strong> at any barangay drop-off. Your EcoPoints are recorded after verification.</p>
+          </aside>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           7. SCREEN: RESIDENT REWARDS
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-rewards">
+
+        <div class="page-title-block">
+
+          <h1>Rewards</h1>
+
+        </div>
+
+        <!-- EcoPoints balance -->
+        <section class="rw-balance" aria-label="EcoPoints balance">
+          <span class="rw-balance-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 16.2c-2.9 0-4.7-1.9-4.7-4.7 2.9 0 4.7 1.9 4.7 4.7Z"></path><path d="M12 16.2c0-2.8 1.8-4.7 4.7-4.7 0 2.8-1.8 4.7-4.7 4.7Z"></path></svg>
+          </span>
+          <p class="rw-balance-text" role="status" aria-live="polite"><strong id="rewards-points-balance">500</strong> pts available</p>
+        </section>
+
+        <!-- Category filters -->
+        <div class="rw-chips-wrap" id="rw-chips-wrap">
+          <div class="chip-row rw-chips" id="rw-chips" role="group" aria-label="Reward categories">
+            <button class="chip active" type="button" data-category="all" aria-pressed="true" onclick="filterRewards('all')">All</button>
+            <button class="chip" type="button" data-category="grocery" aria-pressed="false" onclick="filterRewards('grocery')">Grocery</button>
+            <button class="chip" type="button" data-category="dining" aria-pressed="false" onclick="filterRewards('dining')">Dining</button>
+            <button class="chip" type="button" data-category="essentials" aria-pressed="false" onclick="filterRewards('essentials')">Essentials</button>
+            <button class="chip" type="button" data-category="transport" aria-pressed="false" onclick="filterRewards('transport')">Transport</button>
+          </div>
+        </div>
+
+        <!-- Reward catalog -->
+        <div class="rw-section-head">
+          <h2 class="rw-section-title">Available rewards</h2>
+          <span class="rw-section-count" id="rewards-count" aria-live="polite">0 rewards</span>
+        </div>
+        <div class="rewards-grid" id="rewards-grid"></div>
+
+        <!-- My Vouchers -->
+        <section class="rw-vouchers" id="my-vouchers" aria-labelledby="rw-vouchers-title">
+          <div class="rw-section-head">
+            <h2 class="rw-section-title" id="rw-vouchers-title">My vouchers</h2>
+            <span class="rw-section-count" id="vouchers-total">0 active</span>
+          </div>
+          <div class="tab-bar rw-voucher-tabs" id="voucher-tab-bar" role="group" aria-label="Filter my vouchers">
+            <button class="tab-btn active" type="button" id="voucher-tab-active" data-tab="active" aria-pressed="true" onclick="switchVoucherTab('active')">Active <span class="rw-tab-count" id="voucher-count-active">0</span></button>
+            <button class="tab-btn" type="button" id="voucher-tab-used" data-tab="used" aria-pressed="false" onclick="switchVoucherTab('used')">Used <span class="rw-tab-count" id="voucher-count-used">0</span></button>
+            <button class="tab-btn" type="button" id="voucher-tab-expired" data-tab="expired" aria-pressed="false" onclick="switchVoucherTab('expired')">Expired <span class="rw-tab-count" id="voucher-count-expired">0</span></button>
+          </div>
+          <div class="rw-voucher-rows" id="my-vouchers-list"></div>
+        </section>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           8. SCREEN: RESIDENT PROFILE (Dedicated Profile Screen)
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-profile">
+
+        <div class="page-title-block">
+          <h1>Profile</h1>
+        </div>
+
+        <!-- Identity: resident, barangay, and membership at a glance -->
+        <section class="pf-identity" aria-labelledby="profile-name">
+          <svg class="pf-identity-leaf" viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M22 98C22 56 52 22 104 18c2 54-28 88-82 90Z"/>
+            <path d="M22 98 78 40M40 86l6-26M60 62l20-2"/>
+          </svg>
+
+          <div class="pf-identity-top">
+            <div class="pf-avatar-wrap">
+              <div class="pf-avatar" id="profile-avatar" aria-hidden="true">MS</div>
+              <span class="pf-avatar-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-13 0 9-5 14-14 13Z"/><path d="M5 19 15 9"/></svg>
+              </span>
+            </div>
+            <button class="pf-edit-btn" type="button" onclick="toggleEditProfilePanel()" aria-expanded="false" aria-controls="edit-profile-panel">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              <span>Edit</span>
+            </button>
+          </div>
+
+          <h2 class="pf-name" id="profile-name">Maria Santos</h2>
+          <p class="pf-email" id="profile-email">maria.santos@email.com</p>
+
+          <div class="pf-meta">
+            <span class="pf-meta-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <span id="profile-barangay">Barangay San Isidro</span>
+            </span>
+            <span class="pf-meta-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+              <span id="profile-member-since">Member since Mar 15, 2024</span>
+            </span>
+          </div>
+        </section>
+
+        <!-- Inline edit panel, directly beneath the identity it updates -->
+        <section class="edit-profile-panel pf-edit-panel" id="edit-profile-panel" aria-labelledby="pf-edit-title" aria-hidden="true" hidden>
+          <div class="pf-edit-head">
+            <div>
+              <h3 id="pf-edit-title">Edit profile</h3>
+              <p>Your name appears on your Eco-Pass and deposit receipts.</p>
+            </div>
+            <button class="pf-edit-close" type="button" onclick="toggleEditProfilePanel()" aria-label="Close edit profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+
+          <div class="pf-edit-fields">
+            <div class="form-group">
+              <label for="profile-edit-name">Full name</label>
+              <input type="text" id="profile-edit-name" value="Maria Santos" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="profile-edit-phone">Contact number</label>
+              <input type="tel" id="profile-edit-phone" value="09171234567" autocomplete="tel">
+            </div>
+            <div class="form-group">
+              <label for="profile-edit-email">Email address</label>
+              <input type="email" id="profile-edit-email" value="maria.santos@email.com" readonly aria-describedby="pf-email-note">
+              <p class="pf-field-note" id="pf-email-note">Your email is linked to your Rikna account and can’t be changed here.</p>
+            </div>
+          </div>
+
+          <div class="pf-edit-actions">
+            <button class="btn-primary" type="button" onclick="saveProfileEdit()">Save changes</button>
+            <button class="btn-ghost" type="button" onclick="toggleEditProfilePanel()">Cancel</button>
+          </div>
+        </section>
+
+        <!-- Impact: real resident totals, no derived achievements -->
+        <section class="pf-section" aria-labelledby="pf-impact-title">
+          <div class="pf-section-head">
+            <h3 id="pf-impact-title">Your impact</h3>
+            <span>All time</span>
+          </div>
+
+          <div class="pf-impact">
+            <div class="pf-impact-item">
+              <span class="pf-impact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-13 0 9-5 14-14 13Z"/><path d="M5 19 15 9"/></svg>
+              </span>
+              <p class="pf-impact-value"><strong id="profile-total-kg">18.5</strong><span>kg</span></p>
+              <p class="pf-impact-label">Total recycled</p>
+            </div>
+
+            <div class="pf-impact-item">
+              <span class="pf-impact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4Z"/><path d="M3 7l9 4 9-4M12 21V11"/></svg>
+              </span>
+              <p class="pf-impact-value"><strong id="profile-total-deposits">12</strong><span>deposits</span></p>
+              <p class="pf-impact-label">Verified deposits</p>
+            </div>
+
+            <div class="pf-impact-item">
+              <span class="pf-impact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/></svg>
+              </span>
+              <p class="pf-impact-value"><strong id="profile-lifetime-pts">1,240</strong><span>pts</span></p>
+              <p class="pf-impact-label">Lifetime EcoPoints</p>
+            </div>
+
+            <div class="pf-impact-item">
+              <span class="pf-impact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7" r="3.5"/><path d="M17 4.5a3.5 3.5 0 0 1 0 6.8M22 20v-1.4a3.6 3.6 0 0 0-2.8-3.5"/></svg>
+              </span>
+              <p class="pf-impact-value"><strong id="profile-community-events">2</strong><span>approved</span></p>
+              <p class="pf-impact-label">Community events</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Personal details: scannable labels over values, no table rows -->
+        <section class="pf-section" aria-labelledby="pf-details-title">
+          <div class="pf-section-head">
+            <h3 id="pf-details-title">Personal details</h3>
+          </div>
+
+          <dl class="pf-details">
+            <div class="pf-detail">
+              <dt>Resident ID</dt>
+              <dd class="pf-mono" id="profile-id">RES-2024-001</dd>
+            </div>
+            <div class="pf-detail">
+              <dt>Contact number</dt>
+              <dd id="profile-display-phone">09171234567</dd>
+            </div>
+            <div class="pf-detail pf-detail-wide">
+              <dt>Email address</dt>
+              <dd id="profile-email-detail">maria.santos@email.com</dd>
+            </div>
+            <div class="pf-detail">
+              <dt>Barangay</dt>
+              <dd id="profile-barangay-detail">Barangay San Isidro</dd>
+            </div>
+            <div class="pf-detail">
+              <dt>Municipality</dt>
+              <dd id="profile-municipality">Quezon City</dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Account settings, grouped by intent -->
+        <section class="pf-section" aria-labelledby="pf-account-title">
+          <div class="pf-section-head">
+            <h3 id="pf-account-title">Account</h3>
+          </div>
+
+          <div class="pf-settings">
+            <button class="pf-setting" type="button" onclick="toggleEditProfilePanel()" aria-expanded="false" aria-controls="edit-profile-panel">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">Edit profile</span>
+                <span class="pf-setting-hint">Name and contact number</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <button class="pf-setting" type="button" onclick="openModal('modal-forgot-password')">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">Change password</span>
+                <span class="pf-setting-hint">Reset through your account email</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <button class="pf-setting" type="button" onclick="toggleNotifPreferences()">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">Notification preferences</span>
+                <span class="pf-setting-hint">Push and SMS alerts</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+          <div class="pf-section-head pf-section-head-gap">
+            <h3 id="pf-support-title">Support</h3>
+          </div>
+
+          <div class="pf-settings" aria-labelledby="pf-support-title">
+            <button class="pf-setting" type="button" onclick="showToast('Help Center: support@rikna.ph | Hotline: 8888-RKN', 'info')">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2-2.4 3.6M12 17h.01"/></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">Privacy &amp; help</span>
+                <span class="pf-setting-hint">Support channels and data privacy</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <button class="btn-logout pf-logout" type="button" onclick="doLogout()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Log out</span>
+        </button>
+
+      </div>
+      <!-- =====================================================================
+
+           9. SCREEN: RESIDENT NOTIFICATIONS
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-notifications">
+
+        <div class="screen-subnav-header">
+
+          <button class="btn-back" onclick="showResidentTab('home')">
+
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+          </button>
+
+          <h2>Notifications</h2>
+
+          <button class="btn-text" style="color: var(--color-forest); font-size: 13px; font-weight: 600;" onclick="markAllNotificationsRead()">Mark all read</button>
+
+        </div>
+
+        <div class="notif-list" id="resident-notif-list">
+
+          <div class="notif-item unread" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">PET Plastic Deposit Verified (+90 pts)</div>
+
+              <div class="notif-body">Your deposit of 3.0 kg PET Plastic has been successfully recorded and verified by Rodel Aguila.</div>
+
+              <div class="notif-time">Yesterday at 2:32 PM</div>
+
+            </div>
+
+          </div>
+
+          <div class="notif-item unread" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">Barangay Clean-Up Drive Announced</div>
+
+              <div class="notif-body">Join us this coming Nov 15 at Barangay San Isidro Plaza. Earn 50 EcoPoints for participating.</div>
+
+              <div class="notif-time">Nov 4, 2026</div>
+
+            </div>
+
+          </div>
+
+          <div class="notif-item" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot read"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">Voucher Redeemed Successfully</div>
+
+              <div class="notif-body">SM Supermarket ₱50 Voucher was redeemed for 100 EcoPoints. Present the barcode at checkout.</div>
+
+              <div class="notif-time">Oct 30, 2026</div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           10. SCREEN: COLLECTOR HOME
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-collector-home">
+
+        <header class="app-header">
+
+          <span class="header-brand"><img src="assets/logo.png" alt="" class="brand-logo">rikna</span>
+
+          <div class="header-right">
+
+            <button class="btn-notif" onclick="showCollectorTab('notifications')">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+
+              <span class="notif-badge" id="collector-notif-badge">1</span>
+
+            </button>
+
+          </div>
+
+        </header>
+
+
+
+        <!-- Collector Profile Banner -->
+
+        <div class="greeting-card">
+
+          <h2 class="greeting-name">Officer Rodel Aguila</h2>
+
+          <div class="greeting-sub">
+
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+
+            Authorized Collector • Barangay San Isidro (COL-2024-007)
+
+          </div>
+
+        </div>
+
+
+
+        <!-- 4 Stats Cards (2x2) -->
+
+        <div class="stats-row-4">
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="collector-kg-today">12.5 kg</span>
+
+            <span class="stat-label">Collected Today</span>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="collector-tx-count">5</span>
+
+            <span class="stat-label">Deposits Today</span>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="collector-pts-awarded">420 pts</span>
+
+            <span class="stat-label">Points Awarded</span>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span class="stat-value" style="color: var(--color-leaf);">5 Types</span>
+
+            <span class="stat-label">Accepted Waste</span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Large Scan Resident CTA -->
+
+        <div style="padding: 0 20px 14px;">
+
+          <button class="btn-primary" style="padding: 18px 24px; font-size: 17px; box-shadow: 0 6px 20px rgba(60, 141, 112, 0.25);" onclick="showCollectorTab('scan')">
+
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10" rx="1"></rect></svg>
+
+            Scan & Deposit Waste
+
+          </button>
+
+        </div>
+
+
+
+        <!-- Event Proposals shortcut card -->
+
+        <div style="padding: 0 20px 10px;">
+
+          <div class="card" onclick="openEventProposalForm()" style="cursor: pointer; background: var(--color-forest-light); border: 1.5px solid #86EFAC;">
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+
+              <div>
+
+                <div style="font-weight: 700; font-size: 14px; color: var(--color-forest-dark);">Barangay Event Proposals</div>
+
+                <div style="font-size: 12px; color: #4A5568; margin-top: 2px;">Propose clean-up campaigns to LGU Admin</div>
+
+              </div>
+
+              <span class="badge badge-success">+ New Proposal</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Recent Deposits List -->
+
+        <div class="section-header">
+
+          <span class="section-title">Today's Collections</span>
+
+          <button class="section-link" onclick="showCollectorTab('records')">View All</button>
+
+        </div>
+
+        <div class="tx-list" id="collector-recent-list"></div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           11. SCREEN: COLLECTOR SCAN (5-Step Wizard with Manual Weight)
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-collector-scan">
+
+        <div class="screen-subnav-header">
+
+          <button class="btn-back" onclick="showCollectorTab('home')">
+
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+          </button>
+
+          <h2>Collection Wizard</h2>
+
+          <div style="width: 28px;"></div>
+
+        </div>
+
+
+
+        <!-- 5-Step Indicators -->
+
+        <div class="step-indicators">
+
+          <div class="step-dot active" id="step-dot-1"></div>
+
+          <div class="step-dot" id="step-dot-2"></div>
+
+          <div class="step-dot" id="step-dot-3"></div>
+
+          <div class="step-dot" id="step-dot-4"></div>
+
+          <div class="step-dot" id="step-dot-5"></div>
+
+        </div>
+
+
+
+        <!-- Step 1: Scan Resident -->
+
+        <div class="step-content active" id="step-1-content">
+
+          <h3 class="step-heading">Step 1: Scan Resident QR Code</h3>
+
+          <div class="qr-scanner">
+
+            <div class="qr-frame">
+
+              <div class="qr-corner tl"></div>
+
+              <div class="qr-corner tr"></div>
+
+              <div class="qr-corner bl"></div>
+
+              <div class="qr-corner br"></div>
+
+              <div class="qr-scan-line"></div>
+
+            </div>
+
+          </div>
+
+          <p style="text-align: center; font-size: 14px; color: #6B7280; margin-bottom: 16px;">
+
+            Point camera at the resident's Rikna QR code
+
+          </p>
+
+
+
+          <button class="btn-secondary" onclick="selectDemoResident()" style="margin-bottom: 12px;">
+
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+            Select Demo Resident (Maria Santos)
+
+          </button>
+
+
+
+          <!-- Verified Resident Card (hidden until scanned) -->
+
+          <div class="scanned-resident-card" id="scanned-resident-card">
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+
+              <div>
+
+                <div style="font-size: 11px; text-transform:uppercase; color: var(--color-forest); font-weight:700;">Resident Verified</div>
+
+                <div style="font-weight: 700; font-size: 16px; color: #1A2332;" id="scan-resident-name">Maria Santos</div>
+
+                <div style="font-size: 13px; color: #6B7280;" id="scan-resident-id">RES-2024-001</div>
+
+                <div style="font-size: 12px; color: #6B7280;" id="scan-resident-barangay">Barangay San Isidro</div>
+
+              </div>
+
+              <span class="badge badge-success">Active</span>
+
+            </div>
+
+          </div>
+
+
+
+          <div style="margin-top: 16px;">
+
+            <button class="btn-primary" id="btn-step1-continue" onclick="nextStep()">
+
+              Continue to Step 2
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Step 2: Select Material -->
+
+        <div class="step-content" id="step-2-content">
+
+          <h3 class="step-heading">Step 2: Select Waste Material</h3>
+
+          <div class="material-options-grid">
+
+            <div class="material-option" data-id="PET" onclick="selectMaterial('PET')">
+
+              <div class="material-option-info">
+
+                <div class="material-option-icon" style="background: rgba(20, 99, 117, 0.15); color: #146375;">
+
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+
+                </div>
+
+                <div>
+
+                  <div class="material-option-name">PET Plastic</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Clean bottles & clear food tubs</div>
+
+                </div>
+
+              </div>
+
+              <div class="material-option-rate">30 pts/kg</div>
+
+            </div>
+
+
+
+            <div class="material-option" data-id="PAPER" onclick="selectMaterial('PAPER')">
+
+              <div class="material-option-info">
+
+                <div class="material-option-icon" style="background: rgba(60, 141, 112, 0.15); color: #3C8D70;">
+
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+
+                </div>
+
+                <div>
+
+                  <div class="material-option-name">Paper / Cardboard</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Cartons, sheets, clean boxes</div>
+
+                </div>
+
+              </div>
+
+              <div class="material-option-rate">10 pts/kg</div>
+
+            </div>
+
+
+
+            <div class="material-option" data-id="ALUM" onclick="selectMaterial('ALUM')">
+
+              <div class="material-option-info">
+
+                <div class="material-option-icon" style="background: rgba(153, 203, 91, 0.2); color: #99CB5B;">
+
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+
+                </div>
+
+                <div>
+
+                  <div class="material-option-name">Aluminum</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Soda cans, clean foils & trays</div>
+
+                </div>
+
+              </div>
+
+              <div class="material-option-rate">60 pts/kg</div>
+
+            </div>
+
+
+
+            <div class="material-option" data-id="TIN" onclick="selectMaterial('TIN')">
+
+              <div class="material-option-info">
+
+                <div class="material-option-icon" style="background: rgba(212, 234, 80, 0.25); color: #859613;">
+
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line></svg>
+
+                </div>
+
+                <div>
+
+                  <div class="material-option-name">Tin / Steel</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Canned goods tins, metal lids</div>
+
+                </div>
+
+              </div>
+
+              <div class="material-option-rate">12 pts/kg</div>
+
+            </div>
+
+
+
+            <div class="material-option" data-id="GLASS" onclick="selectMaterial('GLASS')">
+
+              <div class="material-option-info">
+
+                <div class="material-option-icon" style="background: rgba(203, 213, 225, 0.35); color: #475569;">
+
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l2 6v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8l2-6z"></path><line x1="6" y1="8" x2="18" y2="8"></line></svg>
+
+                </div>
+
+                <div>
+
+                  <div class="material-option-name">Glass</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Bottles & glass jars</div>
+
+                </div>
+
+              </div>
+
+              <div class="material-option-rate">5 pts/kg</div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="wizard-nav" style="padding: 20px 0 0;">
+
+            <button class="btn-secondary" onclick="prevStep()">Back</button>
+
+            <button class="btn-primary" onclick="nextStep()">Next</button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Step 3: Enter Weight & Documentation Photo (Manual Input - No Scale) -->
+
+        <div class="step-content" id="step-3-content">
+
+          <h3 class="step-heading">Step 3: Enter Weight & Documentation</h3>
+
+
+
+          <div class="form-group">
+
+            <label for="manual-weight-input">Weight (kg)</label>
+
+            <input type="number" step="0.01" min="0.01" max="100" id="manual-weight-input" placeholder="e.g. 2.50" value="2.50">
+
+            <div id="weight-error" style="color: #DC2626; font-size: 12px; margin-top: 4px; display: none;">Please enter a valid weight greater than 0 kg.</div>
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="deposit-remarks">Collector Remarks (Optional)</label>
+
+            <textarea id="deposit-remarks" placeholder="Add any condition notes, bundle count, or observations..."></textarea>
+
+          </div>
+
+
+
+          <!-- Documentation Photo Section -->
+
+          <div class="photo-upload-section">
+
+            <h4 style="font-size: 14px; font-weight: 700; color: #1A2332; margin-bottom: 8px;">Documentation Photo</h4>
+
+            <div class="photo-warning">
+
+              <strong>Mandatory verification photo:</strong> Please take a photo showing both the recyclable materials and the physical scale readout.
+
+            </div>
+
+
+
+            <!-- Hidden File Input -->
+
+            <input type="file" id="photo-upload-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
+
+
+
+            <div class="photo-upload-buttons">
+
+              <button class="btn-leaf" type="button" onclick="document.getElementById('photo-upload-input').click()">
+
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+
+                Take Photo
+
+              </button>
+
+              <button class="btn-secondary" type="button" style="padding: 10px 16px; font-size: 14px;" onclick="document.getElementById('photo-upload-input').click()">
+
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+
+                Upload File
+
+              </button>
+
+            </div>
+
+
+
+            <!-- Preview area -->
+
+            <div class="photo-preview-area" id="photo-preview-area">
+
+              <img id="photo-preview-img" src="" alt="Deposit documentation">
+
+              <button class="btn-remove-photo" onclick="removePhoto()" type="button" title="Remove photo">✕</button>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="wizard-nav" style="padding: 20px 0 0;">
+
+            <button class="btn-secondary" onclick="prevStep()">Back</button>
+
+            <button class="btn-primary" onclick="nextStep()">Calculate Points</button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Step 4: Calculated EcoPoints -->
+
+        <div class="step-content" id="step-4-content">
+
+          <h3 class="step-heading">Step 4: Calculated EcoPoints</h3>
+
+          <div class="calc-card">
+
+            <div class="deposit-row">
+
+              <span class="label">Material Category</span>
+
+              <span class="value" id="calc-material">PET Plastic</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Net Weight</span>
+
+              <span class="value" id="calc-weight">2.50 kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Conversion Rate</span>
+
+              <span class="value" id="calc-rate">30 pts/kg</span>
+
+            </div>
+
+            <div class="deposit-total-row">
+
+              <div>
+
+                <div style="font-size: 12px; color: var(--color-forest-dark); font-weight:600;">CALCULATED REWARD</div>
+
+                <div style="font-size: 13px; color: #4A5568;" id="calc-formula">2.50 kg × 30 pts/kg</div>
+
+              </div>
+
+              <div class="pts" id="calc-points-val">75 pts</div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="wizard-nav" style="padding: 10px 0 0;">
+
+            <button class="btn-secondary" onclick="prevStep()">Back</button>
+
+            <button class="btn-primary" onclick="nextStep()">Review Summary</button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Step 5: Confirm Deposit -->
+
+        <div class="step-content" id="step-5-content">
+
+          <h3 class="step-heading">Step 5: Confirm Deposit</h3>
+
+          <div class="card deposit-confirm-card" style="padding: 18px;">
+
+            <div class="deposit-row">
+
+              <span class="label">Resident</span>
+
+              <span class="value" id="summary-res-name">Maria Santos (RES-2024-001)</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Material</span>
+
+              <span class="value" id="summary-material">PET Plastic</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Weight</span>
+
+              <span class="value" id="summary-weight">2.50 kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Rate</span>
+
+              <span class="value" id="summary-rate">30 pts/kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Collector Officer</span>
+
+              <span class="value" id="summary-collector">Rodel Aguila</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Remarks</span>
+
+              <span class="value" id="summary-remarks" style="font-style: italic; color: #6B7280;">None</span>
+
+            </div>
+
+            <div class="deposit-row" style="align-items: center;">
+
+              <span class="label">Verification Photo</span>
+
+              <div id="confirm-photo-container">
+
+                <img id="confirm-photo-thumb" src="" alt="Thumb" style="display:none; width:44px; height:44px; border-radius:8px; object-fit:cover; cursor:pointer;" onclick="openModal('modal-photo-preview')">
+
+                <span id="confirm-no-photo" style="font-size: 12px; color: #9CA3AF;">Attached</span>
+
+              </div>
+
+            </div>
+
+            <div class="deposit-total-row">
+
+              <span style="font-weight: 700; color: #1A2332;">Total Points to Credit</span>
+
+              <span class="pts" id="summary-total-pts">+75 pts</span>
+
+            </div>
+
+          </div>
+
+
+
+          <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 10px;">
+
+            <button class="btn-primary" onclick="confirmDeposit()">
+
+              Confirm & Credit Points
+
+            </button>
+
+            <button class="btn-ghost" onclick="showCollectorTab('home')">
+
+              Cancel Deposit
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           12. SCREEN: COLLECTOR RECORDS
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-collector-records">
+
+        <header class="app-header">
+
+          <span class="header-brand"><img src="assets/logo.png" alt="" class="brand-logo">rikna</span>
+
+          <div class="header-right">
+
+            <button class="btn-notif" onclick="showCollectorTab('notifications')">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+
+            </button>
+
+          </div>
+
+        </header>
+
+
+
+        <div style="padding: 14px 20px 4px;">
+
+          <h2 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700;">Collection Records</h2>
+
+        </div>
+
+
+
+        <!-- Search Bar -->
+
+        <div class="search-bar">
+
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+
+          <input type="text" id="collector-records-search" placeholder="Search resident name or ID..." oninput="filterRecords()">
+
+        </div>
+
+
+
+        <!-- Material Filter Chips -->
+
+        <div class="chip-row" id="records-material-chips">
+
+          <button class="chip active" data-mat="all" onclick="setRecordMaterialFilter('all', this)">All</button>
+
+          <button class="chip" data-mat="PET Plastic" onclick="setRecordMaterialFilter('PET Plastic', this)">PET</button>
+
+          <button class="chip" data-mat="Paper/Cardboard" onclick="setRecordMaterialFilter('Paper/Cardboard', this)">Paper</button>
+
+          <button class="chip" data-mat="Aluminum" onclick="setRecordMaterialFilter('Aluminum', this)">Aluminum</button>
+
+          <button class="chip" data-mat="Tin/Steel" onclick="setRecordMaterialFilter('Tin/Steel', this)">Tin</button>
+
+          <button class="chip" data-mat="Glass" onclick="setRecordMaterialFilter('Glass', this)">Glass</button>
+
+        </div>
+
+
+
+        <!-- Date Filter Buttons -->
+
+        <div style="display:flex; gap: 8px; padding: 0 20px 12px;">
+
+          <button class="btn-leaf" style="padding: 6px 12px; font-size: 12px;" onclick="setRecordDateFilter('today')">Today</button>
+
+          <button class="btn-secondary" style="padding: 6px 12px; font-size: 12px; width:auto;" onclick="setRecordDateFilter('week')">This Week</button>
+
+          <button class="btn-ghost" style="padding: 6px 12px; font-size: 12px;" onclick="setRecordDateFilter('all')">All Time</button>
+
+        </div>
+
+
+
+        <!-- Records List -->
+
+        <div class="tx-list" id="records-list"></div>
+
+
+
+        <!-- Material Inventory Summary -->
+
+        <div class="section-header" style="margin-top: 14px;">
+
+          <span class="section-title">Today's Aggregated Inventory</span>
+
+        </div>
+
+        <div style="padding: 0 20px 24px;" id="material-inventory-table">
+
+          <div class="card" style="padding: 12px 16px;">
+
+            <div class="deposit-row">
+
+              <span class="label">PET Plastic</span>
+
+              <span class="value">6.5 kg (195 pts)</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Paper/Cardboard</span>
+
+              <span class="value">4.2 kg (42 pts)</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Aluminum Cans</span>
+
+              <span class="value">1.8 kg (108 pts)</span>
+
+            </div>
+
+            <div class="deposit-row" style="border-bottom: none;">
+
+              <span class="label">Total Material Weight</span>
+
+              <span class="value text-forest">12.5 kg</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           13. SCREEN: COLLECTOR NOTIFICATIONS
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-collector-notifications">
+
+        <div class="screen-subnav-header">
+
+          <button class="btn-back" onclick="showCollectorTab('home')">
+
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+          </button>
+
+          <h2>Notifications</h2>
+
+          <button class="btn-text" style="color: var(--color-forest); font-size: 13px; font-weight: 600;" onclick="markAllNotificationsRead()">Mark all read</button>
+
+        </div>
+
+        <div class="notif-list" id="collector-notif-list">
+
+          <div class="notif-item unread" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">LGU Weekly Collection Target Updated</div>
+
+              <div class="notif-body">Barangay San Isidro MRF has set a 150 kg weekly target for high-density PET.</div>
+
+              <div class="notif-time">Today at 8:00 AM</div>
+
+            </div>
+
+          </div>
+
+          <div class="notif-item" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot read"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">MRF Logistics Center Notice</div>
+
+              <div class="notif-body">San Isidro MRF drop-off truck arrival scheduled at 4:30 PM today.</div>
+
+              <div class="notif-time">Yesterday</div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           14. SCREEN: ADMIN HOME
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-admin-home">
+
+        <header class="app-header">
+
+          <span class="header-brand"><img src="assets/logo.png" alt="" class="brand-logo">rikna</span>
+
+          <div class="header-right">
+
+            <button class="btn-notif" onclick="showAdminTab('notifications')">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+
+              <span class="notif-badge" id="admin-notif-badge">3</span>
+
+            </button>
+
+          </div>
+
+        </header>
+
+
+
+        <div class="greeting-card">
+
+          <h2 class="greeting-name">LGU Central Admin</h2>
+
+          <div class="greeting-sub">
+
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+
+            Solid Waste Management Oversight • Pasig City
+
+          </div>
+
+        </div>
+
+
+
+        <!-- 4 Stat Cards -->
+
+        <div class="stats-row-4">
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="admin-total-waste">847.3 kg</span>
+
+            <span class="stat-label">Total Diverted</span>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="admin-residents">234</span>
+
+            <span class="stat-label">Active Residents</span>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="admin-points-dist">28,450</span>
+
+            <span class="stat-label">Points Granted</span>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span class="stat-value" id="admin-vouchers-redeemed">47</span>
+
+            <span class="stat-label">Vouchers Claimed</span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Participating Barangays Row -->
+
+        <div style="padding: 0 20px 10px;">
+
+          <div class="card" style="background: var(--color-forest-light); border: 1.5px solid #bcead5;">
+
+            <div style="display:flex; align-items:center; gap: 10px;">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-forest)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+
+              <div>
+
+                <div style="font-weight: 700; font-size: 14px; color: var(--color-forest-dark);">5 Participating Barangays</div>
+
+                <div style="font-size: 12px; color: #4A5568;">San Isidro, Pinyahan, Ugong, Bagong Silang, Sta. Cruz</div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Waste Trends 7-Day Bar Chart -->
+
+        <div class="section-header">
+
+          <span class="section-title">7-Day Waste Trends</span>
+
+        </div>
+
+        <div style="padding: 0 20px 10px;">
+
+          <div class="card">
+
+            <div class="bar-chart" id="trends-chart">
+
+              <div class="bar-row">
+
+                <span class="bar-label">Mon</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 55%;"></div></div>
+
+                <span class="bar-value">92 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Tue</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 68%;"></div></div>
+
+                <span class="bar-value">114 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Wed</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 48%;"></div></div>
+
+                <span class="bar-value">80 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Thu</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 82%;"></div></div>
+
+                <span class="bar-value">138 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Fri</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 75%;"></div></div>
+
+                <span class="bar-value">126 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Sat</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 90%;"></div></div>
+
+                <span class="bar-value">152 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Sun</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div>
+
+                <span class="bar-value">145 kg</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Material Breakdown -->
+
+        <div class="section-header">
+
+          <span class="section-title">Material Share</span>
+
+        </div>
+
+        <div style="padding: 0 20px 10px;">
+
+          <div class="card">
+
+            <div class="bar-chart">
+
+              <div class="bar-row">
+
+                <span class="bar-label">PET Plastic</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 45%; background: #146375;"></div></div>
+
+                <span class="bar-value">381 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Paper</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 25%; background: #3C8D70;"></div></div>
+
+                <span class="bar-value">212 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Aluminum</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 15%; background: #99CB5B;"></div></div>
+
+                <span class="bar-value">127 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Tin/Steel</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 10%; background: #D4EA50;"></div></div>
+
+                <span class="bar-value">85 kg</span>
+
+              </div>
+
+              <div class="bar-row">
+
+                <span class="bar-label">Glass</span>
+
+                <div class="bar-track"><div class="bar-fill" style="width: 5%; background: #CBD5E0;"></div></div>
+
+                <span class="bar-value">42 kg</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Top Barangay Performance List -->
+
+        <div class="section-header">
+
+          <span class="section-title">Barangay Rankings</span>
+
+        </div>
+
+        <div style="padding: 0 20px 24px;">
+
+          <div class="card" style="padding: 6px 16px;">
+
+            <div class="deposit-row">
+
+              <span class="label">1. Barangay San Isidro</span>
+
+              <span class="value text-forest">342 kg (40%)</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">2. Barangay Pinyahan</span>
+
+              <span class="value">280 kg (33%)</span>
+
+            </div>
+
+            <div class="deposit-row" style="border-bottom: none;">
+
+              <span class="label">3. Barangay Ugong</span>
+
+              <span class="value">225 kg (27%)</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           15. SCREEN: ADMIN MANAGE
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-admin-manage">
+
+        <header class="app-header">
+
+          <span class="header-brand"><img src="assets/logo.png" alt="" class="brand-logo">rikna</span>
+
+          <div class="header-right">
+
+            <button class="btn-notif" onclick="showAdminTab('notifications')">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+
+            </button>
+
+          </div>
+
+        </header>
+
+
+
+        <!-- 4 Manage Tabs -->
+
+        <div class="tab-bar">
+
+          <button class="tab-btn active" id="manage-tab-categories" onclick="showManageTab('categories')">Materials</button>
+
+          <button class="tab-btn" id="manage-tab-rewards" onclick="showManageTab('rewards')">Rewards</button>
+
+          <button class="tab-btn" id="manage-tab-collectors" onclick="showManageTab('collectors')">Collectors</button>
+
+          <button class="tab-btn" id="manage-tab-activities" onclick="showManageTab('activities')">Activities</button>
+
+        </div>
+
+
+
+        <!-- Tab 1: Waste Categories -->
+
+        <div id="manage-content-categories" style="display:block;">
+
+          <div class="section-header">
+
+            <span class="section-title">Accepted Waste Categories</span>
+
+            <button class="btn-leaf" style="font-size: 12px; padding: 6px 12px;" onclick="openCategoryEdit(null)">+ Add Category</button>
+
+          </div>
+
+          <div id="categories-manage-list"></div>
+
+        </div>
+
+
+
+        <!-- Tab 2: Rewards -->
+
+        <div id="manage-content-rewards" style="display:none;">
+
+          <div class="section-header">
+
+            <span class="section-title">Merchant Reward Items</span>
+
+            <button class="btn-leaf" style="font-size: 12px; padding: 6px 12px;" onclick="openRewardEdit(null)">+ Add Reward</button>
+
+          </div>
+
+          <div id="rewards-manage-list"></div>
+
+        </div>
+
+
+
+        <!-- Tab 3: Collectors (REDESIGNED) -->
+
+        <div id="manage-content-collectors" style="display:none;">
+
+          <!-- Summary Cards Row -->
+
+          <div class="collector-summary">
+
+            <div class="collector-summary-card">
+
+              <div class="value" id="col-total-count">3</div>
+
+              <div class="label">Total Officers</div>
+
+            </div>
+
+            <div class="collector-summary-card">
+
+              <div class="value" id="col-active-count" style="color: var(--status-success);">2</div>
+
+              <div class="label">Active</div>
+
+            </div>
+
+            <div class="collector-summary-card">
+
+              <div class="value" id="col-restricted-count" style="color: var(--status-error);">1</div>
+
+              <div class="label">Restricted</div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Collector Search & Filter -->
+
+          <div class="search-bar" style="margin-bottom: 8px;">
+
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+
+            <input type="text" id="collector-search" placeholder="Search collector name or ID..." oninput="filterCollectors()">
+
+          </div>
+
+
+
+          <div class="collector-filter-row">
+
+            <select id="collector-barangay-filter" onchange="filterCollectors()">
+
+              <option value="all">All Barangays</option>
+
+              <option value="San Isidro">San Isidro</option>
+
+              <option value="Pinyahan">Pinyahan</option>
+
+              <option value="Ugong">Ugong</option>
+
+            </select>
+
+            <select id="collector-status-filter" onchange="filterCollectors()">
+
+              <option value="all">All Statuses</option>
+
+              <option value="active">Active Only</option>
+
+              <option value="restricted">Restricted Only</option>
+
+            </select>
+
+          </div>
+
+
+
+          <!-- Collectors Cards List -->
+
+          <div id="collectors-manage-list">
+
+            <div class="collector-card">
+
+              <div class="collector-avatar-sm">RA</div>
+
+              <div class="collector-card-info">
+
+                <div class="collector-card-name">Rodel Aguila</div>
+
+                <div class="collector-card-sub">Barangay San Isidro • COL-2024-007</div>
+
+                <div style="margin-top: 4px;"><span class="badge badge-active">Active</span></div>
+
+              </div>
+
+              <button class="btn-view-details" onclick="openCollectorDetails('COL-2024-007')">View Details</button>
+
+            </div>
+
+            <div class="collector-card">
+
+              <div class="collector-avatar-sm">ER</div>
+
+              <div class="collector-card-info">
+
+                <div class="collector-card-name">Eduardo Ramos</div>
+
+                <div class="collector-card-sub">Barangay Pinyahan • COL-2024-012</div>
+
+                <div style="margin-top: 4px;"><span class="badge badge-active">Active</span></div>
+
+              </div>
+
+              <button class="btn-view-details" onclick="openCollectorDetails('COL-2024-012')">View Details</button>
+
+            </div>
+
+            <div class="collector-card">
+
+              <div class="collector-avatar-sm" style="background: #94A3B8;">DC</div>
+
+              <div class="collector-card-info">
+
+                <div class="collector-card-name">Danilo Cruz</div>
+
+                <div class="collector-card-sub">Barangay Ugong • COL-2024-019</div>
+
+                <div style="margin-top: 4px;"><span class="badge badge-restricted">Restricted</span></div>
+
+              </div>
+
+              <button class="btn-view-details" onclick="openCollectorDetails('COL-2024-019')">View Details</button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Collection Centers Heading & List -->
+
+          <div class="section-header" style="margin-top: 10px;">
+
+            <span class="section-title">Drop-Off Collection Hubs</span>
+
+            <button class="btn-leaf" style="font-size: 12px; padding: 6px 12px;" onclick="openCollectorEdit(null)">+ Add Collector</button>
+
+          </div>
+
+          <div style="padding: 0 20px 24px;">
+
+            <div class="card" onclick="openModal('modal-collection-center')" style="cursor:pointer; margin-bottom: 8px;">
+
+              <div style="font-weight: 700; font-size: 14px;">San Isidro Eco Hub</div>
+
+              <div style="font-size: 12px; color: #6B7280;">123 Rizal Ave, Brgy San Isidro • Mon-Sat 7:00 AM - 5:00 PM</div>
+
+            </div>
+
+            <div class="card" onclick="openModal('modal-collection-center')" style="cursor:pointer;">
+
+              <div style="font-weight: 700; font-size: 14px;">Pinyahan MRF Center</div>
+
+              <div style="font-size: 12px; color: #6B7280;">45 Kalayaan Rd, Brgy Pinyahan • Mon-Fri 8:00 AM - 4:00 PM</div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Tab 4: Activities & Event Proposals -->
+
+        <div id="manage-content-activities" style="display:none;">
+
+          <!-- Collector Proposals Pending Review -->
+
+          <div class="section-header">
+
+            <span class="section-title">Submitted Event Proposals</span>
+
+          </div>
+
+          <div style="padding: 0 20px;" id="event-proposals-admin-list">
+
+            <div class="proposal-card">
+
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+
+                <div>
+
+                  <span class="badge badge-pending" style="margin-bottom: 6px;">Pending Review</span>
+
+                  <div class="proposal-card-title">Riverside Eco Cleanup Campaign</div>
+
+                  <div class="proposal-card-sub">Proposed by Rodel Aguila (Barangay San Isidro)</div>
+
+                  <div style="font-size: 12px; color: #6B7280; margin-top: 4px;">Proposed: Dec 5, 2026 • Target: 50 pax</div>
+
+                </div>
+
+                <button class="btn-leaf" style="padding: 6px 12px; font-size: 12px;" onclick="openEventProposalReview('PROP001')">Review</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Approved Activities -->
+
+          <div class="section-header" style="margin-top: 14px;">
+
+            <span class="section-title">Published Environmental Initiatives</span>
+
+            
+
+          </div>
+
+          <div style="padding: 0 20px 24px;" id="approved-events-list">
+
+            <div class="card">
+
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+
+                <div>
+
+                  <div style="font-weight: 700; font-size: 15px;">Barangay Clean-Up Drive</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Nov 15, 2026 • 50 participation pts</div>
+
+                </div>
+
+                <span class="badge badge-success">Active</span>
+
+              </div>
+
+            </div>
+
+            <div class="card">
+
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+
+                <div>
+
+                  <div style="font-weight: 700; font-size: 15px;">Tree Planting Initiative</div>
+
+                  <div style="font-size: 12px; color: #6B7280;">Nov 22, 2026 • 75 participation pts</div>
+
+                </div>
+
+                <span class="badge badge-success">Active</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           16. SCREEN: ADMIN REPORTS & AUDIT LOGS
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-admin-reports">
+
+        <header class="app-header">
+
+          <span class="header-brand"><img src="assets/logo.png" alt="" class="brand-logo">rikna</span>
+
+          <div class="header-right">
+
+            <button class="btn-notif" onclick="showAdminTab('notifications')">
+
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+
+            </button>
+
+          </div>
+
+        </header>
+
+
+
+        <div style="padding: 14px 20px 4px; display: flex; justify-content: space-between; align-items: center;">
+
+          <h2 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700;">Audits & Reports</h2>
+
+          <button class="btn-leaf" style="font-size: 12px; padding: 6px 12px;" onclick="exportCSV()">
+
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+
+            Export CSV
+
+          </button>
+
+        </div>
+
+
+
+        <!-- Search Bar -->
+
+        <div class="search-bar">
+
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+
+          <input type="text" id="admin-tx-search" placeholder="Search TX ID, resident, or collector..." oninput="searchAdminTx(this.value)">
+
+        </div>
+
+
+
+        <!-- Section: Suspicious Activity Review (Relocated here from dashboard) -->
+
+        <div class="section-header">
+
+          <span class="section-title" style="color: var(--danger); display:flex; align-items:center; gap: 6px;">
+
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+
+            Flagged & Suspicious Activity
+
+          </span>
+
+        </div>
+
+        <div style="padding: 0 20px 8px;" id="suspicious-activity-list">
+
+          <div class="card" style="border-left: 4px solid var(--danger);">
+
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+
+              <div>
+
+                <span class="badge badge-warning" style="margin-bottom: 6px;">Weight Threshold (>15 kg)</span>
+
+                <div style="font-weight: 700; font-size: 15px; color: #1A2332;">DEP006 • 25.0 kg PET Plastic</div>
+
+                <div style="font-size: 12px; color: #6B7280; margin-top: 2px;">Resident: Rodrigo Mendoza • Officer: Rodel Aguila</div>
+
+              </div>
+
+              <button class="btn-leaf" style="font-size: 12px; padding: 6px 12px;" onclick="openFraudReview('DEP006')">Review</button>
+
+            </div>
+
+          </div>
+
+          <div class="card" style="border-left: 4px solid #F59E0B;">
+
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+
+              <div>
+
+                <span class="badge badge-warning" style="margin-bottom: 6px;">Multiple Submissions (1 hr)</span>
+
+                <div style="font-weight: 700; font-size: 15px; color: #1A2332;">DEP004 • 2.8 kg Glass</div>
+
+                <div style="font-size: 12px; color: #6B7280; margin-top: 2px;">Resident: Pedro Lim • Officer: Rodel Aguila</div>
+
+              </div>
+
+              <button class="btn-leaf" style="font-size: 12px; padding: 6px 12px;" onclick="openFraudReview('DEP004')">Review</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Section: All Transactions -->
+
+        <div class="section-header">
+
+          <span class="section-title">All Collection Transactions</span>
+
+        </div>
+
+        <div class="tx-list" id="admin-tx-list"></div>
+
+
+
+        <!-- Section: System Audit Log -->
+
+        <div class="section-header" style="margin-top: 14px;">
+
+          <span class="section-title">System Audit Log</span>
+
+        </div>
+
+        <div style="padding: 0 20px 24px;">
+
+          <div class="card" id="audit-log-list" style="padding: 8px 16px;"></div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           17. SCREEN: ADMIN NOTIFICATIONS
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-admin-notifications">
+
+        <div class="screen-subnav-header">
+
+          <button class="btn-back" onclick="showAdminTab('home')">
+
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+          </button>
+
+          <h2>Notifications</h2>
+
+          <button class="btn-text" style="color: var(--color-forest); font-size: 13px; font-weight: 600;" onclick="markAllNotificationsRead()">Mark all read</button>
+
+        </div>
+
+        <div class="notif-list" id="admin-notif-list">
+
+          <div class="notif-item unread" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">New Event Proposal Submitted</div>
+
+              <div class="notif-body">Officer Rodel Aguila submitted "Riverside Eco Cleanup Campaign" for approval.</div>
+
+              <div class="notif-time">10 minutes ago</div>
+
+            </div>
+
+          </div>
+
+          <div class="notif-item unread" onclick="openModal('modal-notification-detail')">
+
+            <div class="notif-dot"></div>
+
+            <div class="notif-body-wrap">
+
+              <div class="notif-title">High Weight Deposit Flagged (DEP006)</div>
+
+              <div class="notif-body">Deposit exceeding 15.0 kg threshold requires supervisor sign-off.</div>
+
+              <div class="notif-time">Yesterday</div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+      <!-- =====================================================================
+           SCREEN: COLLECTOR PROFILE
+           ===================================================================== -->
+      <div class="screen" id="screen-collector-profile">
+        <div class="profile-header">
+          <div class="profile-avatar" id="collector-profile-avatar">RA</div>
+          <h2 class="profile-name" id="collector-profile-name">Rodel Aguila</h2>
+          <div class="profile-email-text" id="collector-profile-email">rikna.collector.demo@gmail.com</div>
+          <div class="profile-meta-text" id="collector-profile-since">Collector since Jan 10, 2024</div>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">Collector Information</div>
+          <div class="profile-info-card">
+            <div class="profile-info-row"><span class="profile-info-label">Collector ID</span><span class="profile-info-value" id="collector-profile-id">COL-2024-007</span></div>
+            <div class="profile-info-row"><span class="profile-info-label">Assigned Barangay</span><span class="profile-info-value" id="collector-profile-barangay">Barangay San Isidro</span></div>
+            <div class="profile-info-row"><span class="profile-info-label">Contact</span><span class="profile-info-value" id="collector-profile-contact">09281234567</span></div>
+            <div class="profile-info-row" style="border-bottom:none"><span class="profile-info-label">Account Status</span><span class="badge badge-active" id="collector-profile-status">Active</span></div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">Today's Performance</div>
+          <div class="stats-row" style="padding:0;margin-bottom:0">
+            <div class="stat-card"><span class="stat-value" id="cp-kg-today">12.5</span><span class="stat-label">kg today</span></div>
+            <div class="stat-card"><span class="stat-value" id="cp-tx-today">5</span><span class="stat-label">deposits today</span></div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">Account</div>
+          <div class="profile-info-card">
+            <div class="profile-menu-item" onclick="showCollectorTab('notifications')">
+              <span>Notifications</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="profile-menu-item" onclick="showToast('Feature coming soon','info')">
+              <span>Help &amp; Support</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-logout" onclick="doLogout()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Log Out
+        </button>
+      </div>
+
+      <!-- =====================================================================
+           SCREEN: ADMIN PROFILE
+           ===================================================================== -->
+      <div class="screen" id="screen-admin-profile">
+        <div class="profile-header">
+          <div class="profile-avatar" id="admin-profile-avatar">JR</div>
+          <h2 class="profile-name" id="admin-profile-name">Engr. Josefina Reyes</h2>
+          <div class="profile-email-text" id="admin-profile-email">rikna.admin.demo@gmail.com</div>
+          <div class="profile-meta-text" id="admin-profile-since">Administrator since Jan 1, 2024</div>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">Administrator Information</div>
+          <div class="profile-info-card">
+            <div class="profile-info-row"><span class="profile-info-label">Admin ID</span><span class="profile-info-value" id="admin-profile-id">ADM-2024-001</span></div>
+            <div class="profile-info-row"><span class="profile-info-label">Office</span><span class="profile-info-value" id="admin-profile-barangay">LGU Quezon City</span></div>
+            <div class="profile-info-row" style="border-bottom:none"><span class="profile-info-label">Contact</span><span class="profile-info-value" id="admin-profile-contact">09391234567</span></div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">System Overview</div>
+          <div class="stats-row" style="padding:0;margin-bottom:0">
+            <div class="stat-card"><span class="stat-value" id="ap-residents">234</span><span class="stat-label">residents</span></div>
+            <div class="stat-card"><span class="stat-value" id="ap-collectors">3</span><span class="stat-label">collectors</span></div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <div class="profile-section-title">Account</div>
+          <div class="profile-info-card">
+            <div class="profile-menu-item" onclick="showAdminTab('notifications')">
+              <span>Notifications</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="profile-menu-item" onclick="showToast('Feature coming soon','info')">
+              <span>Help &amp; Support</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-logout" onclick="doLogout()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Log Out
+        </button>
+      </div>
+
+      <!-- =====================================================================
+
+           BOTTOM NAVIGATION BARS (Feather SVG Icons)
+
+           ===================================================================== -->
+
+
+
+      <!-- Resident Bottom Nav (5 Tabs) -->
+
+      <nav class="bottom-nav" id="nav-resident" aria-label="Resident navigation">
+
+        <button class="nav-item active" id="navbtn-resident-home" onclick="showResidentTab('home')" aria-current="page">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+
+          <span>Home</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-resident-wallet" onclick="showResidentTab('wallet')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+
+          <span>EcoWallet</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-resident-qr" onclick="showResidentTab('qr')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10" rx="1"></rect></svg>
+
+          <span>My QR</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-resident-rewards" onclick="showResidentTab('rewards')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>
+
+          <span>Rewards</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-resident-profile" onclick="showResidentTab('profile')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+          <span>Profile</span>
+
+        </button>
+
+      </nav>
+
+
+
+      <!-- Collector Bottom Nav (3 Tabs) -->
+
+      <nav class="bottom-nav" id="nav-collector">
+
+        <button class="nav-item active" id="navbtn-collector-home" onclick="showCollectorTab('home')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+
+          <span>Dashboard</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-collector-scan" onclick="showCollectorTab('scan')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10" rx="1"></rect></svg>
+
+          <span>Scanner</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-collector-records" onclick="showCollectorTab('records')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+
+          <span>Records</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-collector-profile" onclick="showCollectorTab('profile')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Profile</span>
+        </button>
+
+      </nav>
+
+
+
+      <!-- Admin Bottom Nav (3 Tabs) -->
+
+      <nav class="bottom-nav" id="nav-admin">
+
+        <button class="nav-item active" id="navbtn-admin-home" onclick="showAdminTab('home')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+
+          <span>Dashboard</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-admin-manage" onclick="showAdminTab('manage')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+
+          <span>Manage</span>
+
+        </button>
+
+        <button class="nav-item" id="navbtn-admin-reports" onclick="showAdminTab('reports')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+
+          <span>Reports</span>
+
+        </button>
+
+      
+
+        <button class="nav-item" id="navbtn-admin-profile" onclick="showAdminTab('profile')">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+          <span>Profile</span>
+
+        </button>
+
+      </nav>
+
+
+
+      <!-- =====================================================================
+
+           MODALS (All 22 Interactive Bottom Sheets & Overlays)
+
+           ===================================================================== -->
+
+
+
+      <!-- 1. modal-forgot-password -->
+
+      <div class="modal-overlay" id="modal-forgot-password" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Reset Password</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-forgot-password')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p style="font-size: 14px; color: #6B7280; margin-bottom: 16px;">
+
+              Enter your registered Rikna email address. We'll send you a secure verification link to reset your account password.
+
+            </p>
+
+            <div class="form-group">
+
+              <label>Email Address</label>
+
+              <input type="email" id="reset-email" placeholder="you@email.com" value="rikna.resident.demo@gmail.com">
+
+            </div>
+
+            <button class="btn-primary" onclick="sendPasswordReset()">Send Reset Link</button>
+
+            <button class="btn-ghost" style="width: 100%; margin-top: 8px;" onclick="closeModal('modal-forgot-password')">Cancel</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 2. modal-transaction (Receipt view) -->
+
+      <div class="modal-overlay" id="modal-transaction" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Transaction Details</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-transaction')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div style="text-align: center; margin-bottom: 16px;">
+
+              <span class="badge badge-success" id="tx-detail-status">verified</span>
+
+              <div style="font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 800; color: var(--color-forest); margin-top: 8px;" id="tx-detail-points">+90 pts</div>
+
+              <div style="font-size: 12px; color: #9CA3AF;" id="tx-detail-id">TXN001</div>
+
+            </div>
+
+            <div class="card" style="padding: 12px 16px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Date & Time</span>
+
+                <span class="value" id="tx-detail-date">Nov 5, 2026</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Material Category</span>
+
+                <span class="value" id="tx-detail-type">PET Plastic</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Net Weight</span>
+
+                <span class="value" id="tx-detail-weight">3.0 kg</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Collector Officer</span>
+
+                <span class="value" id="tx-detail-collector">Rodel Aguila</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Barangay</span>
+
+                <span class="value" id="tx-detail-barangay">Barangay San Isidro</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">Resident</span>
+
+                <span class="value" id="tx-detail-resident">Maria Santos</span>
+
+              </div>
+
+            </div>
+
+            <button class="btn-secondary" style="margin-top: 14px;" onclick="closeModal('modal-transaction')">Close Receipt</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 3. modal-collection-center -->
+
+      <div class="modal-overlay" id="modal-collection-center" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>San Isidro Eco Hub</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-collection-center')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="card" style="margin-bottom: 16px;">
+
+              <div style="font-weight: 700; font-size: 15px; color: #1A2332;">Barangay San Isidro MRF Center</div>
+
+              <div style="font-size: 13px; color: #6B7280; margin-top: 4px;">123 Rizal Ave, Brgy San Isidro, Pasig City</div>
+
+              <div style="font-size: 13px; color: var(--color-forest); font-weight: 600; margin-top: 6px;">Hours: Monday - Saturday, 7:00 AM - 5:00 PM</div>
+
+              <div style="font-size: 13px; color: #6B7280; margin-top: 2px;">Hotline: (02) 8921-4321</div>
+
+            </div>
+
+            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Available Services</h4>
+
+            <ul style="font-size: 13px; color: #4A5568; line-height: 1.8; padding-left: 20px; margin-bottom: 16px;">
+
+              <li>Bulk recyclable drop-off and live certified weighing</li>
+
+              <li>EcoPoint voucher redemption merchant verification</li>
+
+              <li>Community composting and e-waste collection drives</li>
+
+            </ul>
+
+            <button class="btn-primary" onclick="closeModal('modal-collection-center')">Done</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 4. modal-event-detail -->
+
+      <div class="modal-overlay" id="modal-event-detail" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3 id="event-detail-name">Barangay Clean-Up Drive</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-event-detail')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <span class="badge badge-success" style="margin-bottom: 12px;" id="event-detail-pts">+50 EcoPoints</span>
+
+            <div style="font-size: 14px; font-weight: 600; color: #1A2332; margin-bottom: 4px;" id="event-detail-date">Saturday, November 15, 2026 • 7:00 AM</div>
+
+            <div style="font-size: 13px; color: #6B7280; margin-bottom: 16px;">Location: Barangay San Isidro Plaza</div>
+
+            <p style="font-size: 14px; color: #4A5568; line-height: 1.6; margin-bottom: 20px;" id="event-detail-desc">
+
+              Community cleanup of waterways and main streets in celebration of National Clean Air Month. Gloves and trash sacks will be provided. Earn 50 EcoPoints credited upon sign-in with your QR code.
+
+            </p>
+
+            <button class="btn-primary" onclick="showToast('Registered! You will be reminded 1 day before the event.', 'success'); closeModal('modal-event-detail');">I'm Interested</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 5. modal-voucher-detail -->
+
+      <div class="modal-overlay" id="modal-voucher-detail" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Reward Voucher</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-voucher-detail')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div style="font-size: 12px; color: #9CA3AF; text-transform: uppercase; font-weight: 700;" id="vd-merchant">SM Supermarket</div>
+
+            <h4 style="font-size: 18px; font-weight: 800; color: #1A2332; margin: 4px 0 8px;" id="vd-name">SM Supermarket ₱50 Voucher</h4>
+
+            <p style="font-size: 14px; color: #6B7280; line-height: 1.5; margin-bottom: 16px;" id="vd-desc">Get ₱50 off your grocery cart at any participating SM Supermarket or Savemore branch.</p>
+
+            <div class="card" style="padding: 12px 16px; margin-bottom: 16px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Points Required</span>
+
+                <span class="value text-forest" id="vd-pts-required">100 pts</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">Your Balance</span>
+
+                <span class="value" id="vd-user-pts">500 pts</span>
+
+              </div>
+
+            </div>
+
+            <div id="vd-pts-status" style="font-size: 13px; font-weight: 600; color: var(--color-forest); margin-bottom: 16px; text-align: center;">
+
+              You have enough EcoPoints for this reward!
+
+            </div>
+
+            <button class="btn-primary" id="btn-redeem-voucher" onclick="confirmRedemptionOpen()">Redeem Voucher</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 6. modal-voucher-confirm -->
+
+      <div class="modal-overlay" id="modal-voucher-confirm" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Confirm Redemption</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-voucher-confirm')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p style="font-size: 14px; color: #4A5568; margin-bottom: 16px;">
+
+              Are you sure you want to redeem your EcoPoints for <strong id="vc-reward-name">SM Supermarket ₱50 Voucher</strong>?
+
+            </p>
+
+            <div class="card" style="padding: 12px 16px; margin-bottom: 16px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Points to Deduct</span>
+
+                <span class="value" style="color: var(--danger);" id="vc-pts-deduct">-100 pts</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">Remaining Balance</span>
+
+                <span class="value text-forest" id="vc-pts-after">400 pts</span>
+
+              </div>
+
+            </div>
+
+            <div style="display:flex; gap: 10px;">
+
+              <button class="btn-secondary" onclick="closeModal('modal-voucher-confirm')">Cancel</button>
+
+              <button class="btn-primary" id="btn-confirm-redeem" onclick="confirmRedemption()">Confirm & Redeem</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 7. modal-voucher-success -->
+
+      <div class="modal-overlay" id="modal-voucher-success" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-body success-wrap">
+
+            <div class="success-check">
+
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+            </div>
+
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700;">Voucher Ready!</h3>
+
+            <p style="font-size: 13px; color: #6B7280; margin: 4px 0 16px;" id="success-voucher-name">SM Supermarket ₱50 Voucher</p>
+
+            <div style="background: #F8FAFC; border: 1.5px dashed var(--color-forest); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+
+              <div style="font-size: 12px; color: #6B7280; text-transform: uppercase;">Claim Code</div>
+
+              <div style="font-family: monospace; font-size: 20px; font-weight: 800; color: var(--color-forest); letter-spacing: 2px; margin: 6px 0;" id="vs-code">SM-RKN-5839</div>
+
+              <div class="barcode-placeholder" style="margin: 8px auto;">
+
+                <div style="width:2px; height:80%;"></div><div style="width:4px; height:95%;"></div><div style="width:1px; height:75%;"></div>
+
+                <div style="width:3px; height:90%;"></div><div style="width:2px; height:85%;"></div><div style="width:4px; height:95%;"></div>
+
+              </div>
+
+              <div style="font-size: 11px; color: #9CA3AF;" id="vs-expiry">Valid until Dec 31, 2026</div>
+
+            </div>
+
+            <button class="btn-primary" onclick="closeModal('modal-voucher-success'); showResidentTab('rewards'); switchVoucherTab('active');">
+
+              View in My Vouchers
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 8. modal-voucher-scan (Simulate merchant scan) -->
+
+      <div class="modal-overlay" id="modal-voucher-scan" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Redeem at Merchant</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-voucher-scan')">✕</button>
+
+          </div>
+
+          <div class="modal-body" style="text-align: center;">
+
+            <div style="font-size: 12px; color: #9CA3AF; text-transform:uppercase; font-weight:700;" id="vscan-merchant">SM Supermarket</div>
+
+            <h4 style="font-size: 18px; font-weight: 700; margin: 4px 0 12px;" id="vscan-name">SM Supermarket ₱50 Voucher</h4>
+
+            <div style="background: #F8FAFC; border-radius: 14px; padding: 20px; border: 1.5px solid var(--border-base); margin-bottom: 16px;">
+
+              <div style="font-family: monospace; font-size: 18px; font-weight: 700; color: var(--color-forest);" id="vscan-code">SM-RKN-5839</div>
+
+              <div class="barcode-placeholder" id="vscan-barcode" style="height: 70px; margin: 14px 0;"></div>
+
+              <div style="font-size: 12px; color: #6B7280;" id="vscan-expiry">Valid until Dec 31, 2026</div>
+
+            </div>
+
+            <p style="font-size: 13px; color: #6B7280; margin-bottom: 16px;">Present this barcode to the cashier at checkout</p>
+
+            <button class="btn-leaf" style="width: 100%; padding: 13px;" onclick="simulateMarkVoucherUsed()">
+
+              Simulate Merchant Scan & Claim
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 9. modal-deposit-success -->
+
+      <div class="modal-overlay" id="modal-deposit-success" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-body success-wrap">
+
+            <div class="success-check">
+
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+            </div>
+
+            <h3 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700;">Deposit Confirmed!</h3>
+
+            <p style="font-size: 13px; color: #6B7280; margin: 4px 0 16px;">EcoPoints successfully credited to resident</p>
+
+            <div class="card" style="padding: 12px 16px; text-align: left; margin-bottom: 16px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Deposit ID</span>
+
+                <span class="value" id="ds-txid">DEP007</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Resident</span>
+
+                <span class="value" id="ds-resident">Maria Santos</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Material</span>
+
+                <span class="value" id="ds-material">PET Plastic</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Weight</span>
+
+                <span class="value" id="ds-weight">2.50 kg</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">Points Awarded</span>
+
+                <span class="value text-forest" id="ds-points">+75 pts</span>
+
+              </div>
+
+            </div>
+
+            <button class="btn-primary" onclick="closeModal('modal-deposit-success'); showCollectorTab('records');">
+
+              Done & View Records
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 10. modal-fraud-review (Full Review Flow) -->
+
+      <div class="modal-overlay" id="modal-fraud-review" onclick="closeModalOutside(event)">
+
+        <div class="modal-content modal-tall">
+
+          <div class="modal-header">
+
+            <h3>Suspicious Activity Review</h3>
+
+            <button class="modal-close" onclick="cancelFraudReview()">?</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+
+              <span class="badge badge-warning" id="fr-status">Flagged: Unusually high weight</span>
+
+              <span style="font-family: monospace; font-size: 13px; color: #6B7280;" id="fr-txid">DEP006</span>
+
+            </div>
+
+            <div class="card" style="padding: 12px 16px; margin-bottom: 14px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Collector Officer</span>
+
+                <span class="value" id="fr-collector">Rodel Aguila</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Resident</span>
+
+                <span class="value" id="fr-resident">Rodrigo Mendoza</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Barangay</span>
+
+                <span class="value" id="fr-barangay">Barangay San Isidro</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Material</span>
+
+                <span class="value" id="fr-material">PET Plastic</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Recorded Weight</span>
+
+                <span class="value" style="color: var(--danger); font-weight:700;" id="fr-weight">25.0 kg</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Points Subject to Hold</span>
+
+                <span class="value" id="fr-points">750 pts</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">Flag Trigger</span>
+
+                <span class="value text-danger" id="fr-reason">Exceeds 15 kg threshold</span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Documentation Photo from field -->
+
+            <div style="margin-bottom: 14px;">
+
+              <label style="font-size: 13px; font-weight: 600; color: #4A5568; display:block; margin-bottom: 6px;">Submitted Scale Photo</label>
+
+              <div style="background: #F1F5F9; border-radius: 10px; padding: 20px; text-align: center; border: 1px solid var(--border-base);">
+
+                <img id="fr-photo" src="" alt="Scale documentation" style="max-height: 140px; border-radius: 8px; display:none; margin: 0 auto;">
+
+                <div id="fr-photo-placeholder" style="color: #64748B; font-size: 13px;">
+
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 4px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+
+                  <div>Collector scale photo verified (25.00 kg bag batch)</div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+              <label for="fr-outcome">Review Determination</label>
+
+              <select id="fr-outcome" class="review-outcome-select">
+
+                <option value="cleared">Cleared — Legitimate Bulk Deposit</option>
+
+                <option value="irregularity">Confirmed Irregularity — Deduct Points & Warn</option>
+
+              </select>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+              <label for="fr-notes">Supervisor Audit Notes</label>
+
+              <textarea id="fr-notes" placeholder="Enter findings, verification notes, or corrective actions taken..."></textarea>
+
+            </div>
+
+
+
+            <div style="display:flex; gap: 10px;">
+
+              <button class="btn-secondary" onclick="cancelFraudReview()">?</button>
+
+              <button class="btn-primary" onclick="finishFraudReview()">Finish Review</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 11. modal-correction -->
+
+      <div class="modal-overlay" id="modal-correction" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Request Transaction Correction</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-correction')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="form-group">
+
+              <label>Transaction ID</label>
+
+              <input type="text" id="correction-tx-id" value="DEP001" readonly style="background:#EDF2F7;">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Reason for Correction</label>
+
+              <select id="correction-reason">
+
+                <option value="weight">Incorrect Weight Entry</option>
+
+                <option value="material">Wrong Material Selected</option>
+
+                <option value="duplicate">Duplicate Entry</option>
+
+                <option value="resident">Wrong Resident QR Scanned</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Explanation & Corrected Values</label>
+
+              <textarea id="correction-desc" placeholder="Provide accurate values and reason..."></textarea>
+
+            </div>
+
+            <button class="btn-primary" onclick="submitCorrection(event)">Submit Correction Request</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 12. modal-category-edit -->
+
+      <div class="modal-overlay" id="modal-category-edit" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Edit Waste Category</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-category-edit')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="form-group">
+
+              <label>Category Name</label>
+
+              <input type="text" id="edit-cat-name" placeholder="e.g. PET Plastic" value="PET Plastic">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Points Rate (pts/kg)</label>
+
+              <input type="number" id="edit-cat-rate" value="30">
+
+            </div>
+
+            <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+
+              <label style="margin-bottom:0;">Accept Submissions</label>
+
+              <label class="toggle-switch">
+
+                <input type="checkbox" id="edit-cat-toggle" checked>
+
+                <span class="toggle-slider"></span>
+
+              </label>
+
+            </div>
+
+            <button class="btn-primary" style="margin-top: 14px;" onclick="saveCategoryEdit()">Save Category</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 13. modal-reward-edit -->
+
+      <div class="modal-overlay" id="modal-reward-edit" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Edit Reward Item</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-reward-edit')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="form-group">
+
+              <label>Reward Name</label>
+
+              <input type="text" id="edit-rwd-name" placeholder="e.g. SM Supermarket ₱50 Voucher">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Merchant / Partner</label>
+
+              <input type="text" id="edit-rwd-merchant" placeholder="e.g. SM Supermarket">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Points Required</label>
+
+              <input type="number" id="edit-rwd-pts" placeholder="100">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Available Quantity</label>
+
+              <input type="number" id="edit-rwd-qty" value="25">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Description</label>
+
+              <textarea id="edit-rwd-desc" placeholder="Details about this voucher..."></textarea>
+
+            </div>
+
+            <button class="btn-primary" onclick="saveRewardEdit(event)">Save Reward</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 14. modal-collector-edit -->
+
+      <div class="modal-overlay" id="modal-collector-edit" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Collector Officer Account</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-collector-edit')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="form-group">
+
+              <label>Full Name</label>
+
+              <input type="text" id="edit-col-name" placeholder="e.g. Rodel Aguila">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Officer ID</label>
+
+              <input type="text" id="edit-col-id" placeholder="COL-2024-XXX">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Assigned Barangay</label>
+
+              <select id="edit-col-barangay">
+
+                <option value="Barangay San Isidro">Barangay San Isidro</option>
+
+                <option value="Barangay Pinyahan">Barangay Pinyahan</option>
+
+                <option value="Barangay Ugong">Barangay Ugong</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Email Address</label>
+
+              <input type="email" id="edit-col-email" placeholder="officer@barangay.gov.ph">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Phone Number</label>
+
+              <input type="tel" id="edit-col-phone" placeholder="09XX XXX XXXX">
+
+            </div>
+
+            <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+
+              <label style="margin-bottom:0;">Collection Authorization Active</label>
+
+              <label class="toggle-switch">
+
+                <input type="checkbox" id="edit-col-status" checked>
+
+                <span class="toggle-slider"></span>
+
+              </label>
+
+            </div>
+
+            <button class="btn-primary" style="margin-top: 14px;" onclick="saveCollectorEdit(event)">Save Collector</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 15. modal-collector-details (NEW: Full Collector Detail View) -->
+
+      <div class="modal-overlay" id="modal-collector-details" onclick="closeModalOutside(event)">
+
+        <div class="modal-content modal-tall">
+
+          <div class="cd-header">
+
+            <div class="cd-avatar" id="cd-avatar">RA</div>
+
+            <h3 style="font-family:'Poppins',sans-serif; font-size:18px; color:#fff;" id="cd-name">Rodel Aguila</h3>
+
+            <div style="font-size:13px; opacity:0.9;" id="cd-id">COL-2024-007</div>
+
+            <div style="margin-top:6px;"><span class="badge badge-active" id="cd-status">Active Officer</span></div>
+
+          </div>
+
+          <div class="cd-stats">
+
+            <div class="cd-stat">
+
+              <div class="value" id="cd-total-waste">342 kg</div>
+
+              <div class="label">Total Waste</div>
+
+            </div>
+
+            <div class="cd-stat">
+
+              <div class="value" id="cd-total-deposits">84</div>
+
+              <div class="label">Deposits</div>
+
+            </div>
+
+            <div class="cd-stat">
+
+              <div class="value" id="cd-total-points">11,240</div>
+
+              <div class="label">Points Issued</div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="modal-body" style="padding-top: 14px;">
+
+            <div class="profile-info-card" style="margin-bottom: 14px;">
+
+              <div class="profile-info-row">
+
+                <span class="profile-info-label">Assigned Barangay</span>
+
+                <span class="profile-info-value" id="cd-barangay">Barangay San Isidro</span>
+
+              </div>
+
+              <div class="profile-info-row">
+
+                <span class="profile-info-label">Email</span>
+
+                <span class="profile-info-value" id="cd-email">rodel.aguila@sanisidro.gov.ph</span>
+
+              </div>
+
+              <div class="profile-info-row">
+
+                <span class="profile-info-label">Contact</span>
+
+                <span class="profile-info-value" id="cd-phone">0918 234 5678</span>
+
+              </div>
+
+              <div class="profile-info-row">
+
+                <span class="profile-info-label">Registered Since</span>
+
+                <span class="profile-info-value" id="cd-created">Jan 12, 2026</span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Action buttons: Restrict / Restore -->
+
+            <div style="display:flex; gap: 10px; margin-bottom: 16px;">
+
+              <button class="btn-danger" id="btn-cd-restrict" onclick="openRestrictCollector(currentViewingCollectorId)">
+
+                Restrict Collector Account
+
+              </button>
+
+              <button class="btn-leaf" id="btn-cd-restore" style="display:none; width: 100%; justify-content:center;" onclick="openRestoreCollector(currentViewingCollectorId)">
+
+                Restore Account
+
+              </button>
+
+            </div>
+
+
+
+            <!-- Collection History -->
+
+            <div class="section-title" style="margin-bottom: 8px;">Collection History</div>
+
+            <div class="cd-history-filters">
+
+              <select id="cd-filter-material" onchange="filterCollectorHistory()">
+
+                <option value="all">All Materials</option>
+
+                <option value="PET Plastic">PET Plastic</option>
+
+                <option value="Aluminum">Aluminum</option>
+
+              </select>
+
+              <select id="cd-filter-date" onchange="filterCollectorHistory()">
+
+                <option value="all">All Time</option>
+
+                <option value="week">This Week</option>
+
+              </select>
+
+            </div>
+
+            <div class="tx-list" id="cd-history-list" style="max-height: 220px; overflow-y:auto;"></div>
+
+
+
+            <button class="btn-secondary" style="margin-top: 14px;" onclick="closeModal('modal-collector-details')">Close Details</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 16. modal-restrict-collector (NEW: Restriction Confirmation) -->
+
+      <div class="modal-overlay" id="modal-restrict-collector" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3 style="color: var(--danger);">Restrict Collector Officer</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-restrict-collector')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p style="font-size: 14px; color: #4A5568; margin-bottom: 12px;">
+
+              Are you sure you want to restrict account access for <strong id="rc-collector-name">Rodel Aguila</strong>?
+
+            </p>
+
+            <div class="photo-warning" style="background:#FEF2F2; border-left-color:#DC2626; color:#991B1B;">
+
+              Restricting will instantly disable this officer's ability to scan resident QR codes and create new deposit records until reinstated.
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Reason for Restriction</label>
+
+              <select id="rc-reason">
+
+                <option value="Suspicious Activity">Suspicious Deposit Weight Activity</option>
+
+                <option value="Policy Violation">Barangay Protocol Violation</option>
+
+                <option value="Account Review">Periodic Administrative Review</option>
+
+                <option value="Other">Other Operational Concern</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Internal Audit Notes</label>
+
+              <textarea id="rc-notes" placeholder="Detailed rationale for restriction..."></textarea>
+
+            </div>
+
+            <div style="display:flex; gap: 10px;">
+
+              <button class="btn-secondary" onclick="closeModal('modal-restrict-collector')">Cancel</button>
+
+              <button class="btn-danger" onclick="confirmRestrictCollector()">Confirm Restriction</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 17. modal-restore-collector (NEW: Restoration Confirmation) -->
+
+      <div class="modal-overlay" id="modal-restore-collector" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Restore Collector Account</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-restore-collector')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p style="font-size: 14px; color: #4A5568; margin-bottom: 14px;">
+
+              Restore full deposit processing permissions for <strong id="rst-collector-name">Danilo Cruz</strong>?
+
+            </p>
+
+            <div class="form-group">
+
+              <label>Restoration Justification Notes</label>
+
+              <textarea id="rst-notes" placeholder="Document clearance, verification completion, or supervisor remarks..."></textarea>
+
+            </div>
+
+            <div style="display:flex; gap: 10px;">
+
+              <button class="btn-secondary" onclick="closeModal('modal-restore-collector')">Cancel</button>
+
+              <button class="btn-primary" onclick="confirmRestoreCollector()">Confirm & Restore</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 18. modal-activity-edit -->
+
+      <div class="modal-overlay" id="modal-activity-edit" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Environmental Activity</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-activity-edit')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="form-group">
+
+              <label>Event Name</label>
+
+              <input type="text" id="edit-act-name" placeholder="e.g. Barangay Clean-Up Drive">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Event Type</label>
+
+              <select id="edit-act-type">
+
+                <option value="cleanup">Clean-Up Drive</option>
+
+                <option value="planting">Tree Planting</option>
+
+                <option value="seminar">Waste Sorting Seminar</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Date & Time</label>
+
+              <input type="text" id="edit-act-date" placeholder="e.g. 2026-11-15 07:00 AM">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Location</label>
+
+              <input type="text" id="edit-act-location" placeholder="e.g. Barangay Plaza">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Participation Points Awarded</label>
+
+              <input type="number" id="edit-act-pts" value="50">
+
+            </div>
+
+            <div class="form-group">
+
+              <label>Description</label>
+
+              <textarea id="edit-act-desc" placeholder="Details and instructions for residents..."></textarea>
+
+            </div>
+
+            <button class="btn-primary" onclick="saveActivityEdit(event)">Publish Activity</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 19. modal-event-proposal (NEW: Collector Creates Proposal) -->
+
+      <div class="modal-overlay" id="modal-event-proposal" onclick="closeModalOutside(event)">
+
+        <div class="modal-content modal-tall">
+
+          <div class="modal-header">
+
+            <h3>Propose Barangay Event</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-event-proposal')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p style="font-size: 13px; color: #6B7280; margin-bottom: 14px;">
+
+              Submit an environmental initiative proposal to LGU Admin for budget, logistics, and EcoPoint allocation approval.
+
+            </p>
+
+            <form onsubmit="submitEventProposal(event)">
+
+              <div class="form-group">
+
+                <label>Event Title</label>
+
+                <input type="text" id="prop-title" placeholder="e.g. Riverside Plastic Interception Campaign" required>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Campaign Category</label>
+
+                <select id="prop-category" required>
+
+                  <option value="Cleanup">Barangay Clean-Up</option>
+
+                  <option value="Recycling Campaign">Recycling Collection Campaign</option>
+
+                  <option value="Tree Planting">Tree Planting & Greening</option>
+
+                  <option value="Seminar">Community Education & Seminar</option>
+
+                  <option value="Workshop">Zero-Waste Upcycling Workshop</option>
+
+                </select>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Barangay</label>
+
+                <input type="text" id="prop-barangay" value="Barangay San Isidro" readonly style="background:#EDF2F7;">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Proposed Location</label>
+
+                <input type="text" id="prop-location" placeholder="Specific street, park, or riverbank" required>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Target Date</label>
+
+                <input type="date" id="prop-date" required>
+
+              </div>
+
+              <div style="display:flex; gap: 8px;">
+
+                <div class="form-group" style="flex:1;">
+
+                  <label>Start Time</label>
+
+                  <input type="time" id="prop-start-time" value="07:00" required>
+
+                </div>
+
+                <div class="form-group" style="flex:1;">
+
+                  <label>End Time</label>
+
+                  <input type="time" id="prop-end-time" value="11:00" required>
+
+                </div>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Expected Resident Participants</label>
+
+                <input type="number" id="prop-participants" placeholder="e.g. 50" min="5" required>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Proposed EcoPoint Reward (per attendee)</label>
+
+                <input type="number" id="prop-points" placeholder="e.g. 50" min="10" value="50">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Description & Scope</label>
+
+                <textarea id="prop-desc" placeholder="Scope of the activity, necessary barangay supplies, and community impact..." required></textarea>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Logistics Remarks (Optional)</label>
+
+                <textarea id="prop-remarks" placeholder="Notes for hauling truck, refreshments, or gloves..."></textarea>
+
+              </div>
+
+              
+              <!-- Supporting Documents Upload Section -->
+              <div class="form-group">
+                <label>Supporting Documents (Optional)</label>
+                <p style="font-size: 12px; color: #6B7280; margin-bottom: 8px;">Upload relevant documents such as budget estimates, site plans, or permits</p>
+                <input type="file" id="prop-documents" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple style="display:none;" onchange="handleProposalDocuments(event)">
+                <button type="button" class="btn-secondary" onclick="document.getElementById('prop-documents').click()" style="width: 100%; margin-bottom: 8px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  Choose Files
+                </button>
+                <div id="prop-documents-list" style="display:none; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px; margin-top: 8px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #64748B; margin-bottom: 6px;">Selected Documents:</div>
+                  <div id="prop-documents-items"></div>
+                </div>
+              </div>
+
+              <button class="btn-primary" type="submit">Submit Proposal to Admin</button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 20. modal-event-proposal-review (NEW: Admin Reviews Proposal) -->
+
+      <div class="modal-overlay" id="modal-event-proposal-review" onclick="closeModalOutside(event)">
+
+        <div class="modal-content modal-tall">
+
+          <div class="modal-header">
+
+            <h3>Event Proposal Review</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-event-proposal-review')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+
+              <span class="badge badge-pending" id="epr-status">Pending Review</span>
+
+              <span style="font-size: 13px; color: #6B7280;" id="epr-category">Barangay Clean-Up</span>
+
+            </div>
+
+            <h4 style="font-size: 18px; font-weight: 800; color: #1A2332; margin-bottom: 6px;" id="epr-title">Riverside Eco Cleanup Campaign</h4>
+
+            <div style="font-size: 13px; color: #6B7280; margin-bottom: 14px;" id="epr-proposer">Proposed by Officer Rodel Aguila (Barangay San Isidro)</div>
+
+
+
+            <div class="card" style="padding: 12px 16px; margin-bottom: 14px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Barangay</span>
+
+                <span class="value" id="epr-barangay">Barangay San Isidro</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Proposed Location</span>
+
+                <span class="value" id="epr-location">San Isidro Riverside Path</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Date & Time</span>
+
+                <span class="value" id="epr-date-time">Dec 5, 2026 • 7:00 AM - 11:00 AM</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Expected Participants</span>
+
+                <span class="value" id="epr-participants">50 Residents</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">EcoPoint Allocation</span>
+
+                <span class="value text-forest" id="epr-pts">50 pts / participant</span>
+
+              </div>
+
+            </div>
+
+
+
+            <div style="margin-bottom: 14px;">
+
+              <label style="font-size: 12px; font-weight: 700; text-transform:uppercase; color: #9CA3AF; display:block; margin-bottom: 4px;">Description</label>
+
+              <p style="font-size: 13px; color: #4A5568; line-height: 1.5;" id="epr-desc">
+
+                Organized riverbank cleanup targeting accumulated single-use plastics along the San Isidro water channel prior to the rainy season.
+
+              </p>
+
+            </div>
+
+
+
+            <div style="margin-bottom: 16px;">
+
+              <label style="font-size: 12px; font-weight: 700; text-transform:uppercase; color: #9CA3AF; display:block; margin-bottom: 4px;">Logistics Remarks</label>
+
+              <p style="font-size: 13px; color: #4A5568; line-height: 1.5;" id="epr-remarks">
+
+                Requesting 1 hauling dump truck and 100 heavy-duty collection sacks from LGU SWM depot.
+
+              </p>
+
+            </div>
+
+
+
+            <div id="epr-reject-box" style="display:none; margin-bottom: 14px;">
+
+              <label style="font-size: 13px; font-weight: 600; color: var(--danger);">Rejection Rationale</label>
+
+              <textarea id="epr-reject-reason" placeholder="Provide reason for rejecting or asking for revisions..."></textarea>
+
+            </div>
+
+
+
+            <div style="display:flex; gap: 10px;">
+
+              <button class="btn-secondary" style="border-color: var(--danger); color: var(--danger);" onclick="rejectEventProposal()">
+
+                Reject / Revise
+
+              </button>
+
+              <button class="btn-primary" onclick="approveEventProposal('PROP001')">
+
+                Approve & Allocate Points
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 21. modal-report-detail (Admin Transaction Detail) -->
+
+      <div class="modal-overlay" id="modal-report-detail" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Audit Transaction Record</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-report-detail')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="card" style="padding: 12px 16px; margin-bottom: 16px;">
+
+              <div class="deposit-row">
+
+                <span class="label">Transaction ID</span>
+
+                <span class="value" id="report-detail-id">DEP001</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Resident</span>
+
+                <span class="value" id="report-detail-resident">Maria Santos</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Material</span>
+
+                <span class="value" id="report-detail-material">PET Plastic</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Net Weight</span>
+
+                <span class="value" id="report-detail-weight">3.0 kg</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Points</span>
+
+                <span class="value text-forest" id="report-detail-points">+90 pts</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Collector</span>
+
+                <span class="value" id="report-detail-collector">Rodel Aguila</span>
+
+              </div>
+
+              <div class="deposit-row">
+
+                <span class="label">Date Recorded</span>
+
+                <span class="value" id="report-detail-date">Nov 5, 2026</span>
+
+              </div>
+
+              <div class="deposit-row" style="border-bottom: none;">
+
+                <span class="label">Audit Status</span>
+
+                <span class="value"><span class="badge badge-success" id="report-detail-status">verified</span></span>
+
+              </div>
+
+            </div>
+
+            <div style="display:flex; gap: 8px;">
+
+              <button class="btn-leaf" style="flex:1;" onclick="resolveFlag(activeReportRecordId)">Verify & Sign Off</button>
+
+              <button class="btn-secondary" style="flex:1;" onclick="openCorrection(activeReportRecordId)">Correction</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 22. modal-notification-detail (NEW) -->
+
+      <div class="modal-overlay" id="modal-notification-detail" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3 id="notif-detail-title">Notification</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-notification-detail')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div style="font-size: 12px; color: #9CA3AF; margin-bottom: 12px;" id="notif-detail-time">Nov 5, 2026 at 2:32 PM</div>
+
+            <p style="font-size: 14px; color: #4A5568; line-height: 1.6; margin-bottom: 20px;" id="notif-detail-body">
+
+              Your deposit of 3.0 kg PET Plastic has been successfully recorded and verified by Rodel Aguila. 90 EcoPoints have been added to your balance.
+
+            </p>
+
+            <button class="btn-primary" id="notif-detail-action" onclick="closeModal('modal-notification-detail')">Close</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 23. modal-photo-preview (NEW: Full size photo view) -->
+
+      <div class="modal-overlay" id="modal-photo-preview" onclick="closeModalOutside(event)">
+
+        <div class="modal-content" style="text-align: center; background: #0F172A; color: #fff;">
+
+          <div class="modal-header" style="background: transparent; border-bottom: 1px solid rgba(255,255,255,0.1);">
+
+            <h3 style="color:#fff;">Documentation Photo</h3>
+
+            <button class="modal-close" style="color:#fff;" onclick="closeModal('modal-photo-preview')">✕</button>
+
+          </div>
+
+          <div class="modal-body" style="padding: 16px;">
+
+            <img id="photo-preview-full" src="" alt="Enlarged photo preview" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
+
+            <p style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px;">
+
+              Digital timestamped verification image
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+    </div><!-- /#app -->
+
+  </div><!-- /#app-wrapper -->
+
+
+
+  <!-- Load Main JavaScript -->
+
+  <script src="script.js"></script>
+
+
+
+  <!-- Inline mock script disabled in favor of script.js -->
+
+  <script>
+
+    if (false) (function() {
+
+    /* ==========================================================================
+
+       RIKNA UI INTERACTIVITY ADAPTER & STATE EXTENSIONS
+
+       Ensures 100% smooth interaction with all revised features
+
+       ========================================================================== */
+
+
+
+    // Demo Accounts Panel Accordion
+
+    function toggleDemoPanel() {
+
+      const panel = document.getElementById('demo-panel-body');
+
+      const chevron = document.getElementById('demo-chevron');
+
+      if (panel) {
+
+        const isHidden = panel.style.display === 'none' || panel.style.display === '';
+
+        panel.style.display = isHidden ? 'flex' : 'none';
+
+        if (chevron) {
+
+          chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+
+        }
+
+      }
+
+    }
+
+
+
+    // Fill Demo Accounts on Login Screen
+
+    function fillDemo(email, pass) {
+
+      const emailInput = document.getElementById('login-email');
+
+      const passInput = document.getElementById('login-password');
+
+      if (emailInput) emailInput.value = email;
+
+      if (passInput) passInput.value = pass;
+
+      
+
+      const err = document.getElementById('login-error');
+
+      if (err) err.style.display = 'none';
+
+
+
+      // Visual flash
+
+      emailInput.style.borderColor = '#3C8D70';
+
+      setTimeout(() => { emailInput.style.borderColor = ''; }, 600);
+
+
+
+      showToast(`Selected demo credentials for ${email.split('.')[1] || 'user'}`, 'info');
+
+    }
+
+
+
+    // Role-Based Screen Tabs Navigation
+
+    function showResidentTab(tab) {
+
+      const navItems = document.querySelectorAll('#nav-resident .nav-item');
+
+      navItems.forEach(n => n.classList.remove('active'));
+
+      const activeBtn = document.getElementById(`navbtn-resident-${tab}`);
+
+      if (activeBtn) activeBtn.classList.add('active');
+
+
+
+      if (tab === 'notifications') {
+
+        showScreen('screen-resident-notifications');
+
+      } else {
+
+        showScreen(`screen-resident-${tab}`);
+
+      }
+
+    }
+
+
+
+    function showCollectorTab(tab) {
+
+      const navItems = document.querySelectorAll('#nav-collector .nav-item');
+
+      navItems.forEach(n => n.classList.remove('active'));
+
+      const activeBtn = document.getElementById(`navbtn-collector-${tab}`);
+
+      if (activeBtn) activeBtn.classList.add('active');
+
+
+
+      if (tab === 'notifications') {
+
+        showScreen('screen-collector-notifications');
+
+      } else {
+
+        showScreen(`screen-collector-${tab}`);
+
+      }
+
+    }
+
+
+
+    function showAdminTab(tab) {
+
+      const navItems = document.querySelectorAll('#nav-admin .nav-item');
+
+      navItems.forEach(n => n.classList.remove('active'));
+
+      const activeBtn = document.getElementById(`navbtn-admin-${tab}`);
+
+      if (activeBtn) activeBtn.classList.add('active');
+
+
+
+      if (tab === 'notifications') {
+
+        showScreen('screen-admin-notifications');
+
+      } else {
+
+        showScreen(`screen-admin-${tab}`);
+
+      }
+
+    }
+
+
+
+    // Admin Manage Tabs
+
+    function showManageTab(tab) {
+
+      const tabs = ['categories', 'rewards', 'collectors', 'activities'];
+
+      tabs.forEach(t => {
+
+        const btn = document.getElementById(`manage-tab-${t}`);
+
+        const content = document.getElementById(`manage-content-${t}`);
+
+        if (btn) btn.classList.toggle('active', t === tab);
+
+        if (content) content.style.display = (t === tab) ? 'block' : 'none';
+
+      });
+
+
+
+      if (tab === 'categories' && typeof renderCategoriesManage === 'function') {
+
+        renderCategoriesManage();
+
+      } else if (tab === 'rewards' && typeof renderRewardsManage === 'function') {
+
+        renderRewardsManage();
+
+      }
+
+    }
+
+
+
+    // Collector 5-Step Wizard State & Photo Upload
+
+    let currentUploadedPhotoUrl = null;
+
+    let currentSelectedMaterial = { id: 'PET', name: 'PET Plastic', rate: 30 };
+
+
+
+    function selectMaterial(matId) {
+
+      const materials = [
+
+        { id: 'PET', name: 'PET Plastic', rate: 30 },
+
+        { id: 'PAPER', name: 'Paper/Cardboard', rate: 10 },
+
+        { id: 'ALUM', name: 'Aluminum', rate: 60 },
+
+        { id: 'TIN', name: 'Tin/Steel', rate: 12 },
+
+        { id: 'GLASS', name: 'Glass', rate: 5 }
+
+      ];
+
+      const found = materials.find(m => m.id === matId) || materials[0];
+
+      currentSelectedMaterial = found;
+
+
+
+      document.querySelectorAll('.material-option').forEach(opt => {
+
+        opt.classList.toggle('selected', opt.getAttribute('data-id') === matId);
+
+      });
+
+
+
+      showToast(`Selected: ${found.name} (${found.rate} pts/kg)`, 'info');
+
+      updateStep4Calculation();
+
+    }
+
+
+
+    function handlePhotoUpload(event) {
+
+      const file = event.target.files && event.target.files[0];
+
+      if (!file) return;
+
+
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+
+        currentUploadedPhotoUrl = e.target.result;
+
+        const previewArea = document.getElementById('photo-preview-area');
+
+        const previewImg = document.getElementById('photo-preview-img');
+
+        const confirmThumb = document.getElementById('confirm-photo-thumb');
+
+        const confirmNoPhoto = document.getElementById('confirm-no-photo');
+
+        const previewFull = document.getElementById('photo-preview-full');
+
+
+
+        if (previewImg) previewImg.src = currentUploadedPhotoUrl;
+
+        if (previewArea) previewArea.style.display = 'block';
+
+        if (confirmThumb) {
+
+          confirmThumb.src = currentUploadedPhotoUrl;
+
+          confirmThumb.style.display = 'inline-block';
+
+        }
+
+        if (confirmNoPhoto) confirmNoPhoto.style.display = 'none';
+
+        if (previewFull) previewFull.src = currentUploadedPhotoUrl;
+
+
+
+        showToast('Documentation photo attached!', 'success');
+
+      };
+
+      reader.readAsDataURL(file);
+
+    }
+
+
+
+    function removePhoto() {
+
+      currentUploadedPhotoUrl = null;
+
+      const previewArea = document.getElementById('photo-preview-area');
+
+      const input = document.getElementById('photo-upload-input');
+
+      const confirmThumb = document.getElementById('confirm-photo-thumb');
+
+      const confirmNoPhoto = document.getElementById('confirm-no-photo');
+
+
+
+      if (previewArea) previewArea.style.display = 'none';
+
+      if (input) input.value = '';
+
+      if (confirmThumb) confirmThumb.style.display = 'none';
+
+      if (confirmNoPhoto) confirmNoPhoto.style.display = 'inline';
+
+
+
+      showToast('Photo removed', 'info');
+
+    }
+
+
+
+    function updateStep4Calculation() {
+
+      const weightInput = document.getElementById('manual-weight-input');
+
+      const weight = parseFloat(weightInput ? weightInput.value : 2.5) || 2.5;
+
+      const rate = currentSelectedMaterial.rate;
+
+      const points = Math.round(weight * rate);
+
+
+
+      // Safe update step 4
+
+      const elMat = document.getElementById('calc-material');
+
+      const elWeight = document.getElementById('calc-weight');
+
+      const elRate = document.getElementById('calc-rate');
+
+      const elFormula = document.getElementById('calc-formula');
+
+      const elPoints = document.getElementById('calc-points-val');
+
+
+
+      if (elMat) elMat.textContent = currentSelectedMaterial.name;
+
+      if (elWeight) elWeight.textContent = `${weight.toFixed(2)} kg`;
+
+      if (elRate) elRate.textContent = `${rate} pts/kg`;
+
+      if (elFormula) elFormula.textContent = `${weight.toFixed(2)} kg × ${rate} pts/kg`;
+
+      if (elPoints) elPoints.textContent = `${points} pts`;
+
+
+
+      // Update Step 5 Summary
+
+      const sMat = document.getElementById('summary-material');
+
+      const sWeight = document.getElementById('summary-weight');
+
+      const sRate = document.getElementById('summary-rate');
+
+      const sTotal = document.getElementById('summary-total-pts');
+
+      const remarksInput = document.getElementById('deposit-remarks');
+
+      const sRemarks = document.getElementById('summary-remarks');
+
+
+
+      if (sMat) sMat.textContent = currentSelectedMaterial.name;
+
+      if (sWeight) sWeight.textContent = `${weight.toFixed(2)} kg`;
+
+      if (sRate) sRate.textContent = `${rate} pts/kg`;
+
+      if (sTotal) sTotal.textContent = `+${points} pts`;
+
+      if (sRemarks) sRemarks.textContent = (remarksInput && remarksInput.value.trim()) ? remarksInput.value.trim() : 'None';
+
+    }
+
+
+
+    // Step navigation
+
+    let currentWizardStep = 1;
+
+    function goToStep(step) {
+
+      if (step < 1 || step > 5) return;
+
+      currentWizardStep = step;
+
+
+
+      // Update dots
+
+      for (let i = 1; i <= 5; i++) {
+
+        const dot = document.getElementById(`step-dot-${i}`);
+
+        if (dot) {
+
+          dot.classList.remove('active', 'done');
+
+          if (i < currentWizardStep) dot.classList.add('done');
+
+          else if (i === currentWizardStep) dot.classList.add('active');
+
+        }
+
+        const content = document.getElementById(`step-1-content`.replace('1', i));
+
+        if (content) content.classList.toggle('active', i === currentWizardStep);
+
+      }
+
+
+
+      if (currentWizardStep === 4 || currentWizardStep === 5) {
+
+        updateStep4Calculation();
+
+      }
+
+    }
+
+
+
+    function nextStep() {
+
+      goToStep(currentWizardStep + 1);
+
+    }
+
+
+
+    function prevStep() {
+
+      goToStep(currentWizardStep - 1);
+
+    }
+
+
+
+    function selectDemoResident() {
+
+      const card = document.getElementById('scanned-resident-card');
+
+      if (card) card.style.display = 'block';
+
+      showToast('Scanned: Maria Santos (RES-2024-001)', 'success');
+
+      setTimeout(() => { goToStep(2); }, 500);
+
+    }
+
+
+
+    // Complete Collector Details View, Restrict, and Restore
+
+    let currentViewingCollectorId = 'COL-2024-007';
+
+    const collectorDemoDirectory = {
+
+      'COL-2024-007': {
+
+        name: 'Rodel Aguila',
+
+        id: 'COL-2024-007',
+
+        barangay: 'Barangay San Isidro',
+
+        email: 'rodel.aguila@sanisidro.gov.ph',
+
+        phone: '0918 234 5678',
+
+        created: 'Jan 12, 2026',
+
+        status: 'active',
+
+        waste: '342.5 kg',
+
+        deposits: '84',
+
+        points: '11,240 pts'
+
+      },
+
+      'COL-2024-012': {
+
+        name: 'Eduardo Ramos',
+
+        id: 'COL-2024-012',
+
+        barangay: 'Barangay Pinyahan',
+
+        email: 'eduardo.ramos@pinyahan.gov.ph',
+
+        phone: '0922 456 7890',
+
+        created: 'Feb 3, 2026',
+
+        status: 'active',
+
+        waste: '280.0 kg',
+
+        deposits: '62',
+
+        points: '9,120 pts'
+
+      },
+
+      'COL-2024-019': {
+
+        name: 'Danilo Cruz',
+
+        id: 'COL-2024-019',
+
+        barangay: 'Barangay Ugong',
+
+        email: 'danilo.cruz@ugong.gov.ph',
+
+        phone: '0935 678 9012',
+
+        created: 'Mar 18, 2026',
+
+        status: 'restricted',
+
+        waste: '224.8 kg',
+
+        deposits: '48',
+
+        points: '8,090 pts'
+
+      }
+
+    };
+
+
+
+    function openCollectorDetails(colId) {
+
+      currentViewingCollectorId = colId || 'COL-2024-007';
+
+      const col = collectorDemoDirectory[currentViewingCollectorId] || collectorDemoDirectory['COL-2024-007'];
+
+
+
+      const elAvatar = document.getElementById('cd-avatar');
+
+      const elName = document.getElementById('cd-name');
+
+      const elId = document.getElementById('cd-id');
+
+      const elStatus = document.getElementById('cd-status');
+
+      const elBarangay = document.getElementById('cd-barangay');
+
+      const elEmail = document.getElementById('cd-email');
+
+      const elPhone = document.getElementById('cd-phone');
+
+      const elCreated = document.getElementById('cd-created');
+
+      const elWaste = document.getElementById('cd-total-waste');
+
+      const elDeposits = document.getElementById('cd-total-deposits');
+
+      const elPoints = document.getElementById('cd-total-points');
+
+      const btnRestrict = document.getElementById('btn-cd-restrict');
+
+      const btnRestore = document.getElementById('btn-cd-restore');
+
+
+
+      if (elAvatar) elAvatar.textContent = col.name.split(' ').map(n=>n[0]).join('');
+
+      if (elName) elName.textContent = col.name;
+
+      if (elId) elId.textContent = col.id;
+
+      if (elBarangay) elBarangay.textContent = col.barangay;
+
+      if (elEmail) elEmail.textContent = col.email;
+
+      if (elPhone) elPhone.textContent = col.phone;
+
+      if (elCreated) elCreated.textContent = col.created;
+
+      if (elWaste) elWaste.textContent = col.waste;
+
+      if (elDeposits) elDeposits.textContent = col.deposits;
+
+      if (elPoints) elPoints.textContent = col.points;
+
+
+
+      const isRestricted = col.status === 'restricted';
+
+      if (elStatus) {
+
+        elStatus.className = `badge ${isRestricted ? 'badge-restricted' : 'badge-active'}`;
+
+        elStatus.textContent = isRestricted ? 'Restricted Officer' : 'Active Officer';
+
+      }
+
+
+
+      if (btnRestrict) btnRestrict.style.display = isRestricted ? 'none' : 'block';
+
+      if (btnRestore) btnRestore.style.display = isRestricted ? 'block' : 'none';
+
+
+
+      // Populate sample history
+
+      const historyList = document.getElementById('cd-history-list');
+
+      if (historyList) {
+
+        historyList.innerHTML = `
+
+          <div class="tx-item">
+
+            <div class="tx-info">
+
+              <div class="tx-title">PET Plastic • 3.0 kg</div>
+
+              <div class="tx-subtitle">Nov 5, 2026 • Maria Santos</div>
+
+            </div>
+
+            <div class="tx-amount earned">+90 pts</div>
+
+          </div>
+
+          <div class="tx-item">
+
+            <div class="tx-info">
+
+              <div class="tx-title">Aluminum • 1.5 kg</div>
+
+              <div class="tx-subtitle">Nov 5, 2026 • Jose Reyes</div>
+
+            </div>
+
+            <div class="tx-amount earned">+90 pts</div>
+
+          </div>
+
+        `;
+
+      }
+
+
+
+      openModal('modal-collector-details');
+
+    }
+
+
+
+    function openRestrictCollector(id) {
+
+      closeModal('modal-collector-details');
+
+      const col = collectorDemoDirectory[id || currentViewingCollectorId];
+
+      const nameEl = document.getElementById('rc-collector-name');
+
+      if (nameEl && col) nameEl.textContent = col.name;
+
+      openModal('modal-restrict-collector');
+
+    }
+
+
+
+    function confirmRestrictCollector() {
+
+      const col = collectorDemoDirectory[currentViewingCollectorId];
+
+      if (col) col.status = 'restricted';
+
+      closeModal('modal-restrict-collector');
+
+      showToast(`Collector ${col ? col.name : ''} has been restricted.`, 'error');
+
+      openCollectorDetails(currentViewingCollectorId);
+
+    }
+
+
+
+    function openRestoreCollector(id) {
+
+      closeModal('modal-collector-details');
+
+      const col = collectorDemoDirectory[id || currentViewingCollectorId];
+
+      const nameEl = document.getElementById('rst-collector-name');
+
+      if (nameEl && col) nameEl.textContent = col.name;
+
+      openModal('modal-restore-collector');
+
+    }
+
+
+
+    function confirmRestoreCollector() {
+
+      const col = collectorDemoDirectory[currentViewingCollectorId];
+
+      if (col) col.status = 'active';
+
+      closeModal('modal-restore-collector');
+
+      showToast(`Collector ${col ? col.name : ''} authorization restored.`, 'success');
+
+      openCollectorDetails(currentViewingCollectorId);
+
+    }
+
+
+
+    // Fraud Review Handling
+
+    function openFraudReview(txId) {
+
+      const frId = document.getElementById('fr-txid');
+
+      if (frId) frId.textContent = txId || 'DEP006';
+
+      openModal('modal-fraud-review');
+
+    }
+
+
+
+    function finishFraudReview() {
+
+      const outcome = document.getElementById('fr-outcome').value;
+
+      closeModal('modal-fraud-review');
+
+      if (outcome === 'cleared') {
+
+        showToast('Audit recorded: Transaction marked legitimate and cleared.', 'success');
+
+      } else {
+
+        showToast('Irregularity recorded. Collector flagged for administrative review.', 'error');
+
+      }
+
+    }
+
+
+
+    function cancelFraudReview() {
+
+      closeModal('modal-fraud-review');
+
+    }
+
+
+
+    // Event Proposal Workflows
+
+    function openEventProposalForm() {
+
+      openModal('modal-event-proposal');
+
+    }
+
+
+
+    function submitEventProposal(e) {
+
+      if (e && e.preventDefault) e.preventDefault();
+
+      const title = document.getElementById('prop-title').value;
+
+      closeModal('modal-event-proposal');
+
+      showToast(`Proposal "${title}" submitted to LGU Admin!`, 'success');
+
+    }
+
+
+
+    function openEventProposalReview(propId) {
+
+      openModal('modal-event-proposal-review');
+
+    }
+
+
+
+    function approveEventProposal(propId) {
+
+      closeModal('modal-event-proposal-review');
+
+      showToast('Event proposal approved! EcoPoint budget allocated.', 'success');
+
+    }
+
+
+
+    function rejectEventProposal() {
+
+      const box = document.getElementById('epr-reject-box');
+
+      if (box && box.style.display === 'none') {
+
+        box.style.display = 'block';
+
+        showToast('Please specify the revision notes before confirming rejection.', 'info');
+
+      } else {
+
+        closeModal('modal-event-proposal-review');
+
+        showToast('Event proposal returned to collector officer with revision notes.', 'info');
+
+      }
+
+    }
+
+
+
+    // Profile Management Handlers
+
+    function toggleEditProfilePanel() {
+
+      const panel = document.getElementById('edit-profile-panel');
+
+      if (panel) {
+
+        panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+
+      }
+
+    }
+
+
+
+    function saveProfileEdit() {
+
+      const nameInput = document.getElementById('profile-edit-name');
+
+      const phoneInput = document.getElementById('profile-edit-phone');
+
+      if (nameInput) {
+
+        document.querySelectorAll('.profile-name').forEach(el => el.textContent = nameInput.value);
+
+      }
+
+      if (phoneInput) {
+
+        const phoneEl = document.getElementById('profile-display-phone');
+
+        if (phoneEl) phoneEl.textContent = phoneInput.value;
+
+      }
+
+      toggleEditProfilePanel();
+
+      showToast('Profile information successfully updated!', 'success');
+
+    }
+
+
+
+    function toggleNotifPreferences() {
+
+      showToast('Push notifications & SMS alerts are enabled', 'info');
+
+    }
+
+
+
+    function doLogout() {
+
+      showScreen('screen-welcome');
+
+      showToast('Successfully logged out', 'info');
+
+    }
+
+
+
+    function simulateMarkVoucherUsed() {
+
+      closeModal('modal-voucher-scan');
+
+      showToast('Voucher successfully scanned and redeemed at SM Supermarket!', 'success');
+
+      showResidentTab('rewards');
+
+      switchVoucherTab('used');
+
+    }
+
+
+
+    function markAllNotificationsRead() {
+
+      document.querySelectorAll('.notif-dot').forEach(d => {
+
+        d.classList.remove('unread');
+
+        d.classList.add('read');
+
+      });
+
+      document.querySelectorAll('.notif-item').forEach(i => i.classList.remove('unread'));
+
+      const badges = document.querySelectorAll('.notif-badge');
+
+      badges.forEach(b => b.style.display = 'none');
+
+      showToast('All notifications marked as read', 'info');
+
+    }
+
+
+
+    // Filter Collector Management Cards
+
+    function filterCollectors() {
+
+      const query = (document.getElementById('collector-search')?.value || '').toLowerCase();
+
+      const brgy = document.getElementById('collector-barangay-filter')?.value || 'all';
+
+      const status = document.getElementById('collector-status-filter')?.value || 'all';
+
+
+
+      document.querySelectorAll('#collectors-manage-list .collector-card').forEach(card => {
+
+        const text = card.textContent.toLowerCase();
+
+        const matchesQuery = !query || text.includes(query);
+
+        const matchesBrgy = (brgy === 'all') || text.includes(brgy.toLowerCase());
+
+        const matchesStatus = (status === 'all') || text.includes(status.toLowerCase());
+
+        card.style.display = (matchesQuery && matchesBrgy && matchesStatus) ? 'flex' : 'none';
+
+      });
+
+    }
+
+
+
+    // Collector Records Filter Helpers
+
+    function setRecordMaterialFilter(mat) {
+
+      if (typeof filterRecords === 'function') filterRecords();
+
+      showToast(`Filtering records for ${mat}`, 'info');
+
+    }
+
+
+
+    function setRecordDateFilter(dateFilter) {
+
+      if (typeof filterRecords === 'function') filterRecords();
+
+      showToast(`Showing collections for ${dateFilter}`, 'info');
+
+    }
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+

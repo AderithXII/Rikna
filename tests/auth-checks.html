@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rikna auth motion checks</title>
+  <style>
+    body { margin: 0; background: #E9EDEF; color: #183D38; font: 14px system-ui; }
+    header { padding: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    button, select { min-height: 44px; padding: 8px 12px; }
+    iframe { display: block; width: 390px; height: 844px; border: 0; margin: 0 auto; }
+    pre { white-space: pre-wrap; padding: 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <label>Viewport <select id="size"><option>320×568</option><option>375×667</option><option selected>390×844</option><option>430×932</option><option>320×480</option></select></label>
+    <button id="run" type="button">Run auth checks</button>
+    <button id="welcome" type="button">Welcome</button>
+    <button id="login" type="button">Login</button>
+    <button id="register" type="button">Create Account</button>
+  </header>
+  <iframe id="auth-preview" title="Rikna auth mobile preview" src="../index.html"></iframe>
+  <pre id="results" aria-live="polite">Ready. Checks use in-memory data without saving.</pre>
+  <script src="auth-checks.js"></script>
+</body>
+</html>
