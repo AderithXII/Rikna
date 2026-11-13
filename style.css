@@ -2972,8 +2972,8 @@ body {
 .qr-code-display {
   display: grid;
   grid-template-columns: repeat(21, 1fr);
-  width: min(240px, 64vw);
-  height: min(240px, 64vw);
+  width: min(350px, 64vw);
+  height: min(350px, 64vw);
   gap: 1px;
   background: var(--bg-card);
   padding: 10px;
