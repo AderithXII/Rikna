@@ -712,15 +712,11 @@ function renderPickupTab() {
         row.innerHTML = `<span class="pickup-date">${formatDate(p.date)}</span><span class="pickup-window">${esc(p.timeWindow)}</span><span class="pickup-materials">${esc(Array.isArray(p.materials) ? p.materials.join(', ') : (p.materials || ''))}</span>`;
       } else {
         row.innerHTML = `
-          <div class="pickup-history-main">
-            <span class="pickup-date">${formatDate(p.date)}</span>
-            <span class="pickup-material">${esc(p.material)}</span>
-            <span class="pickup-weight">${(Number(p.weight) || 0).toFixed(2)} kg</span>
-          </div>
-          <div class="pickup-history-side">
-            <span class="pickup-points">+${(p.points || 0).toLocaleString()} pts</span>
-            <span class="pickup-badge pickup-${p.verified ? 'verified' : 'unverified'}">${p.verified ? 'Verified' : 'Unverified'}</span>
-          </div>
+          <span class="pickup-date">${formatDate(p.date)}</span>
+          <span class="pickup-material">${esc(p.material)}</span>
+          <span class="pickup-weight">${(Number(p.weight) || 0).toFixed(2)} kg</span>
+          <span class="pickup-points">+${(p.points || 0).toLocaleString()} pts</span>
+          <span class="pickup-badge pickup-${p.verified ? 'verified' : 'unverified'}">${p.verified ? 'Verified' : 'Unverified'}</span>
         `;
       }
       return row;
@@ -754,8 +750,15 @@ function openPickupDetail(pickupId) {
   setText('pickup-detail-status', p.status);
   const photo = el('pickup-detail-photo');
   if (photo) {
-    if (p.photo) { photo.src = p.photo; photo.style.display = 'block'; }
-    else { photo.style.display = 'none'; }
+    photo.innerHTML = '';
+    if (p.photo) {
+      const img = document.createElement('img');
+      img.src = p.photo;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:var(--radius-md);';
+      photo.appendChild(img);
+    } else {
+      photo.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.6" style="width:28px;height:28px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="12" cy="10" r="3"></circle><polyline points="7 18 12 13 17 18"></polyline></svg>';
+    }
   }
   openModal('modal-pickup-detail');
 }
