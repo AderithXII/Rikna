@@ -445,24 +445,16 @@
 
 
 
-        <section class="home-impact" aria-labelledby="home-impact-title">
+        <!-- Generate Pickup Code -->
+        <section class="home-pickup-qr" aria-labelledby="pickup-qr-title">
           <div class="home-section-heading">
-            <h2 id="home-impact-title">Lifetime Contributions</h2>
-            <span class="home-eyebrow">ALL TIME</span>
+            <h2 id="pickup-qr-title">Generate Pickup Code</h2>
+            <span class="home-eyebrow">FOR COLLECTOR SCAN</span>
           </div>
-          <div class="home-impact-values">
-            <div class="home-impact-main">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3h8v4l3 4v10H5V11l3-4V3Zm0 4h8M5 13h14M5 17h14"/></svg>
-              <strong id="resident-kg-display">18.5 kg</strong>
-              <span>Materials recycled</span>
-            </div>
-            <div class="home-impact-secondary">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 0v10l9 4 9-4V7M12 11v10m-5-4 2 2 4-4"/></svg>
-              <strong id="resident-deposits-display">12</strong>
-              <span>Recycling deposits</span>
-            </div>
+          <div class="pickup-qr-card">
+            <div id="pickup-qr-display" role="img" aria-label="Pickup QR code"></div>
+            <p class="pickup-qr-hint">Show to collector</p>
           </div>
-          <p class="home-impact-note">Your recorded contributions to a cleaner barangay.</p>
         </section>
 
         <!-- Event Passes slot (only rendered when the resident registered for events) -->

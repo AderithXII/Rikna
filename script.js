@@ -1188,6 +1188,18 @@ function renderQRScreen() {
   if (display) display.setAttribute('aria-label', `Resident QR code for ${user.name}, resident ID ${user.id}`);
 }
 
+// Resident pickup code: a per-render QR whose seed ties it to the resident,
+// shown on Home so a collector can scan it at collection.
+function generatePickupQr() {
+  const user = AppState.currentUser || AppState.accounts[0];
+  const seed = `PICKUP-${user.id}-${Date.now()}`;
+  const display = el('pickup-qr-display');
+  if (!display) return;
+  const cells = generateQRPattern(seed);
+  display.innerHTML = cells.map(c => `<div class="qr-cell ${c}"></div>`).join('');
+  display.setAttribute('aria-label', `Pickup QR code for ${user.name}`);
+}
+
 function currentResidentUser() {
   return AppState.currentUser || AppState.accounts[0];
 }
@@ -1334,6 +1346,7 @@ function updateResidentHomeUI() {
   renderHomeRecentTransactions();
   renderHomeActivities();
   renderEventPasses();
+  generatePickupQr();
 }
 
 function renderHomeRecentTransactions() {
