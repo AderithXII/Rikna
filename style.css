@@ -3057,6 +3057,20 @@ body {
 .pickup-history-side .pickup-photo-img { width: 32px; height: 32px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-light); }
 .pickup-history-side .pickup-photo-placeholder { color: var(--text-muted); font-size: 10px; }
 
+/* Placeholder photo slot */
+.pickup-photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-base);
+  background: var(--bg-input);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 /* Pickup panel toggle */
 .pickup-panel { display: none; }
 .pickup-panel.active { display: block; }

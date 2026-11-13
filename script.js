@@ -719,8 +719,6 @@ function renderPickupTab() {
           </div>
           <div class="pickup-history-side">
             <span class="pickup-points">+${(p.points || 0).toLocaleString()} pts</span>
-            <span class="pickup-collector">${esc(p.collector)}</span>
-            ${p.photo ? '<img class="pickup-photo-img" src="' + esc(p.photo) + '" alt="Pickup photo">' : '<span class="pickup-photo-placeholder">No photo</span>'}
             <span class="pickup-badge pickup-${p.verified ? 'verified' : 'unverified'}">${p.verified ? 'Verified' : 'Unverified'}</span>
           </div>
         `;
