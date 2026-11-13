@@ -53,7 +53,6 @@ const INITIAL_STATE = {
     { id: 'RWD002', name: 'Jollibee ₱30 Discount', merchant: 'Jollibee', points: 80, category: 'dining', available: true, qty: 15, description: 'Enjoy ₱30 off your favorite meals at any Jollibee branch.' },
     { id: 'RWD003', name: 'National Bookstore 10% Off', merchant: 'National Bookstore', points: 150, category: 'essentials', available: true, qty: 10, description: '10% discount on books and school essentials at National Bookstore.' },
     { id: 'RWD004', name: 'Mercury Drug ₱100 Voucher', merchant: 'Mercury Drug', points: 200, category: 'essentials', available: true, qty: 8, description: '₱100 medicine and wellness voucher redeemable at Mercury Drug.' },
-    { id: 'RWD005', name: 'Grab ₱50 Ride Credit', merchant: 'Grab', points: 120, category: 'transport', available: true, qty: 25, description: '₱50 Grab ride credit automatically added to your Grab wallet.' },
     { id: 'RWD006', name: '7-Eleven ₱20 Credit', merchant: '7-Eleven', points: 50, category: 'grocery', available: true, qty: 50, description: '₱20 CLiQQ wallet credit redeemable at all 7-Eleven stores.' }
   ],
   collectionRecords: [
@@ -1879,8 +1878,7 @@ function openPhotoPreview(txId) {
 const REWARD_CATEGORY_LABELS = Object.freeze({
   grocery: 'Grocery',
   dining: 'Dining',
-  essentials: 'Essentials',
-  transport: 'Transport'
+  essentials: 'Essentials'
 });
 
 function rewardInitials(merchant) {
