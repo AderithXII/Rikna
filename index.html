@@ -561,69 +561,105 @@
 
 
 
-      <!-- =====================================================================
+            <!-- =====================================================================
 
-           5. SCREEN: RESIDENT WALLET
+           5. SCREEN: RESIDENT TRASH PICKUP
 
            ===================================================================== -->
 
-      <div class="screen" id="screen-resident-wallet">
+      <div class="screen" id="screen-resident-pickup">
 
         <div class="page-title-block">
 
-          <h1>EcoWallet</h1>
+          <h1>Trash Pickup</h1>
 
         </div>
 
+        <!-- Tab segments: Scheduled | History -->
 
+        <div class="tab-bar pickup-tabs" id="pickup-tab-bar" role="group" aria-label="Trash pickup tabs">
 
-        <section class="wallet-hero" aria-labelledby="wallet-balance-label">
-          <h2 id="wallet-balance-label">Available points</h2>
-          <svg class="wallet-eco-mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="32"/>
-              <path d="M38 62c-7-22 6-33 28-31 2 23-8 36-28 31Zm0 0 20-22M34 69l10-17M15 35l-4 14 14-4m60 20 4-14-14 4"/>
-            </g>
-          </svg>
-          <p class="wallet-balance"><strong id="wallet-available">500</strong><span>PTS</span></p>
-          <button class="wallet-redeem" type="button" onclick="showResidentTab('rewards')">Explore rewards <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
-          <dl class="wallet-supporting">
-            <div><dt>Pending verification</dt><dd><strong id="wallet-pending">0</strong> <span>pts</span></dd></div>
-            <div><dt>Lifetime earned</dt><dd><strong id="wallet-lifetime">1,240</strong> <span>pts</span></dd></div>
-          </dl>
-        </section>
+          <button class="tab-btn active" id="pickup-tab-scheduled" type="button" aria-pressed="true" aria-controls="pickup-scheduled-list">Scheduled</button>
 
-        <aside class="wallet-insight" aria-label="Monthly recycling points insight">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 20V10m7 10V4m7 16v-7M3 20h18"/></svg>
-          <div><strong id="wallet-insight-title">Your recycling, rewarded</strong><p id="wallet-insight-detail">Earnings from your recorded activity.</p></div>
-        </aside>
-
-
-
-        <!-- Wallet Tab Bar -->
-
-        <div class="tab-bar wallet-filters" id="wallet-tab-bar" role="group" aria-label="Filter points activity">
-
-          <button class="tab-btn active" id="wallet-tab-all" type="button" aria-pressed="true" aria-controls="wallet-tx-list" onclick="switchWalletTab('all')">All</button>
-
-          <button class="tab-btn" id="wallet-tab-earned" type="button" aria-pressed="false" aria-controls="wallet-tx-list" onclick="switchWalletTab('earned')">Earned</button>
-
-          <button class="tab-btn" id="wallet-tab-spent" type="button" aria-pressed="false" aria-controls="wallet-tx-list" onclick="switchWalletTab('spent')">Spent</button>
+          <button class="tab-btn" id="pickup-tab-history" type="button" aria-pressed="false" aria-controls="pickup-history-list">History</button>
 
         </div>
 
+        <!-- Scheduled pickups (empty state) -->
 
+        <div id="pickup-scheduled" class="pickup-panel active">
+          <div class="empty-state">
+            <p>No scheduled pickups.</p>
+          </div>
+        </div>
 
-        <!-- Transaction List -->
+        <!-- Pickup history (empty state) -->
 
-        <div class="wallet-feed-heading"><h2>Points activity</h2><span id="wallet-tx-count" role="status" aria-live="polite" aria-atomic="true"></span></div>
-        <div class="tx-list" id="wallet-tx-list"></div>
+        <div id="pickup-history" class="pickup-panel">
+          <div class="empty-state">
+            <p>No pickup history yet.</p>
+          </div>
+        </div>
+
+        <!-- Material Exchange Rates -->
+
+        <div class="section-header">
+
+          <span class="section-title">Material Exchange Rates</span>
+
+        </div>
+
+        <div style="padding: 0 20px 24px;">
+
+          <div class="card" style="padding: 12px 16px;">
+
+            <div class="deposit-row">
+
+              <span class="label">PET Plastic Bottles</span>
+
+              <span class="value text-forest">30 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Paper & Cardboard</span>
+
+              <span class="value text-forest">10 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Aluminum Cans</span>
+
+              <span class="value text-forest">60 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row">
+
+              <span class="label">Tin & Steel Cans</span>
+
+              <span class="value text-forest">12 pts / kg</span>
+
+            </div>
+
+            <div class="deposit-row" style="border-bottom: none;">
+
+              <span class="label">Glass Bottles & Jars</span>
+
+              <span class="value text-forest">5 pts / kg</span>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
-
-
-      <!-- =====================================================================
+<!-- =====================================================================
 
            6. SCREEN: RESIDENT QR (Dedicated QR Screen)
 
@@ -2420,11 +2456,11 @@
 
         </button>
 
-        <button class="nav-item" id="navbtn-resident-wallet" onclick="showResidentTab('wallet')">
+        <button class="nav-item" id="navbtn-resident-pickup" onclick="showResidentTab('pickup')">
 
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
 
-          <span>EcoWallet</span>
+          <span>Trash Pickup</span>
 
         </button>
 
