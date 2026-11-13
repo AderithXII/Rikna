@@ -3033,8 +3033,8 @@ body {
 }
 .pickup-row.scheduled { cursor: default; }
 .pickup-row.scheduled:hover { border-color: var(--border-light); }
-.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 90px; white-space: nowrap; }
-.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; min-width: 110px; }
+.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 70px; white-space: nowrap; }
+.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; min-width: 0; }
 .pickup-materials { color: var(--text-gray); font-size: var(--text-sm); flex: 1; min-width: 0; }
 .pickup-material { font-weight: 600; color: var(--color-forest); white-space: nowrap; }
 .pickup-weight { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
