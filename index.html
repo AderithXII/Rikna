@@ -446,9 +446,11 @@
 
 
         <!-- Generate Pickup Code trigger (opens modal) -->
-        <button class="btn-primary" type="button" onclick="openPickupQrModal()" style="margin: 0 20px;">
-          Generate Pickup Code
-        </button>
+        <div class="card home-pickup-card" style="margin: 12px 20px; padding: 0;">
+          <button class="btn-primary" type="button" onclick="openPickupQrModal()" style="width:100%; border:none; border-radius: var(--radius-lg); min-height:56px; font-size:17px; font-weight:700;">
+            Generate Pickup Code
+          </button>
+        </div>
 
         <!-- Event Passes slot (only rendered when the resident registered for events) -->
         <div id="event-passes-slot"></div>
