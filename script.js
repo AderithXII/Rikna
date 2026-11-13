@@ -711,7 +711,19 @@ function renderPickupTab() {
       if (seg.status === 'scheduled') {
         row.innerHTML = `<span class="pickup-date">${formatDate(p.date)}</span><span class="pickup-window">${esc(p.timeWindow)}</span><span class="pickup-materials">${esc(Array.isArray(p.materials) ? p.materials.join(', ') : (p.materials || ''))}</span>`;
       } else {
-        row.innerHTML = `<span class="pickup-date">${formatDate(p.date)}</span><span class="pickup-material">${esc(p.material)}</span><span class="pickup-weight">${(Number(p.weight) || 0).toFixed(2)} kg</span><span class="pickup-points">+${(p.points || 0).toLocaleString()} pts</span><span class="pickup-collector">${esc(p.collector)}</span><span class="pickup-photo">${p.photo ? '<img class="pickup-photo-img" src="' + esc(p.photo) + '" alt="Pickup photo">' : '<span class="pickup-photo-placeholder">No photo</span>'}</span><span class="pickup-badge pickup-${p.verified ? 'verified' : 'unverified'}">${p.verified ? 'Verified' : 'Unverified'}</span>`;
+        row.innerHTML = `
+          <div class="pickup-history-main">
+            <span class="pickup-date">${formatDate(p.date)}</span>
+            <span class="pickup-material">${esc(p.material)}</span>
+            <span class="pickup-weight">${(Number(p.weight) || 0).toFixed(2)} kg</span>
+          </div>
+          <div class="pickup-history-side">
+            <span class="pickup-points">+${(p.points || 0).toLocaleString()} pts</span>
+            <span class="pickup-collector">${esc(p.collector)}</span>
+            ${p.photo ? '<img class="pickup-photo-img" src="' + esc(p.photo) + '" alt="Pickup photo">' : '<span class="pickup-photo-placeholder">No photo</span>'}
+            <span class="pickup-badge pickup-${p.verified ? 'verified' : 'unverified'}">${p.verified ? 'Verified' : 'Unverified'}</span>
+          </div>
+        `;
       }
       return row;
     }));

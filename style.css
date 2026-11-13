@@ -3018,8 +3018,9 @@ body {
 }
 .pickup-row {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   align-items: center;
-  justify-content: space-between;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
@@ -3031,8 +3032,8 @@ body {
 }
 .pickup-row.scheduled { cursor: default; }
 .pickup-row.scheduled:hover { border-color: var(--border-light); }
-.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 105px; }
-.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
+.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 95px; }
+.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; min-width: 105px; }
 .pickup-materials { color: var(--text-gray); font-size: var(--text-sm); }
 .pickup-material { font-weight: 600; color: var(--color-forest); }
 .pickup-weight { color: var(--text-muted); font-size: var(--text-sm); }
@@ -3044,6 +3045,17 @@ body {
 .pickup-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.4px; }
 .pickup-badge.verified { background: var(--status-success-bg); color: var(--status-success); }
 .pickup-badge.unverified { background: var(--status-pending-bg); color: var(--status-pending); }
+
+/* History row layout */
+.pickup-history-main { flex: 1; min-width: 150px; }
+.pickup-history-main .pickup-date { color: var(--text-gray); font-weight: 600; margin-right: 10px; white-space: nowrap; }
+.pickup-history-main .pickup-material { font-weight: 700; color: var(--color-forest); margin-right: 8px; white-space: nowrap; }
+.pickup-history-main .pickup-weight { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
+.pickup-history-side { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-width: 170px; justify-content: flex-end; }
+.pickup-history-side .pickup-points { font-weight: 800; color: var(--color-forest); white-space: nowrap; }
+.pickup-history-side .pickup-collector { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
+.pickup-history-side .pickup-photo-img { width: 32px; height: 32px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-light); }
+.pickup-history-side .pickup-photo-placeholder { color: var(--text-muted); font-size: 10px; }
 
 /* Pickup panel toggle */
 .pickup-panel { display: none; }
