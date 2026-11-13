@@ -1264,16 +1264,25 @@ function currentResidentUser() {
 }
 
 async function copyTextWithFallback(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return true;
+  // Modern clipboard API (works on secure contexts: https, localhost, file:// in most browsers)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      // fall through to execCommand fallback
+    }
   }
+  // execCommand fallback for older / insecure contexts
   const area = document.createElement('textarea');
   area.value = text;
   area.setAttribute('readonly', '');
   area.style.position = 'fixed';
   area.style.opacity = '0';
+  area.style.left = '-9999px';
+  area.style.top = '0';
   document.body.appendChild(area);
+  area.focus();
   area.select();
   let copied = false;
   try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
