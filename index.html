@@ -20,9 +20,6 @@
 
   <link rel="stylesheet" href="style.css?v=3">
 
-  <!-- Leaflet + OpenStreetMap tiles for the collection centers map (CDN; app degrades to the list if offline) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
 </head>
 
 <body>
@@ -501,29 +498,6 @@
           <!-- Filled from approved AppState.activities when Home is rendered. -->
         </div>
 
-
-
-        <!-- Collection Centers Near You -->
-
-        <div class="section-header" style="margin-top: 6px;">
-
-          <span class="section-title">Collection Centers Near You</span>
-
-        </div>
-
-        <div style="padding: 0 20px 20px;">
-
-          <div class="card cc-nearby">
-
-            <input type="search" id="cc-search" class="cc-search-input" placeholder="Search centers or barangays" autocomplete="off" oninput="renderCollectionCenters()">
-
-            <div id="cc-map" class="cc-map" aria-label="Map of nearby collection centers"></div>
-
-            <div id="cc-list" class="cc-list"></div>
-
-          </div>
-
-        </div>
 
 
 
@@ -2699,44 +2673,6 @@
 
 
 
-      <!-- 3. modal-collection-center -->
-
-      <div class="modal-overlay" id="modal-collection-center" onclick="closeModalOutside(event)">
-
-        <div class="modal-content">
-
-          <div class="modal-header">
-
-            <h3 id="cc-detail-name">Collection Center</h3>
-
-            <button class="modal-close" onclick="closeModal('modal-collection-center')">✕</button>
-
-          </div>
-
-          <div class="modal-body">
-
-            <div class="card" style="margin-bottom: 16px;">
-
-              <div style="font-size: 13px; color: #6B7280;" id="cc-detail-address"></div>
-
-              <div style="font-size: 13px; color: var(--color-forest); font-weight: 600; margin-top: 6px;" id="cc-detail-hours"></div>
-
-              <div style="font-size: 13px; color: #6B7280; margin-top: 2px;" id="cc-detail-contact"></div>
-
-            </div>
-
-            <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Accepted Materials</h4>
-
-            <div id="cc-detail-materials" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;"></div>
-
-            <button class="btn-primary" onclick="closeModal('modal-collection-center')">Done</button>
-
-          </div>
-
-        </div>
-
-      </div>
-
 
 
       <!-- 4. modal-event-detail -->
@@ -4219,8 +4155,6 @@
 
 
   <!-- Load Main JavaScript -->
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script src="script.js?v=3"></script>
 
