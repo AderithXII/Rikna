@@ -64,13 +64,6 @@ const INITIAL_STATE = {
     { id: 'COL-2024-008', name: 'Ligaya Santos', barangay: 'Barangay Pengue Ruyu', email: 'ligaya.santos@brgy.gov.ph', contact: '09191234567', phone: '09191234567', status: 'active', registeredDate: '2024-02-20', totalWaste: 98.2, totalDeposits: 36, totalPoints: 2450, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
     { id: 'COL-2024-009', name: 'Ernesto Flores', barangay: 'Barangay Caritan Norte', email: 'ernesto.flores@brgy.gov.ph', contact: '09301234567', phone: '09301234567', status: 'restricted', registeredDate: '2024-03-05', totalWaste: 56.7, totalDeposits: 22, totalPoints: 1120, restrictionReason: 'Suspicious deposit activity under review', restrictionDate: '2026-10-28', restrictionHistory: [{ date: '2026-10-28', reason: 'Suspicious deposit activity under review', admin: 'Engr. Josefina Reyes' }] }
   ],
-  collectionCenters: [
-    { id: 'CC001', name: 'San Gabriel Eco Center', address: '21 Bonifacio St, Barangay San Gabriel, Tuguegarao City', hours: 'Mon–Sat 7:00 AM – 5:00 PM', contact: '(078) 392-1145', materials: ['PET Plastic', 'Paper/Cardboard', 'Aluminum', 'Tin/Steel', 'Glass'], lat: 17.6171, lng: 121.7317 },
-    { id: 'CC002', name: 'Pengue Ruyu Drop-off Hub', address: '88 Rizal St, Barangay Pengue Ruyu, Tuguegarao City', hours: 'Mon–Fri 8:00 AM – 4:00 PM', contact: '(078) 392-2378', materials: ['PET Plastic', 'Paper/Cardboard', 'Glass'], lat: 17.6103, lng: 121.7209 },
-    { id: 'CC003', name: 'Caritan Sur MRF Station', address: '12 Mabini St, Barangay Caritan Sur, Tuguegarao City', hours: 'Daily 6:00 AM – 6:00 PM', contact: '(078) 392-4410', materials: ['PET Plastic', 'Aluminum', 'Tin/Steel'], lat: 17.6222, lng: 121.7244 },
-    { id: 'CC004', name: 'Buntun Riverside Recycling Point', address: 'Riverside Rd, Barangay Buntun, Tuguegarao City', hours: 'Sat–Sun 7:00 AM – 3:00 PM', contact: '(078) 392-5521', materials: ['Paper/Cardboard', 'Glass'], lat: 17.6416, lng: 121.7225 },
-    { id: 'CC005', name: 'Cataggaman Collection Hub', address: '3 Dela Cruz St, Barangay Cataggaman Viejo, Tuguegarao City', hours: 'Mon–Sat 8:00 AM – 5:00 PM', contact: '(078) 392-6634', materials: ['PET Plastic', 'Paper/Cardboard', 'Aluminum', 'Glass'], lat: 17.6308, lng: 121.7369 }
-  ],
   activities: [
     { id: 'ACT001', name: 'Barangay Clean-Up Drive', type: 'cleanup', date: '2026-11-15', location: 'Barangay San Gabriel Plaza', description: 'Community cleanup of main streets and waterways. Bring gloves and eco bags.', participationPts: 50, status: 'approved', proposedBy: null },
     { id: 'ACT002', name: 'Tree Planting Initiative', type: 'planting', date: '2026-11-22', location: 'Barangay San Gabriel Park', description: 'Plant 200 native trees in our barangay park. Seedlings provided.', participationPts: 75, status: 'approved', proposedBy: null }
@@ -142,10 +135,7 @@ function loadState() {
     if (s) {
       const parsed = JSON.parse(s);
       AppState = Object.assign({}, INITIAL_STATE, parsed);
-      // Defensive: saved centers missing coordinates would shadow the defaults
-      if (!Array.isArray(AppState.collectionCenters) || !AppState.collectionCenters.every(c => typeof c.lat === 'number' && typeof c.lng === 'number')) {
-        AppState.collectionCenters = JSON.parse(JSON.stringify(INITIAL_STATE.collectionCenters));
-      }
+
     }
   } catch(e) {
     console.warn('LocalStorage load error, using default state:', e);
@@ -1284,7 +1274,6 @@ function updateResidentUI() {
   renderProfileScreen();
   renderHomeActivities();
   renderEventPasses();
-  renderCollectionCenters();
 }
 
 function updateResidentHomeUI() {
@@ -1299,7 +1288,6 @@ function updateResidentHomeUI() {
   renderHomeRecentTransactions();
   renderHomeActivities();
   renderEventPasses();
-  renderCollectionCenters();
 }
 
 function renderHomeRecentTransactions() {
@@ -1518,83 +1506,6 @@ function buildBarcodeSvg(seed) {
   const b = buildBarcodeSvg('SEED');
   console.assert(a.isEqualNode(b), 'barcode generator must be deterministic');
 })();
-
-// --- COLLECTION CENTERS NEAR YOU (Leaflet + OpenStreetMap) ---
-let ccMap = null;
-let ccMarkers = [];
-
-function renderCollectionCenters() {
-  const list = el('cc-list');
-  if (!list) return;
-  const q = (el('cc-search')?.value || '').trim().toLowerCase();
-  const centers = AppState.collectionCenters.filter(c =>
-    !q || c.name.toLowerCase().includes(q) || c.address.toLowerCase().includes(q));
-  if (!centers.length) {
-    const p = document.createElement('p');
-    p.className = 'home-empty';
-    p.textContent = 'No collection centers match your search.';
-    list.replaceChildren(p);
-  } else {
-    list.replaceChildren(...centers.map(c => {
-      const row = document.createElement('button');
-      row.type = 'button';
-      row.className = 'cc-list-item';
-      row.innerHTML = `<span class="cc-list-copy"><strong></strong><span class="cc-list-sub"></span><span class="cc-list-hours"></span></span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>`;
-      row.querySelector('.cc-list-copy > strong').textContent = c.name;
-      row.querySelector('.cc-list-sub').textContent = c.address;
-      row.querySelector('.cc-list-hours').textContent = c.hours;
-      row.addEventListener('click', () => openCollectionCenter(c.id));
-      return row;
-    }));
-  }
-  syncCollectionMap(centers, q);
-}
-
-function syncCollectionMap(centers, q) {
-  const mapEl = el('cc-map');
-  if (!mapEl) return;
-  if (typeof L === 'undefined') { mapEl.style.display = 'none'; return; } // offline: list still works
-  const locatable = AppState.collectionCenters.filter(c => typeof c.lat === 'number' && typeof c.lng === 'number');
-  if (!locatable.length) { mapEl.style.display = 'none'; return; } // no coordinates: list still works
-  if (!ccMap) {
-    ccMap = L.map('cc-map', { scrollWheelZoom: false }).setView([17.6133, 121.7269], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(ccMap);
-    ccMarkers = locatable.map(c => {
-      const m = L.marker([c.lat, c.lng], {
-        icon: L.divIcon({ className: 'cc-pin', html: '<span class="cc-pin-dot"></span>', iconSize: [20, 20], iconAnchor: [10, 10] })
-      }).addTo(ccMap);
-      m._ccId = c.id;
-      m.on('click', () => openCollectionCenter(c.id));
-      return m;
-    });
-  }
-  // Dim pins that don't match the current search
-  ccMarkers.forEach(m => m.setOpacity(!q || centers.some(c => c.id === m._ccId) ? 1 : 0.2));
-  ccMap.invalidateSize(); // the tab may have been hidden when this first rendered
-}
-
-function openCollectionCenter(id) {
-  const c = AppState.collectionCenters.find(x => x.id === id) || AppState.collectionCenters[0];
-  if (!c) return;
-  setText('cc-detail-name', c.name);
-  setText('cc-detail-address', c.address);
-  setText('cc-detail-hours', 'Hours: ' + c.hours);
-  setText('cc-detail-contact', 'Hotline: ' + c.contact);
-  const mats = el('cc-detail-materials');
-  if (mats) {
-    mats.replaceChildren(...c.materials.map(m => {
-      const chip = document.createElement('span');
-      chip.className = 'cc-chip';
-      chip.textContent = m;
-      return chip;
-    }));
-  }
-  openModal('modal-collection-center');
-}
 
 function renderProfileScreen() {
   const user = AppState.currentUser || AppState.accounts[0];
