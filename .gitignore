@@ -3,11 +3,16 @@ node_modules/
 
 # AI assistant / agent tooling
 AGENTS.md
+agent.md
 graphify-out/
 .agents/
+.agent/
+.claude/
 .opencode/
 .codex/
 .21st/
+agent/
+agents/
 opencode.json
 skills-lock.json
 
