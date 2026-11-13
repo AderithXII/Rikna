@@ -1813,6 +1813,16 @@ function updateWalletSummary() {
   setText('wallet-insight-detail', `From ${earned.length} verified entr${earned.length === 1 ? 'y' : 'ies'} in your recorded history.`);
 }
 
+function openEcoWalletModal(tab) {
+  if (!['balance', 'transactions', 'pending'].includes(tab)) tab = 'balance';
+  openModal('modal-ecowallet');
+  // Open on the requested pane: Balance | Transactions | Pending
+  const btn = el('modal-ecowallet')?.querySelector('.tab-btn[onclick*="' + tab + '"]');
+  if (btn && typeof ecwSwitchTab === 'function') ecwSwitchTab(btn, tab);
+  renderTransactions('all');
+  updateWalletSummary();
+}
+
 function openTransactionDetail(txId) {
   const tx = AppState.resident.transactions.find(t => t.id === txId)
           || AppState.collectionRecords.find(t => t.id === txId);
