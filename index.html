@@ -445,14 +445,9 @@
 
 
 
-        <!-- Generate Pickup Code Card -->
-        <button class="card pickup-qr-card" type="button" onclick="generatePickupQr()" aria-label="Generate pickup code for collector scan" tabindex="0">
-          <div class="pickup-qr-header">
-            <h2 id="pickup-qr-title">Generate Pickup Code</h2>
-            <span class="home-eyebrow">FOR COLLECTOR SCAN</span>
-          </div>
-          <div id="pickup-qr-display" role="img" aria-label="Pickup QR code"></div>
-          <p class="pickup-qr-hint">Show to collector</p>
+        <!-- Generate Pickup Code trigger (opens modal) -->
+        <button class="btn-primary" type="button" onclick="openPickupQrModal()" style="margin: 0 20px;">
+          Generate Pickup Code
         </button>
 
         <!-- Event Passes slot (only rendered when the resident registered for events) -->
@@ -4293,6 +4288,27 @@
               <p style="font-size: 13px; color: var(--text-gray); margin-top: 6px;">Pending points become available once a collector verifies your deposit.</p>
             </div>
 
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- modal-pickup-qr (Generate Pickup Code) -->
+      <div class="modal-overlay" id="modal-pickup-qr" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h3>Generate Pickup Code</h3>
+            <button class="modal-close" onclick="closeModal('modal-pickup-qr')">✕</button>
+          </div>
+
+          <div class="modal-body" style="text-align:center; padding: 24px 20px;">
+            <p style="font-size: 12px; color: #6B7280; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;">For collector scan</p>
+            <div id="pickup-qr-display" role="img" aria-label="Pickup QR code"></div>
+            <p class="pickup-qr-hint" style="margin-top: 14px;">Show to collector</p>
+            <button class="btn-primary" type="button" onclick="openPickupQrModal()" style="margin-top: 20px; min-height:44px;">Regenerate Code</button>
           </div>
 
         </div>

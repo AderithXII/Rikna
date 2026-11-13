@@ -1199,6 +1199,11 @@ function generatePickupQr() {
   display.setAttribute('aria-label', `Pickup QR code for ${user.name}`);
 }
 
+function openPickupQrModal() {
+  openModal('modal-pickup-qr');
+  generatePickupQr();
+}
+
 function currentResidentUser() {
   return AppState.currentUser || AppState.accounts[0];
 }
@@ -1345,7 +1350,6 @@ function updateResidentHomeUI() {
   renderHomeRecentTransactions();
   renderHomeActivities();
   renderEventPasses();
-  generatePickupQr();
 }
 
 function renderHomeRecentTransactions() {
