@@ -29,6 +29,11 @@ const INITIAL_STATE = {
     vouchers: [
       { id: 'VCH001', name: 'SM Supermarket ₱50 Voucher', code: 'SM-RKN-5839', status: 'used', pointsSpent: 100, expiry: '2026-12-31', merchant: 'SM Supermarket', redeemedDate: '2026-10-30' },
       { id: 'VCH002', name: 'Jollibee ₱30 Discount', code: 'JB-RKN-2947', status: 'used', pointsSpent: 80, expiry: '2026-12-31', merchant: 'Jollibee', redeemedDate: '2026-10-20' }
+    ],
+    pickups: [
+      { id: 'PCK001', status: 'scheduled', date: '2026-11-20', timeWindow: '8:00 AM – 12:00 PM', materials: ['PET Plastic Bottles', 'Paper/Cardboard'] },
+      { id: 'PCK002', status: 'completed', date: '2026-11-10', material: 'Aluminum Cans', weight: 2.5, points: 150, collector: 'Rodel Aguila', photo: null, verified: true },
+      { id: 'PCK003', status: 'completed', date: '2026-10-28', material: 'PET Plastic Bottles', weight: 1.8, points: 54, collector: 'Rodel Aguila', photo: null, verified: true }
     ]
   },
   collector: {
@@ -633,7 +638,7 @@ function updateNavActive(navId, btnId) {
 // Tab order defines the swipe sequence: swiping left reveals the next tab,
 // swiping right the previous one. Notifications sits rightmost (a push).
 const TAB_ORDER = {
-  resident: ['home', 'wallet', 'qr', 'rewards', 'profile', 'notifications'],
+  resident: ['home', 'pickup', 'qr', 'rewards', 'profile', 'notifications'],
   collector: ['home', 'scan', 'records', 'profile', 'notifications'],
   admin: ['home', 'manage', 'reports', 'profile', 'notifications'],
 };
@@ -652,6 +657,7 @@ function tabDirection(role, tab) {
 function showResidentTab(tab) {
   const map = {
     home: 'screen-resident-home',
+    pickup: 'screen-resident-pickup',
     wallet: 'screen-resident-wallet',
     qr: 'screen-resident-qr',
     rewards: 'screen-resident-rewards',
@@ -662,6 +668,45 @@ function showResidentTab(tab) {
   showScreen(map[tab], tabDirection('resident', tab));
   updateNavActive('nav-resident', 'navbtn-resident-' + tab);
   refreshTab('resident', tab);
+}
+
+// --- RESIDENT TRASH PICKUP TAB ---
+// Renders the Scheduled (status === 'scheduled') and History (status ===
+// 'completed') pickup segments, each with its own empty state, plus the
+// static Material Exchange Rates list rendered in index.html.
+function renderPickupTab() {
+  const pickups = Array.isArray(AppState.resident.pickups) ? AppState.resident.pickups : [];
+  const segments = [
+    { panel: 'pickup-scheduled', list: 'pickup-scheduled-list', status: 'scheduled', order: 'asc',
+      empty: ['No scheduled pickups', 'Your upcoming collections will appear here.'] },
+    { panel: 'pickup-history', list: 'pickup-history-list', status: 'completed', order: 'desc',
+      empty: ['No pickup history yet', 'Completed collections will appear here.'] }
+  ];
+  segments.forEach(seg => {
+    const panel = el(seg.panel);
+    if (!panel) return;
+    const items = pickups.filter(p => p.status === seg.status)
+      .sort((a, b) => (seg.order === 'asc' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date)));
+    const list = document.createElement('div');
+    list.id = seg.list;
+    list.className = 'pickup-list';
+    if (!items.length) {
+      list.append(buildEmptyState(seg.empty[0], seg.empty[1]));
+      panel.replaceChildren(list);
+      return;
+    }
+    list.replaceChildren(...items.map(p => {
+      const row = document.createElement('div');
+      row.className = 'pickup-row';
+      if (seg.status === 'scheduled') {
+        row.innerHTML = `<span class="pickup-date">${formatDate(p.date)}</span><span class="pickup-window">${esc(p.timeWindow)}</span><span class="pickup-materials">${esc(Array.isArray(p.materials) ? p.materials.join(', ') : (p.materials || ''))}</span>`;
+      } else {
+        row.innerHTML = `<span class="pickup-date">${formatDate(p.date)}</span><span class="pickup-material">${esc(p.material)}</span><span class="pickup-weight">${(Number(p.weight) || 0).toFixed(2)} kg</span><span class="pickup-points">+${(p.points || 0).toLocaleString()} pts</span><span class="pickup-collector">${esc(p.collector)}</span><span class="pickup-photo">${p.photo ? '<img class="pickup-photo-img" src="' + esc(p.photo) + '" alt="Pickup photo">' : '<span class="pickup-photo-placeholder">No photo</span>'}</span><span class="pickup-badge pickup-${p.verified ? 'verified' : 'unverified'}">${p.verified ? 'Verified' : 'Unverified'}</span>`;
+      }
+      return row;
+    }));
+    panel.replaceChildren(list);
+  });
 }
 
 let wizardExitTab = 'scan';
@@ -727,6 +772,7 @@ function showAdminTab(tab) {
 function refreshTab(role, tab) {
   if (role === 'resident') {
     if (tab === 'home') updateResidentHomeUI();
+    else if (tab === 'pickup') renderPickupTab();
     else if (tab === 'wallet') renderTransactions(walletTabFilter);
     else if (tab === 'qr') renderQRScreen();
     else if (tab === 'rewards') renderRewards();
