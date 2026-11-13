@@ -445,17 +445,15 @@
 
 
 
-        <!-- Generate Pickup Code -->
-        <section class="home-pickup-qr" aria-labelledby="pickup-qr-title">
-          <div class="home-section-heading">
+        <!-- Generate Pickup Code Card -->
+        <button class="card pickup-qr-card" type="button" onclick="generatePickupQr()" aria-label="Generate pickup code for collector scan" tabindex="0">
+          <div class="pickup-qr-header">
             <h2 id="pickup-qr-title">Generate Pickup Code</h2>
             <span class="home-eyebrow">FOR COLLECTOR SCAN</span>
           </div>
-          <div class="pickup-qr-card">
-            <div id="pickup-qr-display" role="img" aria-label="Pickup QR code"></div>
-            <p class="pickup-qr-hint">Show to collector</p>
-          </div>
-        </section>
+          <div id="pickup-qr-display" role="img" aria-label="Pickup QR code"></div>
+          <p class="pickup-qr-hint">Show to collector</p>
+        </button>
 
         <!-- Event Passes slot (only rendered when the resident registered for events) -->
         <div id="event-passes-slot"></div>
