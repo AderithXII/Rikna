@@ -3000,41 +3000,54 @@ body {
   margin: 12px 20px;
 }
 .pickup-qr-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 20px 16px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-.pickup-qr-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-.pickup-qr-card:active {
-  transform: scale(0.98);
-}
-.pickup-qr-header {
   text-align: center;
-  width: 100%;
-}
-.pickup-qr-header h2 {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--color-forest-dark);
-  margin-bottom: 4px;
-  letter-spacing: -0.4px;
 }
 .pickup-qr-hint {
-  margin-top: 4px;
+  margin-top: 8px;
   font-size: var(--text-sm);
   color: var(--text-muted);
-  width: 100%;
-  text-align: center;
+  display: block;
 }
+
+/* Trash Pickup tab rows */
+.pickup-list {
+  padding: 0 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pickup-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  cursor: pointer;
+}
+.pickup-row:hover {
+  border-color: var(--color-forest);
+}
+.pickup-row.scheduled { cursor: default; }
+.pickup-row.scheduled:hover { border-color: var(--border-light); }
+.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 105px; }
+.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
+.pickup-materials { color: var(--text-gray); font-size: var(--text-sm); }
+.pickup-material { font-weight: 600; color: var(--color-forest); }
+.pickup-weight { color: var(--text-muted); font-size: var(--text-sm); }
+.pickup-points { font-weight: 800; color: var(--color-forest); }
+.pickup-collector { color: var(--text-muted); font-size: var(--text-sm); }
+.pickup-photo { display: flex; align-items: center; gap: 8px; font-size: var(--text-sm); color: var(--text-muted); }
+.pickup-photo-img { width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-light); }
+.pickup-photo-placeholder { color: var(--text-muted); font-size: 11px; }
+.pickup-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.4px; }
+.pickup-badge.verified { background: var(--status-success-bg); color: var(--status-success); }
+.pickup-badge.unverified { background: var(--status-pending-bg); color: var(--status-pending); }
+
+/* Pickup panel toggle */
+.pickup-panel { display: none; }
+.pickup-panel.active { display: block; }
 
 .qr-perforation { position: relative; border-top: 1.5px dashed var(--border-base); margin: 12px -16px 0; }
 .qr-perforation::before, .qr-perforation::after {

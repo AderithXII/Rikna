@@ -696,7 +696,18 @@ function renderPickupTab() {
     }
     list.replaceChildren(...items.map(p => {
       const row = document.createElement('div');
-      row.className = 'pickup-row';
+      row.className = 'pickup-row ' + (seg.status === 'completed' ? 'clickable' : 'scheduled');
+      if (seg.status === 'completed') {
+        row.setAttribute('role', 'button');
+        row.setAttribute('tabindex', '0');
+        row.onclick = (e) => {
+          e.stopPropagation();
+          openPickupDetail(p.id);
+        };
+        row.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPickupDetail(p.id); }
+        };
+      }
       if (seg.status === 'scheduled') {
         row.innerHTML = `<span class="pickup-date">${formatDate(p.date)}</span><span class="pickup-window">${esc(p.timeWindow)}</span><span class="pickup-materials">${esc(Array.isArray(p.materials) ? p.materials.join(', ') : (p.materials || ''))}</span>`;
       } else {
@@ -706,6 +717,37 @@ function renderPickupTab() {
     }));
     panel.replaceChildren(list);
   });
+}
+
+function switchPickupTab(tab) {
+  if (tab !== 'scheduled' && tab !== 'history') return;
+  document.querySelectorAll('#pickup-tab-bar .tab-btn').forEach(btn => {
+    const active = btn.id === 'pickup-tab-' + tab;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+  document.querySelectorAll('.pickup-panel').forEach(panel => {
+    const active = panel.id === 'pickup-' + tab;
+    panel.classList.toggle('active', active);
+  });
+  if (tab === 'history') renderPickupTab();
+}
+
+function openPickupDetail(pickupId) {
+  const p = AppState.resident.pickups.find(x => x.id === pickupId);
+  if (!p) return;
+  setText('pickup-detail-date', formatDate(p.date));
+  setText('pickup-detail-material', esc(p.material));
+  setText('pickup-detail-weight', (Number(p.weight) || 0).toFixed(2) + ' kg');
+  setText('pickup-detail-points', '+' + (p.points || 0).toLocaleString() + ' pts');
+  setText('pickup-detail-collector', esc(p.collector));
+  setText('pickup-detail-status', p.status);
+  const photo = el('pickup-detail-photo');
+  if (photo) {
+    if (p.photo) { photo.src = p.photo; photo.style.display = 'block'; }
+    else { photo.style.display = 'none'; }
+  }
+  openModal('modal-pickup-detail');
 }
 
 let wizardExitTab = 'scan';
