@@ -9,7 +9,7 @@
 const INITIAL_STATE = {
   currentUser: null,
   accounts: [
-    { email: 'rikna.resident.demo@gmail.com', password: 'Resident123!', role: 'resident', name: 'Maria Santos', id: 'RES-2024-001', contact: '09171234567', barangay: 'Barangay San Gabriel', municipality: 'Tuguegarao City', registeredDate: '2024-03-15' },
+    { email: 'rikna.resident.demo@gmail.com', password: 'Resident123!', role: 'resident', name: 'Maria Santos', id: 'RES-2024-001', contact: '09171234567', barangay: 'Barangay San Gabriel', municipality: 'Tuguegarao City', registeredDate: '2024-03-15', lang: 'en', philSysVerified: false },
     { email: 'rikna.collector.demo@gmail.com', password: 'Collector123!', role: 'collector', name: 'Rodel Aguila', id: 'COL-2024-007', contact: '09281234567', barangay: 'Barangay San Gabriel', registeredDate: '2024-01-10', status: 'active', restrictionReason: null, restrictionDate: null },
     { email: 'rikna.admin.demo@gmail.com', password: 'Admin123!', role: 'admin', name: 'Engr. Josefina Reyes', id: 'ADM-2024-001', contact: '09391234567', barangay: 'LGU Tuguegarao City', registeredDate: '2024-01-01' }
   ],
@@ -1568,8 +1568,6 @@ function buildBarcodeSvg(seed) {
 function renderProfileScreen() {
   const user = AppState.currentUser || AppState.accounts[0];
   const r = AppState.resident;
-  const approvedEvents = (Array.isArray(AppState.activities) ? AppState.activities : [])
-    .filter(a => a.status === 'approved').length;
 
   setText('profile-name', user.name);
   setText('profile-email', user.email);
@@ -1583,7 +1581,6 @@ function renderProfileScreen() {
   setText('profile-total-kg', r.kgRecycled.toFixed(1));
   setText('profile-total-deposits', String(r.deposits));
   setText('profile-lifetime-pts', r.lifetimePoints.toLocaleString());
-  setText('profile-community-events', String(approvedEvents));
 
   const avatar = el('profile-avatar');
   if (avatar) {
@@ -1598,6 +1595,28 @@ function renderProfileScreen() {
   if (nameInp) nameInp.value = user.name;
   if (phoneInp) phoneInp.value = user.contact;
   if (emailInp) emailInp.value = user.email;
+
+  setText('profile-language-label', (user.lang === 'tl' ? 'Tagalog' : 'English'));
+  setText('profile-philsys-badge', user.philSysVerified ? 'Verified' : 'Not verified');
+}
+
+function toggleLanguage() {
+  const user = AppState.currentUser || AppState.accounts.find(a => a.role === 'resident');
+  if (!user) return;
+  user.lang = user.lang === 'tl' ? 'en' : 'tl';
+  saveState();
+  renderProfileScreen();
+  showToast(user.lang === 'tl' ? 'Tagalog' : 'English', 'info');
+}
+
+function verifyPhilSys() {
+  const user = AppState.currentUser || AppState.accounts.find(a => a.role === 'resident');
+  if (!user) return;
+  user.philSysVerified = true;
+  saveState();
+  renderProfileScreen();
+  showToast('PhilSys ID verified and linked', 'success');
+  closeModal('modal-philsys');
 }
 
 function setEditProfilePanel(open) {

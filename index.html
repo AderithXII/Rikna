@@ -884,13 +884,6 @@
               <p class="pf-impact-label">Lifetime EcoToken</p>
             </div>
 
-            <div class="pf-impact-item">
-              <span class="pf-impact-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7" r="3.5"/><path d="M17 4.5a3.5 3.5 0 0 1 0 6.8M22 20v-1.4a3.6 3.6 0 0 0-2.8-3.5"/></svg>
-              </span>
-              <p class="pf-impact-value"><strong id="profile-community-events">2</strong><span>approved</span></p>
-              <p class="pf-impact-label">Community events</p>
-            </div>
           </div>
         </section>
 
@@ -960,6 +953,28 @@
               <span class="pf-setting-copy">
                 <span class="pf-setting-title">Notification preferences</span>
                 <span class="pf-setting-hint">Push and SMS alerts</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <button class="pf-setting" type="button" onclick="toggleLanguage()">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 7v10l6-4 6 4V7zM20 17H4"/></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">Language</span>
+                <span class="pf-setting-hint" id="profile-language-label">English</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <button class="pf-setting" type="button" onclick="openModal('modal-philsys')">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M8 7v4M16 7v4"/></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">PhilSys Link</span>
+                <span class="pf-setting-hint" id="profile-philsys-badge">Not verified</span>
               </span>
               <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
@@ -2603,6 +2618,51 @@
             <button class="btn-primary" onclick="sendPasswordReset()">Send Reset Link</button>
 
             <button class="btn-ghost" style="width: 100%; margin-top: 8px;" onclick="closeModal('modal-forgot-password')">Cancel</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 1a. modal-philsys (Mock PhilSys ID verification) -->
+
+      <div class="modal-overlay" id="modal-philsys" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>Link PhilSys ID</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-philsys')">✕</button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p style="font-size: 14px; color: #6B7280; margin-bottom: 16px;">
+              Enter your PhilSys ID number to link your national ID to your Rikna account.
+            </p>
+
+            <div class="form-group">
+              <label>PhilSys ID</label>
+              <input type="text" id="philsys-id-input" placeholder="1234 5678 9012" maxlength="14">
+            </div>
+
+            <p class="pf-field-note" style="font-size: 12px; margin-top: 8px">Mock verification — any 12–14 digit ID confirms in this demo.</p>
+
+            <div style="display:flex; gap:10px; margin-top: 18px;">
+              <button class="btn-secondary" type="button" onclick="closeModal('modal-philsys')">Cancel</button>
+              <button class="btn-primary" type="button" onclick="verifyPhilSys()">Verify</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
 
           </div>
 
