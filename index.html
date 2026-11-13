@@ -408,7 +408,7 @@
 
         <!-- Points Balance Card -->
 
-        <button class="points-card home-points" type="button" onclick="showResidentTab('wallet')" aria-label="Open EcoWallet and points breakdown">
+        <button class="points-card home-points" type="button" onclick="openEcoWalletModal('balance')" aria-label="Open EcoWallet and points breakdown">
 
           <svg class="home-material-art" viewBox="0 0 112 120" fill="none" aria-hidden="true">
             <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
@@ -468,7 +468,7 @@
 
           <h2 class="section-title">Your recent activity</h2>
 
-          <button class="section-link" onclick="showResidentTab('wallet')">View All</button>
+          <button class="section-link" onclick="openEcoWalletModal('transactions')">View All</button>
 
         </div>
 
@@ -4176,6 +4176,72 @@
 
 
 
+      <!-- modal-ecowallet -->
+
+      <div class="modal-overlay" id="modal-ecowallet" onclick="closeModalOutside(event)">
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+
+            <h3>EcoWallet</h3>
+
+            <button class="modal-close" onclick="closeModal('modal-ecowallet')">✕</button>
+
+          </div>
+
+          <div class="modal-body" style="padding: 0;">
+
+            <!-- Tab bar: Balance | Transactions | Pending -->
+            <div class="tab-bar ecw-tab-bar">
+              <button class="tab-btn active" type="button" onclick="ecwSwitchTab(this,'balance')" aria-pressed="true">Balance</button>
+              <button class="tab-btn" type="button" onclick="ecwSwitchTab(this,'transactions')" aria-pressed="false">Transactions</button>
+              <button class="tab-btn" type="button" onclick="ecwSwitchTab(this,'pending')" aria-pressed="false">Pending</button>
+            </div>
+
+            <!-- Balance pane -->
+            <div id="ecw-pane-balance" class="ecw-pane" style="display:block; padding: 20px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap: 16px; margin-bottom: 18px;">
+                <div>
+                  <div style="font-size: 11px; color: var(--text-gray); text-transform:uppercase; letter-spacing:0.5px;">Available</div>
+                  <div id="ecw-available" style="font: 700 28px/1.2 'Inter', sans-serif; color: var(--text-dark);">0 pts</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: var(--text-gray); text-transform:uppercase; letter-spacing:0.5px;">Pending</div>
+                  <div id="ecw-pending" style="font: 600 18px/1.2 'Inter', sans-serif; color: var(--text-muted);">0 pts</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: var(--text-gray); text-transform:uppercase; letter-spacing:0.5px;">Lifetime</div>
+                  <div id="ecw-lifetime" style="font: 600 18px/1.2 'Inter', sans-serif; color: var(--color-forest);">0 pts</div>
+                </div>
+              </div>
+              <button class="btn-primary" type="button" onclick="closeModal('modal-ecowallet'); showResidentTab('rewards');" style="width:100%; min-height:44px;">Explore Rewards</button>
+            </div>
+
+            <!-- Transactions pane -->
+            <div id="ecw-pane-transactions" class="ecw-pane" style="display:none; padding: 20px;">
+              <div style="display:flex; gap: 8px; margin-bottom: 16px; overflow-x:auto; padding-bottom: 4px;">
+                <button class="chip active" type="button" onclick="ecwFilterTx(this,'all')" aria-pressed="true">All</button>
+                <button class="chip" type="button" onclick="ecwFilterTx(this,'earned')" aria-pressed="false">Earned</button>
+                <button class="chip" type="button" onclick="ecwFilterTx(this,'spent')" aria-pressed="false">Spent</button>
+              </div>
+              <div id="ecw-tx-list" class="tx-list" style="min-height: 240px;">
+                <!-- Transaction rows rendered by script.js -->
+              </div>
+            </div>
+
+            <!-- Pending pane -->
+            <div id="ecw-pane-pending" class="ecw-pane" style="display:none; padding: 20px; text-align:center; color: var(--text-muted);">
+              <p style="font-size: 14px;">No pending EcoToken at the moment.</p>
+              <p style="font-size: 13px; color: var(--text-gray); margin-top: 6px;">Pending points become available once a collector verifies your deposit.</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div><!-- /#app -->
 
   </div><!-- /#app-wrapper -->
@@ -5177,6 +5243,48 @@
     }
 
     })();
+
+  // EcoWallet modal tab switching (self-contained; no script.js changes)
+
+  function ecwSwitchTab(btn, pane) {
+
+    document.querySelectorAll('#modal-ecowallet .tab-btn').forEach(b => {
+
+      b.classList.remove('active');
+
+      b.setAttribute('aria-pressed', 'false');
+
+    });
+
+    btn.classList.add('active');
+
+    btn.setAttribute('aria-pressed', 'true');
+
+    ['balance', 'transactions', 'pending'].forEach(p => {
+
+      const el = document.getElementById('ecw-pane-' + p);
+
+      if (el) el.style.display = (p === pane) ? 'block' : 'none';
+
+    });
+
+  }
+
+  function ecwFilterTx(btn, filter) {
+
+    document.querySelectorAll('#modal-ecowallet .chip').forEach(b => {
+
+      b.classList.remove('active');
+
+      b.setAttribute('aria-pressed', 'false');
+
+    });
+
+    btn.classList.add('active');
+
+    btn.setAttribute('aria-pressed', 'true');
+
+  }
 
   </script>
 
