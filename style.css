@@ -3021,6 +3021,7 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+  justify-content: flex-start;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
@@ -3032,13 +3033,13 @@ body {
 }
 .pickup-row.scheduled { cursor: default; }
 .pickup-row.scheduled:hover { border-color: var(--border-light); }
-.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 95px; white-space: nowrap; }
-.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
-.pickup-materials { color: var(--text-gray); font-size: var(--text-sm); }
-.pickup-material { font-weight: 600; color: var(--color-forest); }
+.pickup-date { font-weight: 700; color: var(--text-dark); min-width: 90px; white-space: nowrap; }
+.pickup-window { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; min-width: 110px; }
+.pickup-materials { color: var(--text-gray); font-size: var(--text-sm); flex: 1; min-width: 0; }
+.pickup-material { font-weight: 600; color: var(--color-forest); white-space: nowrap; }
 .pickup-weight { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
-.pickup-points { font-weight: 800; color: var(--color-forest); white-space: nowrap; }
-.pickup-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.4px; }
+.pickup-points { font-weight: 800; color: var(--color-forest); white-space: nowrap; margin-left: auto; }
+.pickup-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
 .pickup-badge.verified { background: var(--status-success-bg); color: var(--status-success); }
 .pickup-badge.unverified { background: var(--status-pending-bg); color: var(--status-pending); }
 
@@ -8422,11 +8423,11 @@ html, body {
 /* Segment toggle: Scheduled | History tabs on the pickup screen. */
 .pickup-tabs {
   display: flex;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border-base);
+  background: var(--bg-input);
+  border: none;
   border-radius: var(--radius-md);
   margin: 0 20px 16px;
-  overflow-x: auto;
+  overflow: hidden;
   scrollbar-width: none;
 }
 .pickup-tabs::-webkit-scrollbar { display: none; }
@@ -8434,24 +8435,21 @@ html, body {
 .pickup-tabs .tab-btn {
   flex: 1;
   padding: 12px 10px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--text-gray);
+  color: var(--text-muted);
   background: transparent;
   border: none;
   border-radius: 0;
-  border-bottom: 2.5px solid transparent;
-  margin-bottom: -1.5px;
   cursor: pointer;
   text-align: center;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
+  transition: color var(--transition-fast), background var(--transition-fast);
 }
 
 .pickup-tabs .tab-btn:hover { color: var(--color-forest); }
 
 .pickup-tabs .tab-btn.active {
-  color: var(--color-forest);
-  border-bottom-color: var(--color-forest);
+  color: var(--color-forest-dark);
   background: var(--color-forest-light);
 }
 
