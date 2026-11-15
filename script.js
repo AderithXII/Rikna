@@ -50,7 +50,7 @@ const INITIAL_STATE = {
     bagsBreakdown: { Small: 1, Medium: 3, Large: 1 },
     currentDeposit: { resident: null, category: null, bagSize: null, points: 0, photoDataUrl: null, remarks: '', status: 'verified', inspected: true }
   },
-  admin: { totalWaste: 847.3, registeredResidents: 234, pointsDistributed: 28450, vouchersRedeemed: 47, barangays: 5 },
+  admin: { totalBags: 110, registeredResidents: 234, pointsDistributed: 28450, vouchersRedeemed: 47, barangays: 5 },
   wasteMaterials: [
     { id: 'PET', name: 'PET Plastic', rate: 30, enabled: true },
     { id: 'PAPER', name: 'Paper/Cardboard', rate: 10, enabled: true },
@@ -78,9 +78,9 @@ const INITIAL_STATE = {
     { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', category: 'Non-recyclable / Residual', bagSize: 'Medium', points: 20, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Residual plastics bagged per guidelines', flagged: false }
   ],
   collectors: [
-    { id: 'COL-2024-007', name: 'Rodel Aguila', barangay: 'Barangay San Gabriel', email: 'rikna.collector.demo@gmail.com', contact: '09281234567', phone: '09281234567', status: 'active', registeredDate: '2024-01-10', totalWaste: 124.5, totalDeposits: 48, totalPoints: 3240, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
-    { id: 'COL-2024-008', name: 'Ligaya Santos', barangay: 'Barangay Pengue Ruyu', email: 'ligaya.santos@brgy.gov.ph', contact: '09191234567', phone: '09191234567', status: 'active', registeredDate: '2024-02-20', totalWaste: 98.2, totalDeposits: 36, totalPoints: 2450, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
-    { id: 'COL-2024-009', name: 'Ernesto Flores', barangay: 'Barangay Caritan Norte', email: 'ernesto.flores@brgy.gov.ph', contact: '09301234567', phone: '09301234567', status: 'restricted', registeredDate: '2024-03-05', totalWaste: 56.7, totalDeposits: 22, totalPoints: 1120, restrictionReason: 'Suspicious deposit activity under review', restrictionDate: '2026-10-28', restrictionHistory: [{ date: '2026-10-28', reason: 'Suspicious deposit activity under review', admin: 'Engr. Josefina Reyes' }] }
+    { id: 'COL-2024-007', name: 'Rodel Aguila', barangay: 'Barangay San Gabriel', email: 'rikna.collector.demo@gmail.com', contact: '09281234567', phone: '09281234567', status: 'active', registeredDate: '2024-01-10', totalWaste: 124.5, totalBags: 48, totalDeposits: 48, totalPoints: 3240, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
+    { id: 'COL-2024-008', name: 'Ligaya Santos', barangay: 'Barangay Pengue Ruyu', email: 'ligaya.santos@brgy.gov.ph', contact: '09191234567', phone: '09191234567', status: 'active', registeredDate: '2024-02-20', totalWaste: 98.2, totalBags: 36, totalDeposits: 36, totalPoints: 2450, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
+    { id: 'COL-2024-009', name: 'Ernesto Flores', barangay: 'Barangay Caritan Norte', email: 'ernesto.flores@brgy.gov.ph', contact: '09301234567', phone: '09301234567', status: 'restricted', registeredDate: '2024-03-05', totalWaste: 56.7, totalBags: 22, totalDeposits: 22, totalPoints: 1120, restrictionReason: 'Suspicious deposit activity under review', restrictionDate: '2026-10-28', restrictionHistory: [{ date: '2026-10-28', reason: 'Suspicious deposit activity under review', admin: 'Engr. Josefina Reyes' }] }
   ],
   collectionCenters: [
     { id: 'CC001', name: 'San Gabriel Eco Center', address: '21 Bonifacio St, Barangay San Gabriel, Tuguegarao City', hours: 'Mon–Sat 7:00 AM – 5:00 PM', contact: '(078) 392-1145', materials: ['PET Plastic', 'Paper/Cardboard', 'Aluminum', 'Tin/Steel', 'Glass'], lat: 17.6171, lng: 121.7317 },
@@ -3234,6 +3234,7 @@ function _commitDeposit() {
 
     // Update admin statistics
     AppState.admin.pointsDistributed += pts;
+    AppState.admin.totalBags = (AppState.admin.totalBags || 0) + 1;
 
     // Add notifications
     AppState.notifications.resident.unshift({
@@ -3656,7 +3657,7 @@ function filterCollectorHistory() {
 // --- ADMIN DASHBOARD & AUDITS ---
 function updateAdminUI() {
   const user = AppState.currentUser || AppState.accounts.find(a => a.role === 'admin');
-  setText('admin-total-waste', AppState.admin.totalWaste.toFixed(1));
+  setText('admin-total-bags', AppState.admin.totalBags || 0);
   setText('admin-residents', AppState.admin.registeredResidents);
   setText('admin-points-dist', AppState.admin.pointsDistributed.toLocaleString());
   setText('admin-vouchers-redeemed', AppState.admin.vouchersRedeemed);
@@ -3861,9 +3862,9 @@ function getFilteredAdminRecords(filters = getAdminReportFilters()) {
   const endKey = collectorLocalDateKey(end);
 
   return AppState.collectionRecords.filter(record => {
-    if (filters.material !== 'all' && record.material !== filters.material) return false;
+    if (filters.material !== 'all' && (record.category || record.material) !== filters.material) return false;
     if (filters.collector !== 'all' && record.collector !== filters.collector) return false;
-    if (filters.query && ![record.residentName, record.residentId, record.id, record.material, record.collector]
+    if (filters.query && ![record.residentName, record.residentId, record.id, record.category || record.material, record.collector]
       .some(value => String(value ?? '').toLowerCase().includes(filters.query))) return false;
     if (filters.date !== 'all') {
       // Date-only deposits retain their recorded day; timestamps use the local day.
@@ -3933,10 +3934,10 @@ function openReportDetail(recordId) {
   setText('rd-txid', r.id);
   setText('report-detail-resident', (r.residentName || 'Maria Santos') + (r.residentId ? ` (${r.residentId})` : ''));
   setText('rd-resident', (r.residentName || 'Maria Santos') + (r.residentId ? ` (${r.residentId})` : ''));
-  setText('report-detail-material', r.material || '-');
-  setText('rd-material', r.material || '-');
-  setText('report-detail-weight', (r.weight ? r.weight.toFixed(2) : (r.kg ? r.kg.toFixed(2) : '0.00')) + ' kg');
-  setText('rd-weight', (r.weight ? r.weight.toFixed(2) : (r.kg ? r.kg.toFixed(2) : '0.00')) + ' kg');
+  setText('report-detail-material', r.category || r.material || '-');
+  setText('rd-material', r.category || r.material || '-');
+  setText('report-detail-weight', r.bagSize ? r.bagSize + ' Bag' : '—');
+  setText('rd-weight', r.bagSize ? r.bagSize + ' Bag' : '—');
   setText('report-detail-points', '+' + r.points + ' pts');
   setText('rd-points', '+' + r.points + ' pts');
   setText('report-detail-date', formatDate(r.date));
@@ -4184,7 +4185,7 @@ function renderAdminTrends() {
   });
   const max = Math.max(1, ...days.map(d => d.bags));
   container.innerHTML = days.map(d => {
-    const pct = Math.round((d.weight / max) * 100);
+    const pct = Math.round((d.bags / max) * 100);
     return `<div class="trend-row">
       <span class="trend-label">${d.label}</span>
       <div class="bar-track"><div class="bar-fill" data-target="${pct}%"></div></div>
@@ -4359,7 +4360,7 @@ function showManageTab(tab) {
   if (tab === 'categories') renderCategoriesManage();
   else if (tab === 'rewards') renderRewardsManage();
   else if (tab === 'collectors') renderCollectorsManage();
-  else if (tab === 'activities') { renderActivitiesManage(); renderAdminEventProposals(); }
+  else if (tab === 'activities') { renderActivitiesManage(); }
 }
 
 function renderManageSections() {
@@ -4367,7 +4368,6 @@ function renderManageSections() {
   renderRewardsManage();
   renderCollectorsManage();
   renderActivitiesManage();
-  renderAdminEventProposals();
 }
 
 // 1. Waste Categories
@@ -4375,24 +4375,50 @@ function renderCategoriesManage() {
   const container = el('categories-manage-list');
   if (!container) return;
 
-  const materials = AppState.wasteMaterials;
-  const accepted = materials.filter(m => m.enabled).length;
-  setText('categories-manage-count', `${materials.length} categories · ${accepted} accepted`);
+  // The 4 canonical waste categories (not editable by admin – bag rates are fixed system-wide)
+  const WASTE_CATEGORIES = [
+    { id: 'COMPOSTABLE', name: 'Compostable', description: 'Food scraps, yard waste, organic matter' },
+    { id: 'RECYCLABLE', name: 'Recyclable', description: 'Plastics, paper, metal, glass, cardboard' },
+    { id: 'RESIDUAL', name: 'Non-recyclable / Residual', description: 'Mixed waste not suitable for recycling or composting' },
+    { id: 'SPECIAL', name: 'Special Waste', description: 'Batteries, electronics, hazardous household items' }
+  ];
 
-  container.innerHTML = `<div class="manage-group">` + materials.map(m => `
-    <div class="manage-row">
-      <div class="manage-row-info">
-        <div class="manage-row-name">${esc(m.name)}</div>
-        <div class="manage-row-sub">${m.rate} pts per kg</div>
-      </div>
-      <div class="manage-row-actions">
-        <span class="manage-status-pill${m.enabled ? '' : ' inactive'}">${m.enabled ? 'Active' : 'Inactive'}</span>
-        <button class="btn-manage-edit" onclick="openCategoryEdit('${m.id}')" aria-label="Edit ${esc(m.name)}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-      </div>
+  const BAG_RATE_ROWS = [
+    { size: 'Small', pts: 10 },
+    { size: 'Medium', pts: 20 },
+    { size: 'Large', pts: 40 }
+  ];
+
+  const records = AppState.collectionRecords || [];
+  const totals = {};
+  records.forEach(r => { const k = r.category || r.material || 'Unclassified'; totals[k] = (totals[k] || 0) + 1; });
+
+  setText('categories-manage-count', `${WASTE_CATEGORIES.length} categories · Bag-based`);
+
+  container.innerHTML = `
+    <div class="manage-group" style="margin-bottom: 14px;">
+      ${WASTE_CATEGORIES.map(cat => `
+        <div class="manage-row">
+          <div class="manage-row-info">
+            <div class="manage-row-name">${esc(cat.name)}</div>
+            <div class="manage-row-sub">${esc(cat.description)} · ${totals[cat.name] || 0} bags recorded</div>
+          </div>
+          <div class="manage-row-actions">
+            <span class="manage-status-pill">Active</span>
+          </div>
+        </div>
+      `).join('')}
     </div>
-  `).join('') + `</div>`;
+    <div class="card" style="margin: 0 20px 16px; padding: 12px 16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Standardized Bag EcoToken Rates</div>
+      ${BAG_RATE_ROWS.map((r, i) => `
+        <div class="deposit-row"${i === BAG_RATE_ROWS.length - 1 ? ' style="border-bottom:none;"' : ''}>
+          <span class="label">${r.size} Bag</span>
+          <span class="value text-forest">${r.pts} EcoTokens</span>
+        </div>
+      `).join('')}
+      <div style="font-size:11.5px;color:var(--text-muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border-light);">Rejected submissions award 0 EcoTokens regardless of size.</div>
+    </div>`;
 }
 
 function toggleCategory(id) {
@@ -4619,7 +4645,7 @@ function openCollectorDetails(collectorId) {
   setText('cd-contact', c.contact || c.phone || '09281234567');
   setText('cd-created', formatDate(c.registeredDate || '2024-01-10'));
   setText('cd-date', formatDate(c.registeredDate || '2024-01-10'));
-  setText('cd-total-waste', (c.totalWaste || 124.5).toFixed(1) + ' kg');
+  setText('cd-total-waste', (c.totalBags || c.totalDeposits || 0) + ' bags');
   setText('cd-total-deposits', c.totalDeposits || 48);
   setText('cd-total-points', (c.totalPoints || 3240).toLocaleString() + ' pts');
 
@@ -4922,283 +4948,18 @@ function saveActivityEdit(event) {
 }
 
 function renderAdminEventProposals() {
+  // Event proposals removed per Section 3 spec — this section is no longer shown
   const container = el('event-proposals-admin-list');
-  if (!container) return;
-
-  const proposals = AppState.eventProposals;
-  const pending = proposals.filter(p => p.status === 'pending').length;
-  setText('proposals-manage-count', `${proposals.length} submitted · ${pending} pending`);
-  if (!proposals.length) {
-    container.innerHTML = '<div style="padding:20px;text-align:center;color:#9CA3AF;font-size:13px">No event proposals pending review.</div>';
-    return;
-  }
-
-  container.innerHTML = `<div class="manage-group">` + proposals.map(p => `
-    <div class="manage-card-row">
-      <div class="manage-card-header">
-        <div class="manage-card-title">${esc(p.title)}</div>
-        <span class="manage-status-pill${p.status === 'pending' ? '' : ' inactive'}" style="text-transform: capitalize;">${p.status}</span>
-      </div>
-      <div class="manage-card-sub">${esc(p.barangay)} • ${formatDate(p.date)}</div>
-      <div class="manage-card-sub">Proposed by: ${esc(p.proposedBy)}</div>
-      <div class="manage-card-desc">${esc(p.description)}</div>
-      <div class="manage-card-footer">
-        <button class="btn-manage-action" onclick="openEventProposalReview('${p.id}')">Review Proposal</button>
-      </div>
-    </div>
-  `).join('') + `</div>`;
+  if (container) container.innerHTML = '';
+  const countEl = el('proposals-manage-count');
+  if (countEl) countEl.textContent = '';
 }
 
-function openEventProposalForm() {
-  const form = el('modal-event-proposal')?.querySelector('form');
-  if (form) form.reset();
-  const brgyInp = el('prop-barangay');
-  if (brgyInp) brgyInp.value = 'Barangay San Gabriel';
-  openModal('modal-event-proposal');
-}
-
-function submitEventProposal(event) {
-  if (event && event.preventDefault) event.preventDefault();
-
-  const title = el('prop-title')?.value?.trim();
-  const category = el('prop-category')?.value || 'Recycling Campaign';
-  const desc = el('prop-desc')?.value?.trim() || '';
-  const location = el('prop-location')?.value?.trim();
-  const date = el('prop-date')?.value;
-  const start = el('prop-start-time')?.value || '08:00';
-  const end = el('prop-end-time')?.value || '12:00';
-  const participants = parseInt(el('prop-participants')?.value, 10) || 50;
-  const pts = parseInt(el('prop-points')?.value, 10) || 30;
-  const remarks = el('prop-remarks')?.value?.trim() || '';
-
-  if (!title || !date || !location) {
-    showToast('Please fill out all required fields', 'error');
-    return;
-  }
-
-  const colAcc = AppState.accounts.find(a => a.role === 'collector');
-  const proposal = {
-    id: 'PROP' + uid().substring(0, 4),
-    title,
-    category,
-    description: desc,
-    barangay: colAcc?.barangay || 'Barangay San Gabriel',
-    location,
-    date,
-    startTime: start,
-    endTime: end,
-    participants,
-    ecoPointReward: pts,
-    remarks,
-    proposedBy: colAcc?.name || 'Rodel Aguila',
-    proposedById: colAcc?.id || 'COL-2024-007',
-    status: 'pending',
-    submittedDate: new Date().toISOString().split('T')[0],
-    rejectionReason: null
-  };
-
-  AppState.eventProposals.unshift(proposal);
-
-  AppState.notifications.collector.unshift({
-    id: 'CNOTIF' + uid(),
-    title: 'Event Proposal Submitted',
-    body: `Your proposal "${title}" has been submitted for LGU review.`,
-    time: nowStr(),
-    read: false,
-    link: null
-  });
-
-  AppState.notifications.admin.unshift({
-    id: 'ANOTIF' + uid(),
-    title: 'New Event Proposal',
-    body: `${proposal.proposedBy} submitted "${title}" for budget and point allocation.`,
-    time: nowStr(),
-    read: false,
-    link: 'manage'
-  });
-
-  AppState.auditLog.unshift({
-    timestamp: nowStr(),
-    action: 'Event proposal submitted',
-    detail: `${title} by ${proposal.proposedBy}`
-  });
-
-  saveState();
-  closeModal('modal-event-proposal');
-  renderAdminEventProposals();
-  updateNotifBadge('admin');
-  updateNotifBadge('collector');
-  showToast(`Proposal "${title}" submitted to LGU Admin!`, 'success');
-}
+// Event proposal form/submit removed — Collector can no longer submit proposals (Section 2 spec)
+function openEventProposalForm() { showToast('Event proposals are no longer supported.', 'info'); }
+function submitEventProposal(event) { if (event && event.preventDefault) event.preventDefault(); showToast('Event proposals are no longer supported.', 'info'); }
 
 let proposalActionInFlight = false;
-
-function openEventProposalReview(proposalId) {
-  currentProposalId = proposalId;
-  const p = AppState.eventProposals.find(x => x.id === proposalId);
-  if (!p) return;
-
-  setText('epr-title', p.title);
-  setText('epr-category', p.category);
-  setText('epr-barangay', p.barangay);
-  setText('epr-location', p.location);
-  setText('epr-date-time', `${formatDate(p.date)} • ${p.startTime || ''} - ${p.endTime || ''}`);
-  setText('epr-participants', p.participants + ' Residents');
-  setText('epr-pts', (p.ecoPointReward || 50) + ' pts / participant');
-  const totalBudget = (p.participants || 50) * (p.ecoPointReward || 50);
-  setText('epr-budget-total', totalBudget.toLocaleString());
-  setText('epr-desc', p.description);
-  setText('epr-remarks', p.remarks || 'None specified');
-  setText('epr-proposer', `Proposed by ${p.proposedBy} (${p.barangay})`);
-
-  const statusEl = el('epr-status');
-  if (statusEl) {
-    statusEl.textContent = p.status.toUpperCase();
-    statusEl.className = 'badge badge-' + (p.status === 'approved' ? 'success' : p.status === 'rejected' ? 'error' : 'pending');
-  }
-
-  const approveBtn = el('btn-approve-proposal') || document.querySelector('#modal-event-proposal-review .btn-primary');
-  const rejectBox = el('epr-reject-box');
-  const mainActions = el('epr-main-actions');
-  if (rejectBox) rejectBox.style.display = 'none';
-  if (mainActions) mainActions.style.display = 'flex';
-  proposalActionInFlight = false;
-
-  if (p.status === 'pending') {
-    if (approveBtn) approveBtn.style.display = 'block';
-  } else {
-    if (approveBtn) approveBtn.style.display = 'none';
-  }
-
-  openModal('modal-event-proposal-review');
-}
-
-function showRevisionBox() {
-  const box = el('epr-reject-box');
-  const reasonInp = el('epr-reject-reason');
-  const mainActions = el('epr-main-actions');
-  if (box) box.style.display = 'block';
-  if (mainActions) mainActions.style.display = 'none';
-  if (reasonInp) { reasonInp.value = ''; reasonInp.focus(); }
-}
-
-function cancelRevisionRequest() {
-  const box = el('epr-reject-box');
-  const mainActions = el('epr-main-actions');
-  if (box) box.style.display = 'none';
-  if (mainActions) mainActions.style.display = 'flex';
-}
-
-function confirmRevisionRequest() {
-  if (proposalActionInFlight) return;
-  const reasonInp = el('epr-reject-reason');
-  const reason = reasonInp?.value?.trim();
-  if (!reason) {
-    showToast('Please provide notes explaining what needs revision.', 'error');
-    return;
-  }
-  rejectEventProposal();
-}
-
-function approveEventProposal(proposalId) {
-  if (proposalActionInFlight) return;
-  const id = proposalId || currentProposalId;
-  const p = AppState.eventProposals.find(x => x.id === id);
-  if (!p) return;
-
-  proposalActionInFlight = true;
-  p.status = 'approved';
-
-  // Add into resident-facing activities list
-  AppState.activities.push({
-    id: 'ACT' + uid().substring(0, 4),
-    name: p.title,
-    type: p.category.toLowerCase().includes('clean') ? 'cleanup' : p.category.toLowerCase().includes('plant') ? 'planting' : 'seminar',
-    date: p.date,
-    location: p.location,
-    description: p.description,
-    participationPts: p.ecoPointReward || 50,
-    status: 'approved',
-    proposedBy: p.proposedBy
-  });
-
-  AppState.notifications.collector.unshift({
-    id: 'CNOTIF' + uid(),
-    title: 'Event Proposal Approved!',
-    body: `Your proposal "${p.title}" was approved by LGU Admin. EcoToken budget has been allocated.`,
-    time: nowStr(),
-    read: false,
-    link: null
-  });
-
-  AppState.notifications.resident.unshift({
-    id: 'RNOTIF' + uid(),
-    title: 'New Community Event',
-    body: `${p.title} scheduled on ${formatDate(p.date)} at ${p.location}. Earn ${p.ecoPointReward || 50} EcoToken!`,
-    time: nowStr(),
-    read: false,
-    link: 'home'
-  });
-
-  AppState.auditLog.unshift({
-    timestamp: nowStr(),
-    action: 'Event proposal approved',
-    detail: `${p.title} (${p.barangay})`
-  });
-
-  saveState();
-  closeModal('modal-event-proposal-review');
-  renderAdminEventProposals();
-  renderActivitiesManage();
-  updateResidentHomeUI();
-  updateNotifBadge('collector');
-  updateNotifBadge('resident');
-
-  showToast('Event proposal approved! EcoToken budget allocated.', 'success');
-  proposalActionInFlight = false;
-}
-
-function rejectEventProposal() {
-  if (proposalActionInFlight) return;
-  const p = AppState.eventProposals.find(x => x.id === currentProposalId);
-  if (!p) return;
-
-  const rejectBox = el('epr-reject-box');
-  const reasonInp = el('epr-reject-reason');
-
-  if (rejectBox && rejectBox.style.display === 'none') {
-    showRevisionBox();
-    showToast('Please specify the revision notes before confirming return.', 'info');
-    return;
-  }
-
-  const reason = reasonInp?.value?.trim() || 'Logistical coordination needed';
-  proposalActionInFlight = true;
-  p.status = 'rejected';
-  p.rejectionReason = reason;
-
-  AppState.notifications.collector.unshift({
-    id: 'CNOTIF' + uid(),
-    title: 'Event Proposal Revision Required',
-    body: `Your proposal "${p.title}" was returned with notes: ${reason}`,
-    time: nowStr(),
-    read: false,
-    link: null
-  });
-
-  AppState.auditLog.unshift({
-    timestamp: nowStr(),
-    action: 'Event proposal returned',
-    detail: `${p.title} — Notes: ${reason}`
-  });
-
-  saveState();
-  closeModal('modal-event-proposal-review');
-  renderAdminEventProposals();
-  updateNotifBadge('collector');
-  showToast('Event proposal returned to collector officer with revision notes.', 'info');
-  proposalActionInFlight = false;
-}
 
 function showCollectorEventsPanel() {
   // Event proposal removed from Collector role per Section 2 specification

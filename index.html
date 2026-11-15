@@ -18,7 +18,7 @@
 
   <link rel="icon" type="image/png" href="assets/logo.png">
 
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=6">
 
   <!-- Leaflet + OpenStreetMap tiles for the collection centers map (CDN; app degrades to the list if offline) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -1737,14 +1737,23 @@
 
           <div class="admin-performance-top">
 
-            <div class="admin-performance-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-              TOTAL WASTE DIVERTED
+            <div class="admin-perf-main">
+
+              <div class="admin-performance-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                TOTAL BAGS COLLECTED
+              </div>
+
+              <div class="admin-performance-total"><span id="admin-total-bags">110</span><span class="admin-performance-unit"> bags</span></div>
+
+              <div class="admin-performance-scope">Program total to date</div>
+
             </div>
 
-            <div class="admin-performance-total"><span id="admin-total-waste">847.3</span><span class="admin-performance-unit">kg</span></div>
-
-            <div class="admin-performance-scope">Program total to date</div>
+            <div class="admin-mascot-wrap" aria-hidden="true">
+              <div class="admin-mascot-glow"></div>
+              <img src="assets/mascot-admin.png" alt="" class="admin-mascot">
+            </div>
 
           </div>
 
@@ -1863,14 +1872,6 @@
               <span class="section-title">Waste Categories</span>
               <span class="manage-section-count" id="categories-manage-count"></span>
             </div>
-
-            <button class="btn-manage-primary" onclick="openCategoryEdit(null)">
-
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-
-              Add category
-
-            </button>
 
           </div>
 
@@ -2080,78 +2081,24 @@
 
 
 
-        <!-- Tab 4: Activities & Event Proposals -->
+        <!-- Tab 4: Activities -->
 
         <div id="manage-content-activities" style="display:none;">
 
-          <!-- Collector Proposals Pending Review -->
+          <!-- Published Events only — Submitted Event Proposals removed per Section 3 spec -->
 
           <div class="section-header manage-section-head">
-
-            <div class="manage-section-copy">
-              <span class="section-title">Submitted Event Proposals</span>
-              <span class="manage-section-count" id="proposals-manage-count"></span>
-            </div>
-
-          </div>
-
-          <div id="event-proposals-admin-list">
-            <div class="manage-group">
-              <div class="manage-card-row">
-                <div class="manage-card-header">
-                  <div class="manage-card-title">Riverside Eco Cleanup Campaign</div>
-                  <span class="manage-status-pill">Pending</span>
-                </div>
-                <div class="manage-card-sub">Barangay San Gabriel • Dec 5, 2026</div>
-                <div class="manage-card-sub">Proposed by: Rodel Aguila</div>
-                <div class="manage-card-desc">Organized riverbank cleanup targeting accumulated single-use plastics along the San Gabriel water channel prior to the rainy season.</div>
-                <div class="manage-card-footer">
-                  <button class="btn-manage-action" onclick="openEventProposalReview('PROP001')">Review Proposal</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Approved Activities -->
-          <div class="section-header manage-section-head" style="margin-top: 14px;">
             <div class="manage-section-copy">
               <span class="section-title">Published Environmental Initiatives</span>
               <span class="manage-section-count" id="activities-manage-count"></span>
             </div>
           </div>
 
-          <div id="approved-events-list" style="padding-bottom: 24px;">
-            <div class="manage-group">
-              <div class="manage-card-row">
-                <div class="manage-card-header">
-                  <div class="manage-card-title">Barangay Clean-Up Drive</div>
-                  <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-                    <span class="manage-status-pill">Approved</span>
-                    <button class="btn-manage-edit" onclick="openActivityEdit('ACT001')" aria-label="Edit Barangay Clean-Up Drive">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="manage-card-sub">Nov 15, 2026 • Barangay San Gabriel Plaza</div>
-                <div class="manage-card-desc">Community cleanup of main streets and waterways. Bring gloves and eco bags.</div>
-                <div class="manage-card-meta">+50 EcoToken attendance reward</div>
-              </div>
-              <div class="manage-card-row">
-                <div class="manage-card-header">
-                  <div class="manage-card-title">Tree Planting Initiative</div>
-                  <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-                    <span class="manage-status-pill">Approved</span>
-                    <button class="btn-manage-edit" onclick="openActivityEdit('ACT002')" aria-label="Edit Tree Planting Initiative">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="manage-card-sub">Nov 22, 2026 • Barangay San Gabriel Park</div>
-                <div class="manage-card-desc">Plant 200 native trees in our barangay park. Seedlings provided.</div>
-                <div class="manage-card-meta">+75 EcoToken attendance reward</div>
-              </div>
-            </div>
-          </div>
+          <!-- hidden container kept for renderAdminEventProposals() safety -->
+          <div id="event-proposals-admin-list" style="display:none;"></div>
+          <span id="proposals-manage-count" style="display:none;"></span>
+
+          <div id="approved-events-list" style="padding-bottom: 24px;"></div>
 
         </div>
 
@@ -2188,13 +2135,12 @@
         <!-- 3 Filter Dropdowns -->
         <div class="reports-filters-row">
           <div class="reports-select-wrap">
-            <select id="report-filter-material" onchange="filterAdminReports()" aria-label="Filter by material">
-              <option value="all">Materials</option>
-              <option value="PET Plastic">PET Plastic</option>
-              <option value="Paper/Cardboard">Paper/Cardboard</option>
-              <option value="Aluminum">Aluminum</option>
-              <option value="Tin/Steel">Tin/Steel</option>
-              <option value="Glass">Glass</option>
+            <select id="report-filter-material" onchange="filterAdminReports()" aria-label="Filter by category">
+              <option value="all">Categories</option>
+              <option value="Compostable">Compostable</option>
+              <option value="Recyclable">Recyclable</option>
+              <option value="Non-recyclable / Residual">Residual</option>
+              <option value="Special Waste">Special Waste</option>
             </select>
             <svg class="select-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </div>
@@ -3139,7 +3085,7 @@
 
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
 
-              <span class="badge badge-warning" id="fr-status">Flagged: Unusually high weight</span>
+              <span class="badge badge-warning" id="fr-status">Flagged for Review</span>
 
               <span style="font-family: monospace; font-size: 13px; color: #6B7280;" id="fr-txid">DEP006</span>
 
@@ -3563,9 +3509,9 @@
 
             <div class="cd-stat">
 
-              <div class="value" id="cd-total-waste">342 kg</div>
+              <div class="value" id="cd-total-waste">48 bags</div>
 
-              <div class="label">Total Waste</div>
+              <div class="label">Total Bags</div>
 
             </div>
 
@@ -3994,17 +3940,17 @@
 
               <div class="deposit-row">
 
-                <span class="label">Material</span>
+                <span class="label">Waste Category</span>
 
-                <span class="value" id="report-detail-material">PET Plastic</span>
+                <span class="value" id="report-detail-material">Recyclable</span>
 
               </div>
 
               <div class="deposit-row">
 
-                <span class="label">Net Weight</span>
+                <span class="label">Bag Size</span>
 
-                <span class="value" id="report-detail-weight">3.0 kg</span>
+                <span class="value" id="report-detail-weight">Medium Bag</span>
 
               </div>
 
@@ -4134,7 +4080,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=7"></script>
 
 
 
