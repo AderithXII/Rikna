@@ -3,6 +3,8 @@ node_modules/
 
 # AI assistant / agent tooling
 AGENTS.md
+agent.md
+agents/
 graphify-out/
 .agents/
 .opencode/
@@ -16,6 +18,8 @@ docs/
 tests/
 backups/
 
-# OS junk
-Thumbs.db
+# Playwright MCP logs
+.playwright-mcp/
 .DS_Store
+/agent
+/.claude

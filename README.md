@@ -24,21 +24,23 @@ npm run check      # syntax-checks script.js and the test harnesses
 Three prefilled demo accounts (resident, collector, admin) are available on the login screen under **Explore Rikna**.
 
 - **Resident** — deposit points, wallet, rewards/vouchers, QR pass, impact tracking
-- **Collector** — scan residents, record deposits, collection records
+- **Collector** — scan residents, verify bag-based collections (10/20/40 EcoTokens), photo inspection, collection records
 - **Admin** — dashboard KPIs, manage materials/rewards/collectors/activities, audits & reports
 
 ## Project structure
 
 ```
 rikna/
-├── index.html      # All screens + modals
+├── index.html      # All 20 screens + 23 modals
 ├── style.css       # Design tokens, components, screen styles
 ├── script.js       # State, rendering, navigation, interactions
-├── assets/         # logo.png, grain.png
-└── rikna_logo1.png # Logo master
+├── assets/         # logo.png, grain.png, mascot-*.png
+├── rikna_logo1.png # Logo master
+├── agent.md        # Agent documentation index
+└── agents/         # Detailed agent reference docs
 ```
 
 ## Scope notes
 
-- Mobile only (320–430px); desktop layouts are out of scope.
+- Mobile first (320–430px) with tablet/desktop fallbacks.
 - The QR pass is a deterministic demo pattern, not a standards-compliant QR code, and there is no live camera/decoder — this is a prototype with no production QR authorization service.

@@ -1909,76 +1909,173 @@ body {
 
 /* Points Balance Card (Resident Home) */
 .points-card {
-  background: linear-gradient(120deg, #146375 0%, #246D67 60%, #32755D 100%);
-  border-radius: var(--radius-xl);
-  padding: 24px;
+  background: #064E3B;
+  background: linear-gradient(135deg, #074D4D 0%, #0B4639 50%, #064E3B 100%);
+  border-radius: 20px;
+  padding: 20px 22px 16px;
   margin: 12px 20px 16px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(20, 99, 117, 0.16);
+  box-shadow: 0 8px 24px rgba(7, 77, 77, 0.22);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   color: var(--text-white);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .points-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(60, 141, 112, 0.35);
+    box-shadow: 0 12px 30px rgba(7, 77, 77, 0.35);
   }
 }
 
-.points-card-bg-circle {
-  position: absolute;
-  right: -30px;
-  bottom: -40px;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: rgba(212, 234, 80, 0.10);
-  border: 1px solid rgba(245, 239, 179, 0.16);
+/* Mascot column: the image and its glow travel together so the glow stays
+   centred on the bird, whatever size the column ends up. */
+.home-mascot-wrap {
+  position: relative;
+  display: block;
   pointer-events: none;
+  z-index: 2;
+}
+
+.home-mascot {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+}
+
+.home-mascot-glow {
+  position: absolute;
+  left: 55%; /* centred on the bird, not on the recycle mark */
+  top: 47%;
+  width: 78%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 34%, #2C7A5E 0%, #236950 58%, #1D5C47 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .points-label {
-  color: rgba(255, 255, 255, 0.88);
-  font-size: var(--text-sm);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-transform: uppercase;
+  z-index: 3;
+  position: relative;
+}
+
+.home-wallet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: var(--radius-pill);
+  background: rgba(212, 234, 80, 0.15);
+  border: 1px solid rgba(212, 234, 80, 0.35);
+  color: var(--color-lime);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: none;
 }
 
 .points-value-row {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin: 10px 0 6px;
+  margin: 12px 0 10px;
+  position: relative;
+  z-index: 3;
 }
 
 .points-value {
   font-family: 'Poppins', sans-serif;
-  font-size: 36px;
+  font-size: 44px;
   font-weight: 800;
   color: #FFFFFF;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
+  line-height: 1;
+  letter-spacing: -1px;
 }
 
 .points-unit {
   color: var(--color-lime);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .points-hint {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: space-between;
+  gap: 6px;
+  position: relative;
+  z-index: 3;
+  font-weight: 500;
+}
+
+@media (max-width: 360px) {
+  .points-card {
+    padding: 16px 18px 14px;
+    margin: 10px 14px 14px;
+  }
+  .points-value {
+    font-size: 36px;
+  }
+}
+
+/* Collection Centers Page View Switcher */
+.cc-view-switcher {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: #F1F5F9;
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  border: 1px solid var(--border-base);
+}
+
+.cc-view-switcher .tab-btn {
+  border-radius: var(--radius-pill);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.cc-view-switcher .tab-btn.active {
+  background: #FFFFFF;
+  color: var(--color-forest-dark);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.cc-map-wrapper, .cc-list-wrapper {
+  animation: fadeIn 0.2s ease-out;
 }
 
 /* Resident Greeting Card */
@@ -3415,8 +3512,48 @@ body {
 }
 
 .col-perf-primary {
-  padding: 11px 16px 10px;
+  padding: 12px 18px;
   background: var(--color-forest-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.col-perf-main {
+  position: relative;
+  z-index: 2;
+}
+
+.col-mascot-wrap {
+  position: relative;
+  width: 86px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.col-mascot-glow {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(60, 141, 112, 0.22) 0%, rgba(60, 141, 112, 0.05) 70%, transparent 100%);
+  z-index: 1;
+}
+
+.col-mascot {
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-height: 72px;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
 }
 
 .col-perf-label {
@@ -5195,10 +5332,9 @@ body.deposit-success-open #screen-collector-scan > * {
     padding-right: 9px;
   }
 
-  .col-proposal {
-    width: calc(100% - 32px);
-    margin-left: 16px;
-    margin-right: 16px;
+  .col-mascot-wrap {
+    width: 70px;
+    height: 60px;
   }
 
   .col-section-head {
@@ -6643,38 +6779,88 @@ html, body {
 .home-greeting .greeting-sub svg { flex-shrink: 0; color: var(--home-accent); }
 
 #screen-resident-home .home-points {
-  display: block;
+  /* Two columns: the balance and the mascot share the card without ever
+     overlapping, at any viewport width. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "label   label"
+    "value   mascot"
+    "hint    hint";
+  column-gap: 16px;
+  row-gap: 4px;
   width: calc(100% - 2 * var(--home-gutter));
   margin: 0 var(--home-gutter);
-  padding: 16px 20px 14px;
+  padding: clamp(16px, 2.8vw, 20px) clamp(20px, 6.6vw, 40px) clamp(18px, 4vw, 30px);
   border: 0;
-  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-sm) var(--radius-xl);
+  border-radius: 24px;
   text-align: left;
   font-family: inherit;
-  background: var(--home-hero);
-  box-shadow: none;
+  background: linear-gradient(135deg, #12534A 0%, #0E4A43 55%, #0B403A 100%);
+  box-shadow: 0 10px 26px rgba(9, 63, 55, 0.18);
   transform: none;
 }
-.home-points .points-label { color: var(--text-white); font-size: 11px; letter-spacing: 1.2px; font-weight: 600; }
-.home-wallet-tag { font-size: 11px; letter-spacing: 0; font-weight: 500; opacity: 0.85; }
-.home-points .points-value-row { position: relative; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
-.home-points .points-value {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(40px, 13vw, 56px);
+#screen-resident-home .home-points .points-label { grid-area: label; }
+#screen-resident-home .home-points .points-value-row { grid-area: value; align-self: center; }
+#screen-resident-home .home-points .points-hint { grid-area: hint; }
+#screen-resident-home .home-points .home-mascot-wrap {
+  grid-area: mascot;
+  align-self: center;
+  justify-self: end;
+  width: clamp(78px, 24vw, 180px);
+}
+.home-points .points-label {
+  color: var(--text-white);
+  font-size: clamp(11px, 2.5vw, 20px);
+  letter-spacing: 1.4px;
   font-weight: 600;
+  margin-bottom: 11px;
+}
+.home-points .home-wallet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--text-white);
+  font-size: clamp(13px, 2.7vw, 22px);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: none;
+}
+.home-points .home-wallet-pill svg { width: clamp(18px, 3.4vw, 24px); height: auto; }
+.home-points .points-value-row { position: relative; flex-wrap: wrap; gap: 10px; margin: 0; }
+.home-points .points-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(44px, 13.6vw, 108px);
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--text-white);
   overflow-wrap: anywhere;
   max-width: 100%;
 }
-.home-points .points-unit { color: var(--home-reward); font-size: 12px; letter-spacing: 1px; }
+.home-points .points-unit {
+  color: var(--color-lime);
+  font-size: clamp(13px, 4.1vw, 30px);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
 .home-points .points-hint {
   position: relative;
   justify-content: space-between;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-  font-size: 12px;
+  padding-top: clamp(14px, 3vw, 22px);
+  border-top: 1px solid rgba(196, 218, 110, 0.55);
+  font-size: clamp(13px, 3.1vw, 24px);
   color: var(--text-white);
+  font-weight: 500;
+}
+.home-points .points-hint svg {
+  width: clamp(20px, 4.7vw, 34px);
+  height: auto;
+  stroke-width: 2.2;
 }
 .home-material-art { position: absolute; width: 78px; height: 84px; right: 20px; top: 32px; color: var(--color-leaf); opacity: 0.38; pointer-events: none; }
 

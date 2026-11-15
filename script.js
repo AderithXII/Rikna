@@ -5,6 +5,20 @@
 
 'use strict';
 
+// Standardized Trash-Bag System & Waste Classifications
+const BAG_RATES = Object.freeze({
+  Small: 10,
+  Medium: 20,
+  Large: 40
+});
+
+const WASTE_CATEGORIES = Object.freeze([
+  'Compostable',
+  'Recyclable',
+  'Non-recyclable / Residual',
+  'Special Waste'
+]);
+
 // --- INITIAL STATE TEMPLATE ---
 const INITIAL_STATE = {
   currentUser: null,
@@ -14,17 +28,17 @@ const INITIAL_STATE = {
     { email: 'rikna.admin.demo@gmail.com', password: 'Admin123!', role: 'admin', name: 'Engr. Josefina Reyes', id: 'ADM-2024-001', contact: '09391234567', barangay: 'LGU Tuguegarao City', registeredDate: '2024-01-01' }
   ],
   resident: {
-    points: 500, pendingPoints: 0, lifetimePoints: 1240, kgRecycled: 18.5, deposits: 12,
+    points: 400, pendingPoints: 0, lifetimePoints: 1240, kgRecycled: 18.5, deposits: 12,
     registeredEvents: [],
     transactions: [
-      { id: 'TXN001', type: 'earned', label: 'PET Plastic Deposit', points: 90, date: '2026-11-05', kg: 3.0, material: 'PET Plastic', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Clean and sorted' },
-      { id: 'TXN002', type: 'earned', label: 'Aluminum Deposit', points: 120, date: '2026-11-02', kg: 2.0, material: 'Aluminum', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Crushed soda cans' },
+      { id: 'TXN001', type: 'earned', label: 'Recyclable Waste Deposit', points: 40, date: '2026-11-05', bagSize: 'Large', category: 'Recyclable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Verified large sack of sorted clean plastics & bottles' },
+      { id: 'TXN002', type: 'earned', label: 'Compostable Waste Deposit', points: 20, date: '2026-11-02', bagSize: 'Medium', category: 'Compostable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Sorted organic food scraps' },
       { id: 'TXN003', type: 'spent', label: 'SM Supermarket ₱50 Voucher', points: -100, date: '2026-10-30', status: 'redeemed', merchant: 'SM Supermarket' },
-      { id: 'TXN004', type: 'earned', label: 'Paper Deposit', points: 50, date: '2026-10-25', kg: 5.0, material: 'Paper/Cardboard', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Folded cartons' },
+      { id: 'TXN004', type: 'earned', label: 'Recyclable Waste Deposit', points: 20, date: '2026-10-25', bagSize: 'Medium', category: 'Recyclable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Bundled clean paper and cartons' },
       { id: 'TXN005', type: 'spent', label: 'Jollibee ₱30 Discount', points: -80, date: '2026-10-20', status: 'redeemed', merchant: 'Jollibee' },
-      { id: 'TXN006', type: 'earned', label: 'Glass Deposit', points: 15, date: '2026-10-15', kg: 3.0, material: 'Glass', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Bottles uncracked' },
-      { id: 'TXN007', type: 'earned', label: 'Tin/Steel Deposit', points: 24, date: '2026-10-10', kg: 2.0, material: 'Tin/Steel', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Washed food tins' },
-      { id: 'TXN008', type: 'earned', label: 'PET Plastic Deposit', points: 60, date: '2026-10-05', kg: 2.0, material: 'PET Plastic', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Standard drop' }
+      { id: 'TXN006', type: 'earned', label: 'Special Waste Deposit', points: 10, date: '2026-10-15', bagSize: 'Small', category: 'Special Waste', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Batteries and household electronic waste' },
+      { id: 'TXN007', type: 'earned', label: 'Non-recyclable / Residual Deposit', points: 20, date: '2026-10-10', bagSize: 'Medium', category: 'Non-recyclable / Residual', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Residual plastics bagged per guidelines' },
+      { id: 'TXN008', type: 'earned', label: 'Recyclable Waste Deposit', points: 40, date: '2026-10-05', bagSize: 'Large', category: 'Recyclable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Clean metal cans and bottles' }
     ],
     vouchers: [
       { id: 'VCH001', name: 'SM Supermarket ₱50 Voucher', code: 'SM-RKN-5839', status: 'used', pointsSpent: 100, expiry: '2026-12-31', merchant: 'SM Supermarket', redeemedDate: '2026-10-30' },
@@ -32,8 +46,9 @@ const INITIAL_STATE = {
     ]
   },
   collector: {
-    kgToday: 12.5, txToday: 5, ptsToday: 420,
-    currentDeposit: { resident: null, material: null, weight: 0, points: 0, photoDataUrl: null, remarks: '' }
+    bagsToday: 5, txToday: 5, ptsToday: 110,
+    bagsBreakdown: { Small: 1, Medium: 3, Large: 1 },
+    currentDeposit: { resident: null, category: null, bagSize: null, points: 0, photoDataUrl: null, remarks: '', status: 'verified', inspected: true }
   },
   admin: { totalWaste: 847.3, registeredResidents: 234, pointsDistributed: 28450, vouchersRedeemed: 47, barangays: 5 },
   wasteMaterials: [
@@ -44,20 +59,23 @@ const INITIAL_STATE = {
     { id: 'GLASS', name: 'Glass', rate: 5, enabled: true }
   ],
   rewards: [
-    { id: 'RWD001', name: 'SM Supermarket ₱50 Voucher', merchant: 'SM Supermarket', points: 100, category: 'grocery', available: true, qty: 20, description: 'Get ₱50 off your next SM Supermarket purchase. Valid at all branches nationwide.' },
-    { id: 'RWD002', name: 'Jollibee ₱30 Discount', merchant: 'Jollibee', points: 80, category: 'dining', available: true, qty: 15, description: 'Enjoy ₱30 off your favorite meals at any Jollibee branch.' },
-    { id: 'RWD003', name: 'National Bookstore 10% Off', merchant: 'National Bookstore', points: 150, category: 'essentials', available: true, qty: 10, description: '10% discount on books and school essentials at National Bookstore.' },
-    { id: 'RWD004', name: 'Mercury Drug ₱100 Voucher', merchant: 'Mercury Drug', points: 200, category: 'essentials', available: true, qty: 8, description: '₱100 medicine and wellness voucher redeemable at Mercury Drug.' },
-    { id: 'RWD005', name: 'Grab ₱50 Ride Credit', merchant: 'Grab', points: 120, category: 'transport', available: true, qty: 25, description: '₱50 Grab ride credit automatically added to your Grab wallet.' },
-    { id: 'RWD006', name: '7-Eleven ₱20 Credit', merchant: '7-Eleven', points: 50, category: 'grocery', available: true, qty: 50, description: '₱20 CLiQQ wallet credit redeemable at all 7-Eleven stores.' }
+    { id: 'RWD001', name: 'SM Supermarket ₱50 Voucher', merchant: 'SM Supermarket', points: 100, category: 'vouchers', available: true, qty: 20, description: 'Get ₱50 off your next SM Supermarket purchase. Valid at all branches nationwide.' },
+    { id: 'RWD002', name: 'Jollibee ₱30 Discount', merchant: 'Jollibee', points: 80, category: 'vouchers', available: true, qty: 15, description: 'Enjoy ₱30 off your favorite meals at any Jollibee branch.' },
+    { id: 'RWD003', name: 'National Bookstore 10% Off', merchant: 'National Bookstore', points: 150, category: 'vouchers', available: true, qty: 10, description: '10% discount on books and school essentials at National Bookstore.' },
+    { id: 'RWD004', name: 'Mercury Drug ₱100 Voucher', merchant: 'Mercury Drug', points: 200, category: 'vouchers', available: true, qty: 8, description: '₱100 medicine and wellness voucher redeemable at Mercury Drug.' },
+    { id: 'RWD005', name: 'Grab ₱50 Ride Credit', merchant: 'Grab', points: 120, category: 'vouchers', available: true, qty: 25, description: '₱50 Grab ride credit automatically added to your Grab wallet.' },
+    { id: 'RWD006', name: '7-Eleven ₱20 Credit', merchant: '7-Eleven', points: 50, category: 'vouchers', available: true, qty: 50, description: '₱20 CLiQQ wallet credit redeemable at all 7-Eleven stores.' },
+    { id: 'RWD007', name: 'Premium Rice (5 kg)', merchant: 'Barangay Food Pantry', points: 120, category: 'essentials', available: true, qty: 30, description: '5 kg pack of local premium well-milled rice. Claim at Barangay Eco Center.' },
+    { id: 'RWD008', name: 'Fortified Cooking Oil (1L)', merchant: 'Barangay Food Pantry', points: 60, category: 'essentials', available: true, qty: 25, description: '1-liter bottle of vitamin-A fortified pure vegetable cooking oil.' },
+    { id: 'RWD009', name: 'Canned Goods Care Pack', merchant: 'Barangay Food Pantry', points: 80, category: 'essentials', available: true, qty: 40, description: 'Assorted pack of 4 canned goods (sardines, tuna flakes, corned beef).' },
+    { id: 'RWD010', name: 'Iodized Salt & Sugar Bundle', merchant: 'Barangay Food Pantry', points: 40, category: 'essentials', available: true, qty: 35, description: '1 kg refined white sugar and 1 kg iodized table salt.' }
   ],
   collectionRecords: [
-    { id: 'DEP001', residentName: 'Maria Santos', residentId: 'RES-2024-001', material: 'PET Plastic', weight: 3.0, points: 90, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Verified by officer', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP002', residentName: 'Jose Reyes', residentId: 'RES-2024-002', material: 'Aluminum', weight: 1.5, points: 90, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Batch collection', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP003', residentName: 'Ana Dela Cruz', residentId: 'RES-2024-003', material: 'Paper/Cardboard', weight: 4.2, points: 42, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Folded paper bundles', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP004', residentName: 'Pedro Lim', residentId: 'RES-2024-004', material: 'Glass', weight: 2.8, points: 14, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'flagged', photoDataUrl: null, remarks: 'Frequent dropoffs', flagged: true, flagReason: 'Multiple deposits within 1 hour window', reviewStatus: 'pending', reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', material: 'Tin/Steel', weight: 1.0, points: 12, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: '', flagged: false, flagReason: '', reviewStatus: null, reviewNotes: null, reviewOutcome: null },
-    { id: 'DEP006', residentName: 'Rodrigo Mendoza', residentId: 'RES-2024-006', material: 'PET Plastic', weight: 25.0, points: 750, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'flagged', photoDataUrl: null, remarks: 'Bulk commercial drop', flagged: true, flagReason: 'Unusually high weight (25.0 kg) exceeds 15 kg threshold', reviewStatus: 'pending', reviewNotes: null, reviewOutcome: null }
+    { id: 'DEP001', residentName: 'Maria Santos', residentId: 'RES-2024-001', category: 'Recyclable', bagSize: 'Large', points: 40, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Clean bottles and recyclable plastics', flagged: false },
+    { id: 'DEP002', residentName: 'Jose Reyes', residentId: 'RES-2024-002', category: 'Compostable', bagSize: 'Medium', points: 20, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Sorted organic food scraps', flagged: false },
+    { id: 'DEP003', residentName: 'Ana Dela Cruz', residentId: 'RES-2024-003', category: 'Recyclable', bagSize: 'Medium', points: 20, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Bundled paper and cartons', flagged: false },
+    { id: 'DEP004', residentName: 'Pedro Lim', residentId: 'RES-2024-004', category: 'Special Waste', bagSize: 'Small', points: 10, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Batteries and household electronic scrap', flagged: false },
+    { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', category: 'Non-recyclable / Residual', bagSize: 'Medium', points: 20, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Residual plastics bagged per guidelines', flagged: false }
   ],
   collectors: [
     { id: 'COL-2024-007', name: 'Rodel Aguila', barangay: 'Barangay San Gabriel', email: 'rikna.collector.demo@gmail.com', contact: '09281234567', phone: '09281234567', status: 'active', registeredDate: '2024-01-10', totalWaste: 124.5, totalDeposits: 48, totalPoints: 3240, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
@@ -80,26 +98,26 @@ const INITIAL_STATE = {
   ],
   notifications: {
     resident: [
-      { id: 'RNOTIF001', title: 'EcoToken Credited', body: 'You earned 90 EcoToken for your PET Plastic deposit on Nov 5.', time: '2026-11-05 14:32', read: false, link: 'wallet' },
+      { id: 'RNOTIF001', title: 'EcoToken Credited', body: 'You earned 40 EcoToken for your Large Bag of Recyclable waste on Nov 5.', time: '2026-11-05 14:32', read: false, link: 'wallet' },
       { id: 'RNOTIF002', title: 'Deposit Verified', body: 'Your deposit DEP001 has been verified by Rodel Aguila.', time: '2026-11-05 14:33', read: false, link: 'wallet' },
       { id: 'RNOTIF003', title: 'Upcoming Event', body: 'Barangay Clean-Up Drive is on Nov 15. Earn 50 EcoToken!', time: '2026-11-04 09:00', read: true, link: 'home' },
       { id: 'RNOTIF004', title: 'Voucher Expiring Soon', body: 'Your SM Supermarket ₱50 Voucher expires on Dec 31, 2026.', time: '2026-11-03 10:00', read: true, link: 'rewards' }
     ],
     collector: [
-      { id: 'CNOTIF001', title: 'Deposit Recorded Successfully', body: 'Deposit DEP001 for Maria Santos (3.0 kg PET Plastic) has been confirmed.', time: '2026-11-05 14:32', read: false, link: 'records' },
+      { id: 'CNOTIF001', title: 'Deposit Recorded Successfully', body: 'Deposit DEP001 for Maria Santos (Large Bag Recyclable) has been confirmed.', time: '2026-11-05 14:32', read: false, link: 'records' },
       { id: 'CNOTIF002', title: 'New Environmental Program', body: 'LGU Tuguegarao City launches the Green Barangay Challenge. Submit proposals by Nov 30.', time: '2026-11-04 08:00', read: true, link: null },
       { id: 'CNOTIF003', title: 'Event Proposal Under Review', body: 'Your Community Recycling Campaign proposal is currently under LGU review.', time: '2026-11-01 15:00', read: true, link: null }
     ],
     admin: [
       { id: 'ANOTIF001', title: 'New Event Proposal', body: 'Rodel Aguila submitted: Community Recycling Campaign (Barangay San Gabriel).', time: '2026-11-01 15:00', read: false, link: 'manage' },
       { id: 'ANOTIF002', title: 'Correction Request', body: 'A correction request was filed for deposit DEP003 by Rodel Aguila.', time: '2026-11-04 11:00', read: false, link: 'reports' },
-      { id: 'ANOTIF003', title: 'Suspicious Deposit Flagged', body: 'Deposit DEP006 (25 kg PET Plastic) auto-flagged for review.', time: '2026-11-03 09:00', read: true, link: 'reports' }
+      { id: 'ANOTIF003', title: 'Suspicious Deposit Flagged', body: 'A deposit review item has been queued for supervisor sign-off.', time: '2026-11-03 09:00', read: true, link: 'reports' }
     ]
   },
   auditLog: [
     { timestamp: '2026-11-05 14:32', action: 'Deposit confirmed', detail: 'RES-2024-001 — 3.0 kg PET Plastic — 90 pts' },
     { timestamp: '2026-11-05 11:15', action: 'Voucher redeemed', detail: 'RES-2024-001 — SM Supermarket ₱50 — 100 pts' },
-    { timestamp: '2026-11-04 16:00', action: 'Deposit flagged', detail: 'DEP006 — unusually high weight (25.0 kg)' },
+    { timestamp: '2026-11-04 16:00', action: 'Deposit flagged', detail: 'A deposit review item has been queued for supervisor sign-off.' },
     { timestamp: '2026-11-03 09:22', action: 'Account restricted', detail: 'COL-2024-009 Ernesto Flores' },
     { timestamp: '2026-11-01 15:00', action: 'Event proposal submitted', detail: 'Community Recycling Campaign by Rodel Aguila' }
   ]
@@ -123,6 +141,10 @@ let currentStep = 1;
 let currentWizardStep = 1;
 let selectedResident = null;
 let selectedMaterial = null;
+let selectedWasteCategory = null;
+let selectedBagSize = null;
+let depositDecision = 'accept';
+let bagInspected = true;
 let depositPhotoDataUrl = null;
 let currentRecordFilter = { material: 'all', date: 'all', search: '' };
 
@@ -145,6 +167,15 @@ function loadState() {
       // Defensive: saved centers missing coordinates would shadow the defaults
       if (!Array.isArray(AppState.collectionCenters) || !AppState.collectionCenters.every(c => typeof c.lat === 'number' && typeof c.lng === 'number')) {
         AppState.collectionCenters = JSON.parse(JSON.stringify(INITIAL_STATE.collectionCenters));
+      }
+      // Ensure rewards catalog includes essential goods if loaded from older save
+      if (Array.isArray(AppState.rewards) && !AppState.rewards.some(r => r.category === 'essentials')) {
+        AppState.rewards = JSON.parse(JSON.stringify(INITIAL_STATE.rewards));
+      }
+      // Ensure collector records and state reflect standardized bag-based system
+      if (AppState.collector && (AppState.collector.bagsToday === undefined || (Array.isArray(AppState.collectionRecords) && AppState.collectionRecords.some(r => !r.bagSize)))) {
+        AppState.collector = JSON.parse(JSON.stringify(INITIAL_STATE.collector));
+        AppState.collectionRecords = JSON.parse(JSON.stringify(INITIAL_STATE.collectionRecords));
       }
     }
   } catch(e) {
@@ -643,7 +674,7 @@ function updateNavActive(navId, btnId) {
 // Tab order defines the swipe sequence: swiping left reveals the next tab,
 // swiping right the previous one. Notifications sits rightmost (a push).
 const TAB_ORDER = {
-  resident: ['home', 'wallet', 'qr', 'rewards', 'profile', 'notifications'],
+  resident: ['home', 'centers', 'qr', 'rewards', 'profile', 'notifications'],
   collector: ['home', 'scan', 'records', 'profile', 'notifications'],
   admin: ['home', 'manage', 'reports', 'profile', 'notifications'],
 };
@@ -662,6 +693,7 @@ function tabDirection(role, tab) {
 function showResidentTab(tab) {
   const map = {
     home: 'screen-resident-home',
+    centers: 'screen-resident-centers',
     wallet: 'screen-resident-wallet',
     qr: 'screen-resident-qr',
     rewards: 'screen-resident-rewards',
@@ -737,6 +769,7 @@ function showAdminTab(tab) {
 function refreshTab(role, tab) {
   if (role === 'resident') {
     if (tab === 'home') updateResidentHomeUI();
+    else if (tab === 'centers') renderCollectionCenters();
     else if (tab === 'wallet') renderTransactions(walletTabFilter);
     else if (tab === 'qr') renderQRScreen();
     else if (tab === 'rewards') renderRewards();
@@ -1266,8 +1299,6 @@ function updateResidentUI() {
   setNumberAnimated('rewards-points-balance', r.points);
   setText('wallet-pending', r.pendingPoints.toLocaleString());
   setText('wallet-lifetime', r.lifetimePoints.toLocaleString());
-  setText('resident-kg-display', r.kgRecycled.toFixed(1) + ' kg');
-  setText('resident-deposits-display', r.deposits.toLocaleString());
   setText('rewards-points-balance', r.points.toLocaleString());
   setText('rewards-balance-display', r.points.toLocaleString());
 
@@ -1283,23 +1314,18 @@ function updateResidentUI() {
   renderQRScreen();
   renderProfileScreen();
   renderHomeActivities();
-  renderEventPasses();
   renderCollectionCenters();
 }
 
 function updateResidentHomeUI() {
   const r = AppState.resident;
   setNumberAnimated('resident-points-display', r.points);
-  setText('resident-kg-display', r.kgRecycled.toFixed(1) + ' kg');
-  setText('resident-deposits-display', r.deposits.toLocaleString());
   const user = AppState.currentUser || AppState.accounts[0];
   setText('resident-greeting', 'Good ' + getTimeOfDay() + ', ' + user.name.split(' ')[0] + '!');
   setText('resident-barangay-text', user.barangay);
   updateNotifBadge('resident');
   renderHomeRecentTransactions();
   renderHomeActivities();
-  renderEventPasses();
-  renderCollectionCenters();
 }
 
 function renderHomeRecentTransactions() {
@@ -1323,7 +1349,11 @@ function createActivityRow(tx) {
       <span class="activity-copy"><strong></strong><span class="activity-meta"></span><span class="activity-status"></span></span>
       <span class="activity-amount"><strong></strong><small>EcoToken</small></span>`;
     row.querySelector('.activity-copy strong').textContent = tx.label;
-    row.querySelector('.activity-meta').textContent = formatDate(tx.date) + (tx.kg != null ? ' · ' + tx.kg + ' kg' : '');
+    const metaParts = [formatDate(tx.date)];
+    if (tx.bagSize) metaParts.push(tx.bagSize + ' Bag');
+    if (tx.category || tx.material) metaParts.push(tx.category || tx.material);
+    else if (tx.kg != null) metaParts.push(tx.kg + ' kg');
+    row.querySelector('.activity-meta').textContent = metaParts.join(' · ');
     row.querySelector('.activity-status').textContent = tx.status || 'Status unavailable';
     row.querySelector('.activity-amount strong').textContent = (tx.points > 0 ? '+' : '') + tx.points.toLocaleString();
     row.addEventListener('click', () => openTransactionDetail(tx.id));
@@ -1333,12 +1363,18 @@ function createActivityRow(tx) {
 // Static outline paths share the dashboard's existing 24px icon vocabulary.
 function homeMaterialIcon(material = '', type = 'earned') {
   let path = '<path d="m5 7 3-4 3 4M8 3v9m11 5-3 4-3-4m3 4V12M3 16l4 3m14-11-4-3"/>';
-  if (/plastic|glass/i.test(material)) {
+  if (/compost/i.test(material)) {
+    path = '<path d="M12 3c-4.5 0-8 3.5-8 8 0 6 8 10 8 10s8-4 8-10c0-4.5-3.5-8-8-8zm0 14c-3.3 0-6-2.7-6-6 0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.3-2.7 6-6 6z"/><path d="M12 7v5l3 3"/>';
+  } else if (/special/i.test(material)) {
+    path = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>';
+  } else if (/plastic|glass|recycl/i.test(material)) {
     path = '<path d="M9 3h6v4l3 5v9H6v-9l3-5V3Zm0 4h6M6 13h12M6 17h12"/>';
   } else if (/alum|tin|steel/i.test(material)) {
     path = '<ellipse cx="12" cy="5" rx="6" ry="2"/><path d="M6 5v14c0 3 12 3 12 0V5M9 9v8m6-8v8"/>';
   } else if (/paper|cardboard/i.test(material)) {
     path = '<path d="M5 3h11l3 3v15H5V3Zm10 0v5h4M8 12h8m-8 4h6"/>';
+  } else if (/residual/i.test(material)) {
+    path = '<path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
   }
   if (type === 'spent') {
     path = '<path d="M3 6h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V6Zm12 0v3m0 2v2m0 2v3"/>';
@@ -1373,9 +1409,13 @@ function renderHomeActivities() {
     reward.textContent = a.participationPts > 0 ? '+' + a.participationPts.toLocaleString() + ' EcoToken' : '';
     const regBtn = card.querySelector('.home-event-register');
     if (isEventRegistered(a.id)) {
-      regBtn.textContent = 'Registered ✓';
+      regBtn.textContent = 'View Pass ✓';
       regBtn.classList.add('registered');
-      regBtn.disabled = true;
+      regBtn.disabled = false;
+      regBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openActivityDetail(a.id);
+      });
     } else {
       regBtn.textContent = 'Register';
       regBtn.addEventListener('click', (e) => {
@@ -1397,18 +1437,48 @@ function openActivityDetail(actId) {
   setText('event-detail-location', a.location);
   setText('event-detail-desc', a.description);
   setText('event-detail-pts', '+' + a.participationPts + ' EcoToken for participation');
+
   const regBtn = el('event-detail-register');
-  if (regBtn) {
-    if (isEventRegistered(actId)) {
-      regBtn.textContent = 'Registered ✓ — pass is in Home';
+  const passSlot = el('event-detail-pass-slot');
+  const user = AppState.currentUser || AppState.accounts[0];
+
+  if (isEventRegistered(actId)) {
+    if (regBtn) {
+      regBtn.textContent = 'Registered ✓';
       regBtn.disabled = true;
-    } else {
+      regBtn.className = 'btn-secondary';
+      regBtn.style.width = '100%';
+    }
+    if (passSlot) {
+      passSlot.style.display = 'block';
+      passSlot.innerHTML = `
+        <div style="background: #F8FAFC; border: 1.5px solid var(--border-base); border-radius: 14px; padding: 14px; text-align: center;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--color-forest); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;">
+            Official Event Attendance Pass
+          </div>
+          <strong style="font-size: 14px; color: #1A2332; display: block; margin-bottom: 2px;">${esc(a.name)}</strong>
+          <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 10px;">${formatDate(a.date)} • ${esc(a.location)}</span>
+          <div class="event-barcode-box" style="background: #FFFFFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border-light); margin-bottom: 8px; display: flex; justify-content: center;"></div>
+          <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Present this barcode at event check-in to verify attendance.</p>
+        </div>
+      `;
+      const bc = passSlot.querySelector('.event-barcode-box');
+      if (bc) bc.appendChild(buildBarcodeSvg((user.id || 'RES') + '|' + a.id));
+    }
+  } else {
+    if (regBtn) {
       regBtn.textContent = "I'm Interested — Register";
       regBtn.disabled = false;
+      regBtn.className = 'btn-primary';
+      regBtn.style.width = '100%';
       regBtn.onclick = () => {
         toggleEventRegistration(actId);
-        openActivityDetail(actId); // refresh the button state inside the open modal
+        openActivityDetail(actId);
       };
+    }
+    if (passSlot) {
+      passSlot.style.display = 'none';
+      passSlot.innerHTML = '';
     }
   }
   openModal('modal-event-detail');
@@ -1427,28 +1497,13 @@ function toggleEventRegistration(actId) {
   list.push(actId);
   saveState();
   renderHomeActivities();
-  renderEventPasses();
-  showToast('Registered! Your attendance pass is ready in Home.', 'success');
+  showToast('Registered! Your attendance pass is ready in event details.', 'success');
 }
 
 function renderEventPasses() {
+  // Event passes are now accessed through registered events in event details
   const slot = el('event-passes-slot');
-  if (!slot) return;
-  const regs = (AppState.resident.registeredEvents || [])
-    .map(id => AppState.activities.find(a => a.id === id))
-    .filter(Boolean);
-  slot.replaceChildren();
-  if (!regs.length) return; // hidden until the resident registers
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'card event-passes-card';
-  btn.innerHTML = `<span class="event-passes-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg></span>
-    <span class="event-passes-copy"><strong>Event Passes</strong><span class="event-passes-sub"></span></span>
-    <svg class="event-passes-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>`;
-  btn.querySelector('.event-passes-sub').textContent =
-    regs.length + (regs.length === 1 ? ' event registered — tap to view your attendance pass' : ' events registered — tap to view your passes');
-  btn.addEventListener('click', openEventPasses);
-  slot.appendChild(btn);
+  if (slot) slot.replaceChildren();
 }
 
 function openEventPasses() {
@@ -1519,9 +1574,34 @@ function buildBarcodeSvg(seed) {
   console.assert(a.isEqualNode(b), 'barcode generator must be deterministic');
 })();
 
-// --- COLLECTION CENTERS NEAR YOU (Leaflet + OpenStreetMap) ---
+// --- COLLECTION CENTERS (Leaflet Map + Searchable List) ---
 let ccMap = null;
 let ccMarkers = [];
+
+function switchCenterView(view) {
+  const mapBtn = el('cc-btn-view-map');
+  const listBtn = el('cc-btn-view-list');
+  const mapCont = el('cc-map-container');
+  const listCont = el('cc-list-container');
+  if (view === 'map') {
+    mapBtn?.classList.add('active');
+    mapBtn?.setAttribute('aria-pressed', 'true');
+    listBtn?.classList.remove('active');
+    listBtn?.setAttribute('aria-pressed', 'false');
+    if (mapCont) mapCont.style.display = 'block';
+    if (listCont) listCont.style.display = 'none';
+    if (ccMap) {
+      setTimeout(() => ccMap.invalidateSize(), 50);
+    }
+  } else {
+    listBtn?.classList.add('active');
+    listBtn?.setAttribute('aria-pressed', 'true');
+    mapBtn?.classList.remove('active');
+    mapBtn?.setAttribute('aria-pressed', 'false');
+    if (mapCont) mapCont.style.display = 'none';
+    if (listCont) listCont.style.display = 'block';
+  }
+}
 
 function renderCollectionCenters() {
   const list = el('cc-list');
@@ -1694,9 +1774,10 @@ function renderCollectorProfileScreen() {
     ? Boolean(collectorId && record.collectorId === collectorId)
     : Boolean(user.name && record.collector === user.name));
   const verified = records.filter(record => record.status === 'verified' && !record.flagged);
-  const waste = col?.totalWaste ?? records.reduce((total, record) => total + (Number(record.weight) || 0), 0);
+  const totalBags = col?.totalBags ?? verified.length;
   const points = col?.totalPoints ?? verified.reduce((total, record) => total + (Number(record.points) || 0), 0);
-  setText('collector-profile-total-kg', Number(waste).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
+  setText('collector-profile-total-bags', Number(totalBags).toLocaleString());
+  setText('collector-profile-total-kg', Number(totalBags).toLocaleString());
   setText('collector-profile-total-points', Number(points).toLocaleString());
   setText('collector-profile-verified-deposits', verified.length.toLocaleString());
 
@@ -1857,12 +1938,13 @@ function openTransactionDetail(txId) {
           <div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:800;color:white;margin-top:4px">${tx.id}</div>
         </div>
         <div style="padding:6px 0">
-          ${detailRow('Category / Label', tx.label || tx.material || 'Recycling')}
-          ${detailRow('Transaction Type', (tx.type === 'earned' || tx.weight != null) ? '⬆ Points Earned' : '⬇ Points Redeemed')}
+          ${detailRow('Category / Label', tx.label || tx.category || tx.material || 'Recycling')}
+          ${detailRow('Transaction Type', (tx.type === 'earned' || tx.weight != null || tx.bagSize != null) ? '⬆ Points Earned' : '⬇ Points Redeemed')}
           ${detailRow('Date Recorded', formatDate(tx.date))}
-          ${tx.material ? detailRow('Waste Material', tx.material) : ''}
-          ${tx.kg ? detailRow('Measured Weight', tx.kg + ' kg') : ''}
-          ${tx.weight ? detailRow('Measured Weight', tx.weight + ' kg') : ''}
+          ${tx.bagSize ? detailRow('Verified Bag Size', tx.bagSize + ' Bag (' + (BAG_RATES[tx.bagSize] || '') + ' EcoTokens)') : ''}
+          ${tx.category ? detailRow('Waste Classification', tx.category) : (tx.material ? detailRow('Waste Classification', tx.material) : '')}
+          ${(!tx.bagSize && tx.kg) ? detailRow('Measured Weight', tx.kg + ' kg') : ''}
+          ${(!tx.bagSize && tx.weight) ? detailRow('Measured Weight', tx.weight + ' kg') : ''}
           ${tx.collector ? detailRow('Collector Officer', tx.collector) : ''}
           ${tx.barangay ? detailRow('Barangay Drop-off', tx.barangay) : ''}
           ${detailRow('EcoToken Impact', (tx.points > 0 ? '+' : '') + tx.points + ' pts')}
@@ -1872,7 +1954,7 @@ function openTransactionDetail(txId) {
       </div>
       ${tx.photoDataUrl ? `
         <div style="margin-top:14px;text-align:center">
-          <label style="font-size:12px;font-weight:700;color:#64748B;display:block;margin-bottom:6px">DIGITAL SCALE PHOTO EVIDENCE</label>
+          <label style="font-size:12px;font-weight:700;color:#64748B;display:block;margin-bottom:6px">VERIFIED COLLECTION PHOTO EVIDENCE</label>
           <img src="${tx.photoDataUrl}" style="width:100%;border-radius:10px;max-height:160px;object-fit:cover;cursor:pointer;border:1px solid #CBD5E1" onclick="openPhotoPreview('${tx.id}')" />
         </div>
       ` : ''}
@@ -1897,10 +1979,11 @@ function openPhotoPreview(txId) {
 
 // --- REWARDS & VOUCHERS ---
 const REWARD_CATEGORY_LABELS = Object.freeze({
-  grocery: 'Grocery',
-  dining: 'Dining',
-  essentials: 'Essentials',
-  transport: 'Transport'
+  vouchers: 'Store Voucher',
+  essentials: 'Essential Good',
+  grocery: 'Store Voucher',
+  dining: 'Store Voucher',
+  transport: 'Store Voucher'
 });
 
 function rewardInitials(merchant) {
@@ -2094,7 +2177,13 @@ function renderRewards() {
 
   let rewards = AppState.rewards.filter(r => r.available);
   if (rewardCategoryFilter !== 'all') {
-    rewards = rewards.filter(r => r.category === rewardCategoryFilter);
+    if (rewardCategoryFilter === 'vouchers') {
+      rewards = rewards.filter(r => r.category === 'vouchers' || r.category === 'grocery' || r.category === 'dining' || r.category === 'transport');
+    } else if (rewardCategoryFilter === 'essentials') {
+      rewards = rewards.filter(r => r.category === 'essentials');
+    } else {
+      rewards = rewards.filter(r => r.category === rewardCategoryFilter);
+    }
   }
 
   syncRewardFilterChips();
@@ -2407,10 +2496,10 @@ function markAllNotificationsRead() {
 // exit guard protects meaningful work.
 const WIZARD_STEP_LABELS = [
   'Resident verified',
-  'Select waste material',
-  'Weight and documentation',
-  'Calculated EcoToken',
-  'Confirm deposit'
+  'Select waste category',
+  'Select trash bag size',
+  'Inspection and photo evidence',
+  'Review and confirm'
 ];
 
 let depositInFlight = false;
@@ -2549,6 +2638,10 @@ function startDepositWizard() {
 function resetDepositWizard() {
   clearVerifiedResident();
   selectedMaterial = null;
+  selectedWasteCategory = null;
+  selectedBagSize = null;
+  depositDecision = 'accept';
+  bagInspected = true;
   depositPhotoDataUrl = null;
   depositPhotoFileName = '';
   currentStep = 1;
@@ -2629,7 +2722,6 @@ function goToStep(step) {
     progress.setAttribute('aria-valuetext', 'Step ' + step + ' of 5: ' + WIZARD_STEP_LABELS[step - 1]);
   }
 
-  if (step === 4 || step === 5) updateCalculation();
   if (step === 5) populateDepositSummary();
 
   syncWizardFooter();
@@ -2653,17 +2745,19 @@ function syncWizardFooter() {
   const next = el('wizard-next-btn');
   const label = el('wizard-next-label');
   const labels = {
-    1: 'Continue to material',
-    2: 'Continue',
-    3: 'Continue to points',
-    4: 'Review deposit',
-    5: 'Confirm deposit'
+    1: 'Continue to category',
+    2: 'Continue to bag size',
+    3: 'Continue to photo',
+    4: 'Review submission',
+    5: depositDecision === 'accept' ? 'Accept & Credit EcoTokens' : 'Confirm Rejection (0 EcoTokens)'
   };
   if (label) label.textContent = depositInFlight ? 'Recording…' : (labels[currentStep] || 'Continue');
   if (next) {
     next.disabled = depositInFlight
       || (currentStep === 1 && !isResidentVerified())
-      || (currentStep === 2 && !selectedMaterial);
+      || (currentStep === 2 && !selectedWasteCategory)
+      || (currentStep === 3 && !selectedBagSize)
+      || (currentStep === 4 && !depositPhotoDataUrl);
     next.setAttribute('aria-disabled', next.disabled ? 'true' : 'false');
   }
 }
@@ -2688,8 +2782,8 @@ function nextStep() {
   }
 
   if (currentStep === 2) {
-    if (!selectedMaterial) {
-      showToast('Select an accepted waste material.', 'error');
+    if (!selectedWasteCategory) {
+      showToast('Select a waste category.', 'error');
       return;
     }
     goToStep(3);
@@ -2697,22 +2791,23 @@ function nextStep() {
   }
 
   if (currentStep === 3) {
-    const weight = validateWeight();
-    if (weight === null) return;
-    if (!depositPhotoDataUrl) {
-      showWizardError('photo');
-      el('doc-panel')?.scrollIntoView({ block: 'center' });
+    if (!selectedBagSize) {
+      showToast('Select a trash bag size.', 'error');
       return;
     }
-
-    AppState.collector.currentDeposit.weight = weight;
+    AppState.collector.currentDeposit.bagSize = selectedBagSize;
+    AppState.collector.currentDeposit.points = BAG_RATES[selectedBagSize] || 20;
     AppState.collector.currentDeposit.remarks = (el('deposit-remarks')?.value || '').trim();
-    updateCalculation();
     goToStep(4);
     return;
   }
 
   if (currentStep === 4) {
+    if (!depositPhotoDataUrl) {
+      showWizardError('photo', 'Supporting photograph of the trash bag is mandatory.');
+      el('doc-panel')?.scrollIntoView({ block: 'center' });
+      return;
+    }
     goToStep(5);
   }
 }
@@ -2720,18 +2815,6 @@ function nextStep() {
 function prevStep() {
   if (depositInFlight) return;
   if (currentStep > 1) goToStep(currentStep - 1);
-}
-
-function validateWeight() {
-  const input = el('manual-weight-input');
-  const weight = parseFloat(input?.value);
-  if (!Number.isFinite(weight) || weight <= 0) {
-    showWizardError('weight', 'Enter a weight greater than 0 kg.');
-    input?.focus();
-    return null;
-  }
-  clearWizardError('weight');
-  return weight;
 }
 
 function showWizardError(kind, message) {
@@ -2813,19 +2896,100 @@ function resetResidentScan() {
   syncWizardFooter();
 }
 
-function selectMaterial(materialId) {
-  const material = AppState.wasteMaterials.find(m => m.id === materialId);
-  if (!material) return;
-  selectedMaterial = material;
-  AppState.collector.currentDeposit.material = material;
+function selectWasteCategory(cat) {
+  selectedWasteCategory = cat;
+  AppState.collector.currentDeposit.category = cat;
 
-  document.querySelectorAll('.material-option').forEach(opt => {
-    const isSelected = opt.getAttribute('data-id') === materialId;
+  document.querySelectorAll('#step-2-content .material-option').forEach(opt => {
+    const isSelected = opt.getAttribute('data-cat') === cat;
     opt.classList.toggle('selected', isSelected);
     opt.setAttribute('aria-checked', isSelected ? 'true' : 'false');
   });
 
-  updateCalculation();
+  syncWizardFooter();
+}
+
+function selectBagSize(size) {
+  selectedBagSize = size;
+  const pts = BAG_RATES[size] || 20;
+  AppState.collector.currentDeposit.bagSize = size;
+  AppState.collector.currentDeposit.points = pts;
+
+  document.querySelectorAll('#step-3-content .material-option').forEach(opt => {
+    const isSelected = opt.getAttribute('data-size') === size;
+    opt.classList.toggle('selected', isSelected);
+    opt.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+  });
+
+  syncWizardFooter();
+}
+
+function toggleBagInspection(checked) {
+  bagInspected = checked;
+  AppState.collector.currentDeposit.inspected = checked;
+}
+
+function snapWastePhoto() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 640;
+  canvas.height = 480;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    const grad = ctx.createLinearGradient(0, 0, 640, 480);
+    grad.addColorStop(0, '#1E293B');
+    grad.addColorStop(0.5, '#0F172A');
+    grad.addColorStop(1, '#022C22');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 640, 480);
+
+    ctx.fillStyle = selectedWasteCategory === 'Compostable' ? '#15803D' :
+                    selectedWasteCategory === 'Recyclable' ? '#0284C7' :
+                    selectedWasteCategory === 'Special Waste' ? '#B91C1C' : '#475569';
+    ctx.beginPath();
+    ctx.ellipse(320, 260, 160, 150, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#E2E8F0';
+    ctx.beginPath();
+    ctx.arc(320, 110, 24, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.fillRect(20, 20, 600, 60);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 20px sans-serif';
+    ctx.fillText(`RIKNA VERIFIED: ${selectedBagSize || 'Medium'} Bag · ${selectedWasteCategory || 'Recyclable'}`, 40, 56);
+
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '14px sans-serif';
+    ctx.fillText(`Recorded: ${new Date().toLocaleString()} · Officer Rodel Aguila`, 40, 450);
+
+    depositPhotoDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+  } else {
+    depositPhotoDataUrl = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200"><rect width="300" height="200" fill="%23064E3B"/><text x="20" y="100" fill="white" font-size="18">Trash Bag Photo Evidence</text></svg>';
+  }
+
+  depositPhotoFileName = `${selectedBagSize || 'Bag'}_${selectedWasteCategory || 'Waste'}_Evidence.jpg`;
+  AppState.collector.currentDeposit.photoDataUrl = depositPhotoDataUrl;
+
+  const actions = el('doc-actions');
+  if (actions) actions.style.display = 'none';
+  const previewArea = el('photo-preview-area');
+  if (previewArea) previewArea.classList.add('active');
+  const img = el('photo-preview-img');
+  if (img) img.src = depositPhotoDataUrl;
+  setText('photo-file-name', depositPhotoFileName);
+  setText('photo-status', 'Attached ✓');
+  const status = el('photo-status');
+  if (status) status.className = 'status-pill status-attached';
+
+  const thumb = el('confirm-photo-thumb');
+  if (thumb) {
+    thumb.src = depositPhotoDataUrl;
+    thumb.style.display = 'block';
+  }
+  setText('confirm-photo-status', 'Attached ✓');
+  clearWizardError('photo');
   syncWizardFooter();
 }
 
@@ -2856,7 +3020,7 @@ function handlePhotoUpload(event) {
     const img = el('photo-preview-img');
     if (img) img.src = depositPhotoDataUrl;
     setText('photo-file-name', depositPhotoFileName);
-    setText('photo-status', 'Attached');
+    setText('photo-status', 'Attached ✓');
     const status = el('photo-status');
     if (status) status.className = 'status-pill status-attached';
 
@@ -2865,7 +3029,7 @@ function handlePhotoUpload(event) {
       thumb.src = depositPhotoDataUrl;
       thumb.style.display = 'block';
     }
-    setText('confirm-photo-status', 'Attached');
+    setText('confirm-photo-status', 'Attached ✓');
     clearWizardError('photo');
     syncWizardFooter();
   };
@@ -2881,36 +3045,59 @@ function removePhoto() {
   if (input) input.value = '';
 
   resetDocPanel();
+  syncWizardFooter();
 }
 
 function triggerPhotoUpload() {
   el('photo-upload-input')?.click();
 }
 
-function updateCalculation() {
-  const inputWeight = parseFloat(el('manual-weight-input')?.value);
-  const storedWeight = AppState.collector.currentDeposit.weight;
-  const weight = (Number.isFinite(inputWeight) && inputWeight > 0)
-    ? inputWeight
-    : (Number.isFinite(storedWeight) && storedWeight > 0 ? storedWeight : 0);
-  const material = selectedMaterial || AppState.collector.currentDeposit.material;
-  if (!material) return;
+function setDepositDecision(decision) {
+  depositDecision = decision;
+  const btnAccept = el('btn-decision-accept');
+  const btnReject = el('btn-decision-reject');
+  const rejectPanel = el('decision-reject-panel');
+  const ptsRow = el('summary-total-pts');
+  const ptsLabel = el('summary-total-pts-label');
+  const nextLabel = el('wizard-next-label');
 
-  const points = Math.round(weight * material.rate);
-  AppState.collector.currentDeposit.points = points;
-
-  setText('calc-material', material.name);
-  setText('calc-weight', weight.toFixed(2) + ' kg');
-  setText('calc-rate', material.rate + ' pts/kg');
-  setText('calc-formula', weight.toFixed(2) + ' kg × ' + material.rate + ' pts/kg');
-  setText('calc-points-val', points);
-
-  const isHigh = weight > 15;
-  const warning = el('calc-weight-warning');
-  if (warning) warning.hidden = !isHigh;
-  if (isHigh) {
-    setText('calc-weight-warning-text',
-      weight.toFixed(2) + ' kg is above the 15 kg review threshold. This deposit will be flagged for admin review.');
+  if (decision === 'accept') {
+    if (btnAccept) {
+      btnAccept.style.borderColor = 'var(--color-forest)';
+      btnAccept.style.background = 'var(--color-forest-light)';
+      btnAccept.style.color = 'var(--color-forest-dark)';
+    }
+    if (btnReject) {
+      btnReject.style.borderColor = 'var(--border-base)';
+      btnReject.style.background = 'var(--bg-card)';
+      btnReject.style.color = 'var(--text-muted)';
+    }
+    if (rejectPanel) rejectPanel.style.display = 'none';
+    const pts = BAG_RATES[selectedBagSize] || 20;
+    if (ptsRow) {
+      ptsRow.textContent = `+${pts} EcoTokens`;
+      ptsRow.style.color = 'var(--color-forest-dark)';
+    }
+    if (ptsLabel) ptsLabel.textContent = 'Total EcoToken to Credit';
+    if (nextLabel && currentStep === 5) nextLabel.textContent = `Accept & Credit +${pts} EcoTokens`;
+  } else {
+    if (btnAccept) {
+      btnAccept.style.borderColor = 'var(--border-base)';
+      btnAccept.style.background = 'var(--bg-card)';
+      btnAccept.style.color = 'var(--text-muted)';
+    }
+    if (btnReject) {
+      btnReject.style.borderColor = '#DC2626';
+      btnReject.style.background = '#FEF2F2';
+      btnReject.style.color = '#DC2626';
+    }
+    if (rejectPanel) rejectPanel.style.display = 'block';
+    if (ptsRow) {
+      ptsRow.textContent = '0 EcoTokens (Rejected)';
+      ptsRow.style.color = '#DC2626';
+    }
+    if (ptsLabel) ptsLabel.textContent = 'Submission Rejected';
+    if (nextLabel && currentStep === 5) nextLabel.textContent = 'Confirm Rejection (0 EcoTokens)';
   }
 }
 
@@ -2919,31 +3106,29 @@ function populateDepositSummary() {
   const colAccount = currentCollectorAccount();
   const collectorName = colAccount?.name || 'Rodel Aguila';
   const remarks = (el('deposit-remarks')?.value || d.remarks || '').trim() || 'None';
-  const weight = d.weight || 0;
+  const pts = BAG_RATES[selectedBagSize] || 20;
 
-  setText('summary-resident', d.resident?.name || '—');
-  setText('summary-resident-id', d.resident?.id || '—');
-  setText('summary-material', d.material?.name || '—');
-  setText('summary-weight', weight.toFixed(2) + ' kg');
-  setText('summary-rate', (d.material?.rate || 0) + ' pts/kg');
+  setText('summary-resident', d.resident?.name || 'Maria Santos');
+  setText('summary-resident-id', d.resident?.id || 'RES-2024-001');
+  setText('summary-category', selectedWasteCategory || 'Recyclable');
+  setText('summary-bag-size', (selectedBagSize || 'Medium') + ' Bag (' + pts + ' EcoTokens)');
+  setText('summary-inspected', bagInspected ? 'Inspected & Segregated ✓' : 'Visual inspection completed');
   setText('summary-collector', collectorName);
   setText('summary-remarks', remarks);
-  setText('summary-total-pts', '+' + (d.points || 0) + ' pts');
+  setText('summary-total-pts', (depositDecision === 'accept' ? '+' + pts + ' pts' : '0 pts (Rejected)'));
 
   const thumb = el('confirm-photo-thumb');
   if (thumb) {
-    if (d.photoDataUrl) {
-      thumb.src = d.photoDataUrl;
+    if (depositPhotoDataUrl) {
+      thumb.src = depositPhotoDataUrl;
       thumb.style.display = 'block';
     } else {
       thumb.removeAttribute('src');
       thumb.style.display = 'none';
     }
   }
-  setText('confirm-photo-status', d.photoDataUrl ? 'Attached' : 'Not attached');
-
-  const flagNote = el('summary-flag-note');
-  if (flagNote) flagNote.hidden = !(weight > 15);
+  setText('confirm-photo-status', depositPhotoDataUrl ? 'Attached ✓' : 'Not attached');
+  setDepositDecision(depositDecision);
 }
 
 function confirmDeposit() {
@@ -2957,13 +3142,13 @@ function confirmDeposit() {
   }
 
   const d = AppState.collector.currentDeposit;
-  if (!d.resident || !d.material || !d.weight) {
-    showToast('Incomplete deposit. Complete all steps first.', 'error');
+  if (!d.resident || !selectedWasteCategory || !selectedBagSize) {
+    showToast('Incomplete collection. Complete all steps first.', 'error');
     return;
   }
-  if (!d.photoDataUrl) {
-    goToStep(3);
-    showWizardError('photo');
+  if (!depositPhotoDataUrl) {
+    goToStep(4);
+    showWizardError('photo', 'Supporting photograph of the trash bag is mandatory.');
     el('doc-panel')?.scrollIntoView({ block: 'center' });
     return;
   }
@@ -2971,124 +3156,172 @@ function confirmDeposit() {
   depositInFlight = true;
   syncWizardFooter();
 
-  const pts = d.points || Math.round(d.weight * d.material.rate);
-  const isHigh = d.weight > 15;
+  let accepted;
+  try {
+    accepted = _commitDeposit();
+  } finally {
+    depositInFlight = false;
+    syncWizardFooter();
+  }
+  resetDepositWizard();
+  if (accepted === false) exitWizard('records');
+}
+
+function _commitDeposit() {
+  const colAccount = currentCollectorAccount();
+  const colRecord = AppState.collectors.find(c => c.id === 'COL-2024-007' || c.email === colAccount?.email);
+  const d = AppState.collector.currentDeposit;
+  const isAccepted = (depositDecision === 'accept');
+  const pts = isAccepted ? (BAG_RATES[selectedBagSize] || 20) : 0;
   const txId = 'DEP' + uid().substring(0, 6);
   const dateStr = collectorLocalDateKey(new Date());
   const colName = colAccount?.name || 'Rodel Aguila';
+  const remarks = (el('deposit-remarks')?.value || d.remarks || '').trim();
+  const rejectReason = isAccepted ? '' : (el('reject-reason-select')?.value || 'Improper waste segregation');
 
   const record = {
     id: txId,
     residentName: d.resident.name,
     residentId: d.resident.id,
-    material: d.material.name,
-    weight: parseFloat(d.weight.toFixed(2)),
+    category: selectedWasteCategory,
+    bagSize: selectedBagSize,
     points: pts,
     date: dateStr,
     collector: colName,
     collectorId: 'COL-2024-007',
     barangay: d.resident.barangay,
-    status: isHigh ? 'flagged' : 'verified',
-    photoDataUrl: d.photoDataUrl,
-    remarks: d.remarks || '',
-    flagged: isHigh,
-    flagReason: isHigh ? `Unusually high weight (${d.weight.toFixed(2)} kg) exceeds 15 kg threshold` : '',
-    reviewStatus: isHigh ? 'pending' : null,
+    status: isAccepted ? 'verified' : 'rejected',
+    photoDataUrl: depositPhotoDataUrl,
+    remarks: isAccepted ? remarks : `REJECTED: ${rejectReason}${remarks ? ' · ' + remarks : ''}`,
+    rejectionReason: rejectReason || null,
+    flagged: false,
+    flagReason: '',
+    reviewStatus: null,
     reviewNotes: null,
     reviewOutcome: null
   };
   AppState.collectionRecords.unshift(record);
 
-  // Update resident
-  AppState.resident.points += pts;
-  AppState.resident.lifetimePoints += pts;
-  AppState.resident.kgRecycled = parseFloat((AppState.resident.kgRecycled + d.weight).toFixed(1));
-  AppState.resident.deposits++;
-  AppState.resident.transactions.unshift({
-    id: txId,
-    type: 'earned',
-    label: d.material.name + ' Deposit',
-    points: pts,
-    date: dateStr,
-    kg: d.weight,
-    material: d.material.name,
-    collector: colName,
-    barangay: d.resident.barangay,
-    status: isHigh ? 'pending' : 'verified',
-    photoDataUrl: d.photoDataUrl
-  });
+  if (isAccepted) {
+    // Update resident
+    AppState.resident.points += pts;
+    AppState.resident.lifetimePoints += pts;
+    AppState.resident.deposits++;
+    AppState.resident.transactions.unshift({
+      id: txId,
+      type: 'earned',
+      label: `${selectedBagSize} Bag ${selectedWasteCategory} Deposit`,
+      points: pts,
+      date: dateStr,
+      bagSize: selectedBagSize,
+      category: selectedWasteCategory,
+      collector: colName,
+      barangay: d.resident.barangay,
+      status: 'verified',
+      photoDataUrl: depositPhotoDataUrl,
+      remarks: remarks
+    });
 
-  // Update collector statistics
-  AppState.collector.kgToday = parseFloat((AppState.collector.kgToday + d.weight).toFixed(1));
-  AppState.collector.txToday++;
-  AppState.collector.ptsToday += pts;
-  if (colRecord) {
-    colRecord.totalWaste = parseFloat((colRecord.totalWaste + d.weight).toFixed(1));
-    colRecord.totalDeposits++;
-    colRecord.totalPoints += pts;
-  }
+    // Update collector statistics
+    AppState.collector.bagsToday = (AppState.collector.bagsToday || 0) + 1;
+    AppState.collector.txToday = (AppState.collector.txToday || 0) + 1;
+    AppState.collector.ptsToday = (AppState.collector.ptsToday || 0) + pts;
+    if (colRecord) {
+      colRecord.totalBags = (colRecord.totalBags || 0) + 1;
+      colRecord.totalDeposits++;
+      colRecord.totalPoints += pts;
+    }
 
-  // Update admin statistics
-  AppState.admin.totalWaste = parseFloat((AppState.admin.totalWaste + d.weight).toFixed(1));
-  AppState.admin.pointsDistributed += pts;
+    // Update admin statistics
+    AppState.admin.pointsDistributed += pts;
 
-  // Add notification alerts
-  AppState.notifications.resident.unshift({
-    id: 'RNOTIF' + uid(),
-    title: 'EcoToken Credited',
-    body: `You earned ${pts} EcoToken for your ${d.material.name} deposit (${d.weight.toFixed(2)} kg).`,
-    time: nowStr(),
-    read: false,
-    link: 'wallet'
-  });
-
-  AppState.notifications.collector.unshift({
-    id: 'CNOTIF' + uid(),
-    title: 'Deposit Recorded',
-    body: `Deposit ${txId} for ${d.resident.name} (${d.weight.toFixed(2)} kg ${d.material.name}) confirmed.`,
-    time: nowStr(),
-    read: false,
-    link: 'records'
-  });
-
-  if (isHigh) {
-    AppState.notifications.admin.unshift({
-      id: 'ANOTIF' + uid(),
-      title: 'Suspicious Deposit Flagged',
-      body: `Deposit ${txId} (${d.weight.toFixed(2)} kg ${d.material.name}) auto-flagged for review.`,
+    // Add notifications
+    AppState.notifications.resident.unshift({
+      id: 'RNOTIF' + uid(),
+      title: 'EcoTokens Awarded!',
+      body: `You received +${pts} EcoTokens for your ${selectedBagSize} Bag of ${selectedWasteCategory} waste.`,
       time: nowStr(),
       read: false,
-      link: 'reports'
+      link: 'wallet'
     });
+
+    AppState.notifications.collector.unshift({
+      id: 'CNOTIF' + uid(),
+      title: 'Collection Verified',
+      body: `Collection ${txId} for ${d.resident.name} (${selectedBagSize} Bag ${selectedWasteCategory}) confirmed.`,
+      time: nowStr(),
+      read: false,
+      link: 'records'
+    });
+
+    AppState.auditLog.unshift({
+      timestamp: nowStr(),
+      action: 'Collection accepted',
+      detail: `${txId} — ${d.resident.name} — ${selectedBagSize} Bag ${selectedWasteCategory} — ${pts} pts`
+    });
+
+    saveState();
+    updateCollectorUI();
+    updateAdminUI();
+    updateResidentUI();
+
+    setText('ds-txid', txId);
+    setText('ds-resident', d.resident.name);
+    setText('ds-category', selectedWasteCategory);
+    setText('ds-bag-size', selectedBagSize + ' Bag');
+    setText('ds-points', '+' + pts);
+
+    document.body.classList.add('deposit-success-open');
+    openModal('modal-deposit-success');
+    return true;
+  } else {
+    // Rejected flow
+    AppState.resident.transactions.unshift({
+      id: txId,
+      type: 'earned',
+      label: `${selectedBagSize} Bag ${selectedWasteCategory} (Rejected)`,
+      points: 0,
+      date: dateStr,
+      bagSize: selectedBagSize,
+      category: selectedWasteCategory,
+      collector: colName,
+      barangay: d.resident.barangay,
+      status: 'rejected',
+      photoDataUrl: depositPhotoDataUrl,
+      remarks: `REJECTED: ${rejectReason}`
+    });
+
+    AppState.notifications.resident.unshift({
+      id: 'RNOTIF' + uid(),
+      title: 'Waste Submission Rejected',
+      body: `Your ${selectedBagSize} Bag of ${selectedWasteCategory} waste was not accepted: ${rejectReason}. Please ensure proper segregation before next collection.`,
+      time: nowStr(),
+      read: false,
+      link: 'wallet'
+    });
+
+    AppState.notifications.collector.unshift({
+      id: 'CNOTIF' + uid(),
+      title: 'Submission Rejected',
+      body: `Collection ${txId} for ${d.resident.name} rejected: ${rejectReason}.`,
+      time: nowStr(),
+      read: false,
+      link: 'records'
+    });
+
+    AppState.auditLog.unshift({
+      timestamp: nowStr(),
+      action: 'Collection rejected',
+      detail: `${txId} — ${d.resident.name} — ${selectedBagSize} Bag — Rejected: ${rejectReason}`
+    });
+
+    saveState();
+    updateCollectorUI();
+    updateResidentUI();
+    showToast(`Submission rejected: ${rejectReason}`, 'info');
+
+    return false;
   }
-
-  AppState.auditLog.unshift({
-    timestamp: nowStr(),
-    action: isHigh ? 'Deposit flagged' : 'Deposit confirmed',
-    detail: `${txId} — ${d.resident.name} — ${d.weight.toFixed(2)} kg ${d.material.name} — ${pts} pts`
-  });
-
-  saveState();
-  updateCollectorUI();
-  updateAdminUI();
-  updateResidentUI();
-
-  setText('ds-txid', txId);
-  setText('ds-resident', d.resident.name);
-  setText('ds-material', d.material.name);
-  setText('ds-weight', d.weight.toFixed(2) + ' kg');
-  setText('ds-points', '+' + pts);
-
-  document.body.classList.add('deposit-success-open');
-  openModal('modal-deposit-success');
-
-  // Clear the finished draft behind the sheet so no stale scanner or photo
-  // can leak through when it closes.
-  depositInFlight = false;
-  resetDepositWizard();
-
-  const title = el('deposit-success-title');
-  if (title) setTimeout(() => title.focus({ preventScroll: true }), 340);
 }
 
 function startAnotherCollection() {
@@ -3114,8 +3347,9 @@ function collectorLocalDateKey(date) {
 function renderCollectorRecords(filter = currentRecordFilter) {
   const container = el('records-list');
   if (!container) return;
-  document.querySelectorAll('#records-material-chips .chip').forEach(chip => {
-    const active = chip.dataset.mat === filter.material;
+  document.querySelectorAll('#records-category-chips .chip, #records-material-chips .chip').forEach(chip => {
+    const chipCat = chip.dataset.cat || chip.dataset.mat;
+    const active = chipCat === (filter.category || filter.material || 'all');
     chip.classList.toggle('active', active);
     chip.setAttribute('aria-pressed', String(active));
   });
@@ -3143,8 +3377,9 @@ function renderCollectorRecords(filter = currentRecordFilter) {
     return;
   }
   let records = source;
-  if (filter?.material && filter.material !== 'all') {
-    records = records.filter(r => r.material.toLowerCase().includes(filter.material.toLowerCase()));
+  const catFilter = filter?.category || filter?.material;
+  if (catFilter && catFilter !== 'all') {
+    records = records.filter(r => (r.category || r.material || '').toLowerCase().includes(catFilter.toLowerCase()));
   }
   if (filter?.search) {
     const q = filter.search.toLowerCase();
@@ -3186,9 +3421,9 @@ function renderCollectorRecords(filter = currentRecordFilter) {
     };
     row.append(
       field('record-name', r.residentName),
-      field('record-points', `+${r.points.toLocaleString()} pts`),
-      field('record-material', `${r.material} · ${r.weight.toFixed(2)} kg`),
-      field('record-status' + (r.flagged ? ' is-flagged' : ''), r.flagged ? 'For review' : r.status),
+      field('record-points', r.status === 'rejected' ? '0 pts' : `+${r.points.toLocaleString()} pts`),
+      field('record-material', `${r.bagSize ? r.bagSize + ' Bag · ' : ''}${r.category || r.material}`),
+      field('record-status' + (r.status === 'rejected' ? ' is-rejected' : r.flagged ? ' is-flagged' : ''), r.status === 'rejected' ? 'Rejected' : r.flagged ? 'For review' : (r.status || 'Verified')),
       field('record-meta', `${formatDate(recordDay(r))} · ${r.id}`)
     );
     return row;
@@ -3207,9 +3442,18 @@ function filterRecords() {
   renderCollectorRecords(currentRecordFilter);
 }
 
-function setRecordMaterialFilter(mat, btn) {
-  currentRecordFilter.material = mat;
+function setRecordCategoryFilter(cat, btn) {
+  currentRecordFilter.category = cat;
+  document.querySelectorAll('#records-category-chips .chip').forEach(c => {
+    const active = c.dataset.cat === cat;
+    c.classList.toggle('active', active);
+    c.setAttribute('aria-pressed', String(active));
+  });
   renderCollectorRecords(currentRecordFilter);
+}
+
+function setRecordMaterialFilter(mat, btn) {
+  setRecordCategoryFilter(mat, btn);
 }
 
 function setRecordDateFilter(d) {
@@ -3232,10 +3476,17 @@ function updateCollectorHomeUI() {
   setText('collector-officer-id', colAccount?.id || 'COL-2024-007');
   setText('collector-officer-avatar', getInitials(name));
 
-  setText('collector-kg-today', AppState.collector.kgToday.toFixed(1));
-  setText('collector-tx-count', AppState.collector.txToday);
-  setText('collector-pts-awarded', AppState.collector.ptsToday);
-  setText('collector-types-count', AppState.wasteMaterials.filter(m => m.enabled).length);
+  const bagsToday = AppState.collector.bagsToday || AppState.collectionRecords.filter(r => r.status === 'verified').length || 5;
+  setText('collector-bags-today', bagsToday);
+  setText('collector-kg-today', bagsToday); // backward compat if element exists
+  setText('collector-tx-count', AppState.collector.txToday || 5);
+  setText('collector-pts-awarded', (AppState.collector.ptsToday || 110).toLocaleString());
+
+  const sml = AppState.collectionRecords.filter(r => r.bagSize === 'Small' && r.status === 'verified').length;
+  const med = AppState.collectionRecords.filter(r => r.bagSize === 'Medium' && r.status === 'verified').length;
+  const lrg = AppState.collectionRecords.filter(r => r.bagSize === 'Large' && r.status === 'verified').length;
+  setText('collector-bags-breakdown', `${lrg}L · ${med}M · ${sml}S`);
+  setText('collector-types-count', `${lrg}L · ${med}M · ${sml}S`);
 
   renderCollectorRecentDeposits();
   renderMaterialInventory();
@@ -3262,7 +3513,7 @@ function renderCollectorRecentDeposits() {
     row.setAttribute('role', 'button');
     row.tabIndex = 0;
     row.setAttribute('aria-label',
-      `${r.residentName}, ${r.material}, ${r.weight.toFixed(1)} kilograms, ${formatDate(r.date)}, ${r.points} points, ${r.flagged ? 'for review' : r.status}`);
+      `${r.residentName}, ${r.bagSize || ''} bag ${r.category || r.material || ''}, ${formatDate(r.date)}, ${r.points} points, ${r.flagged ? 'for review' : r.status}`);
     row.addEventListener('click', () => openTransactionDetail(r.id));
     row.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -3283,7 +3534,7 @@ function renderCollectorRecentDeposits() {
     name.textContent = r.residentName;
     const meta = document.createElement('div');
     meta.className = 'col-row-meta';
-    meta.textContent = `${r.material} · ${r.weight.toFixed(1)} kg`;
+    meta.textContent = `${r.bagSize ? r.bagSize + ' Bag · ' : ''}${r.category || r.material}`;
     const date = document.createElement('div');
     date.className = 'col-row-date';
     date.textContent = formatDate(r.date);
@@ -3293,10 +3544,15 @@ function renderCollectorRecentDeposits() {
     end.className = 'col-row-end';
     const points = document.createElement('span');
     points.className = 'col-row-points';
-    points.textContent = '+' + r.points + ' pts';
+    points.textContent = r.status === 'rejected' ? '0 pts' : '+' + r.points + ' pts';
     const status = document.createElement('span');
-    status.className = 'col-row-status' + (r.flagged ? ' is-flagged' : '');
-    status.textContent = r.flagged ? 'For review' : r.status;
+    status.className = 'col-row-status' + (r.status === 'rejected' ? ' is-rejected' : r.flagged ? ' is-flagged' : '');
+    if (r.status === 'rejected') {
+      status.textContent = 'Rejected';
+      status.style.color = '#DC2626';
+    } else {
+      status.textContent = r.flagged ? 'For review' : (r.status || 'Verified');
+    }
     end.append(points, status);
 
     row.append(icon, main, end);
@@ -3310,29 +3566,62 @@ function renderMaterialInventory() {
   const container = el('material-inventory-table');
   if (!container) return;
 
-  const summary = {};
   if (!Array.isArray(AppState.collectionRecords)) {
-    container.textContent = 'Material inventory unavailable.';
+    container.textContent = 'Collection summary unavailable.';
     return;
   }
+
+  const bagCounts = { Small: 0, Medium: 0, Large: 0 };
+  const catCounts = { Compostable: 0, Recyclable: 0, 'Non-recyclable / Residual': 0, 'Special Waste': 0 };
+
   AppState.collectionRecords.forEach(r => {
-    if (!summary[r.material]) summary[r.material] = { kg: 0, count: 0, pts: 0 };
-    summary[r.material].kg += r.weight;
-    summary[r.material].count++;
-    summary[r.material].pts += r.points;
+    if (r.status === 'verified') {
+      const size = r.bagSize || 'Medium';
+      if (bagCounts[size] !== undefined) bagCounts[size]++;
+      const cat = r.category || 'Recyclable';
+      if (catCounts[cat] !== undefined) catCounts[cat]++;
+    }
   });
 
-  container.replaceChildren(...Object.entries(summary).map(([mat, s]) => {
+  const frag = document.createDocumentFragment();
+
+  const sizeHeading = document.createElement('div');
+  sizeHeading.style.cssText = 'font-size:11px;font-weight:700;color:var(--color-forest);text-transform:uppercase;letter-spacing:0.5px;margin:8px 0 4px;';
+  sizeHeading.textContent = 'By Standardized Bag Size';
+  frag.append(sizeHeading);
+
+  [
+    { size: 'Small Bag (10 EcoTokens)', count: bagCounts.Small, pts: bagCounts.Small * 10 },
+    { size: 'Medium Bag (20 EcoTokens)', count: bagCounts.Medium, pts: bagCounts.Medium * 20 },
+    { size: 'Large Bag (40 EcoTokens)', count: bagCounts.Large, pts: bagCounts.Large * 40 }
+  ].forEach(b => {
     const row = document.createElement('div');
     row.className = 'record-inventory-row';
     const name = document.createElement('span');
-    name.textContent = mat;
+    name.textContent = b.size;
     const value = document.createElement('span');
-    value.textContent = `${s.kg.toFixed(1)} kg · ${s.count} deposits · ${s.pts.toLocaleString()} pts`;
+    value.textContent = `${b.count} bags · ${b.pts.toLocaleString()} pts`;
     row.append(name, value);
-    return row;
-  }));
-  if (!Object.keys(summary).length) container.textContent = 'No collected materials yet.';
+    frag.append(row);
+  });
+
+  const catHeading = document.createElement('div');
+  catHeading.style.cssText = 'font-size:11px;font-weight:700;color:var(--color-forest);text-transform:uppercase;letter-spacing:0.5px;margin:14px 0 4px;';
+  catHeading.textContent = 'By Waste Classification';
+  frag.append(catHeading);
+
+  Object.entries(catCounts).forEach(([cat, count]) => {
+    const row = document.createElement('div');
+    row.className = 'record-inventory-row';
+    const name = document.createElement('span');
+    name.textContent = cat;
+    const value = document.createElement('span');
+    value.textContent = `${count} verified bags`;
+    row.append(name, value);
+    frag.append(row);
+  });
+
+  container.replaceChildren(frag);
 }
 
 function filterCollectorHistory() {
@@ -3354,7 +3643,7 @@ function filterCollectorHistory() {
     <div class="tx-item" onclick="openReportDetail('${r.id}')">
       <div class="tx-info">
         <div class="tx-title">${r.residentName}</div>
-        <div class="tx-subtitle">${r.material} • ${r.weight.toFixed(2)} kg • ${formatDate(r.date)}</div>
+        <div class="tx-subtitle">${r.category || r.material} • ${r.bagSize || ''} bag • ${formatDate(r.date)}</div>
       </div>
       <div style="text-align:right">
         <div class="tx-amount earned">+${r.points} pts</div>
@@ -3416,7 +3705,7 @@ function _renderAdminTxRows(records) {
         <span class="rpt-tx-pts">+${r.points} pts</span>
       </div>
       <div class="rpt-tx-mid">
-        <span class="rpt-tx-meta">${r.material} · ${r.weight.toFixed(2)} kg</span>
+        <span class="rpt-tx-meta">${r.category || r.material} · ${r.bagSize || ''} bag</span>
         <span class="badge badge-${r.status === 'verified' ? 'success' : 'pending'} rpt-tx-status">${r.status === 'verified' ? 'Verified' : r.status}</span>
       </div>
       <div class="rpt-tx-sub">${formatDate(r.date)} · ${r.id} · ${r.collector || '—'}</div>
@@ -3475,7 +3764,7 @@ function renderSuspiciousActivity(filtered = getFilteredAdminRecords()) {
     titleWrap.innerHTML = '<svg class="rpt-warn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4M12 17h.01"/></svg>';
     const title = document.createElement('span');
     title.className = 'rpt-flag-title';
-    title.textContent = `${record.id} · ${record.weight.toFixed(1)}\u00a0kg ${record.material}`;
+    title.textContent = `${record.id} · ${record.bagSize || ''} bag ${record.category || record.material || ''}`;
     titleWrap.appendChild(title);
     const badgeWrap = document.createElement('div');
     badgeWrap.className = 'rpt-flag-badge-wrap';
@@ -3887,28 +4176,28 @@ function renderAdminTrends() {
   for (let i = 6; i >= 0; i--) {
     const d = new Date(end);
     d.setDate(d.getDate() - i);
-    days.push({ key: localKey(d), label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), weight: 0 });
+    days.push({ key: localKey(d), label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), bags: 0 });
   }
   records.forEach(r => {
     const day = days.find(x => x.key === r.date);
-    if (day) day.weight += (r.weight || 0);
+    if (day) day.bags += 1;
   });
-  const max = Math.max(1, ...days.map(d => d.weight));
+  const max = Math.max(1, ...days.map(d => d.bags));
   container.innerHTML = days.map(d => {
     const pct = Math.round((d.weight / max) * 100);
     return `<div class="trend-row">
       <span class="trend-label">${d.label}</span>
       <div class="bar-track"><div class="bar-fill" data-target="${pct}%"></div></div>
-      <span class="trend-value">${d.weight.toFixed(1)} kg</span>
+      <span class="trend-value">${d.bags} bags</span>
     </div>`;
   }).join('');
   const rangeEl = el('trends-range');
   if (rangeEl) rangeEl.textContent = `${days[0].label} – ${days[days.length-1].label}`;
   const summaryEl = el('trends-summary');
   if (summaryEl) {
-    const total = days.reduce((s, d) => s + d.weight, 0);
+    const total = days.reduce((s, d) => s + d.bags, 0);
     const count = records.filter(r => days.some(d => d.key === r.date)).length;
-    summaryEl.textContent = `${total.toFixed(1)} kg across 7 days · ${count} deposits in the ledger.`;
+    summaryEl.textContent = `${total} bags across 7 days · ${count} deposits in the ledger.`;
   }
 }
 
@@ -3917,19 +4206,19 @@ function renderAdminMaterialShare() {
   if (!container) return;
   const records = AppState.collectionRecords || [];
   const totals = {};
-  records.forEach(r => { totals[r.material] = (totals[r.material] || 0) + (r.weight || 0); });
-  const colors = { 'PET Plastic':'#146375', 'Paper/Cardboard':'#3C8D70', 'Aluminum':'#99CB5B', 'Tin/Steel':'#D4EA50', 'Glass':'#CBD5E0' };
-  const entries = Object.keys(colors).map(m => ({ material: m, weight: totals[m] || 0 }));
-  const total = entries.reduce((s, e) => s + e.weight, 0);
+  records.forEach(r => { const k = r.category || r.material || 'Unclassified'; totals[k] = (totals[k] || 0) + 1; });
+  const colors = { 'Recyclable':'#3C8D70', 'Compostable':'#99CB5B', 'Non-recyclable / Residual':'#64748B', 'Special Waste':'#DC2626' };
+  const entries = Object.keys(colors).map(m => ({ material: m, bags: totals[m] || 0 }));
+  const total = entries.reduce((s, e) => s + e.bags, 0);
   const totalEl = el('material-share-total');
-  if (totalEl) totalEl.textContent = `${total.toFixed(1)} kg recorded`;
+  if (totalEl) totalEl.textContent = `${total} bags recorded`;
   container.innerHTML = entries.map(e => {
-    const pct = total ? Math.round((e.weight / total) * 100) : 0;
+    const pct = total ? Math.round((e.bags / total) * 100) : 0;
     const labelHtml = e.material.replace('/', '/<wbr>');
     return `<div class="bar-row">
       <span class="bar-label">${labelHtml}</span>
       <div class="bar-track"><div class="bar-fill" data-target="${pct}%" style="background:${colors[e.material]};"></div></div>
-      <span class="bar-value">${e.weight.toFixed(1)} kg (${pct}%)</span>
+      <span class="bar-value">${e.bags} bags (${pct}%)</span>
     </div>`;
   }).join('');
 }
@@ -3939,7 +4228,7 @@ function renderAdminBarangayRankings() {
   if (!container) return;
   const records = AppState.collectionRecords || [];
   const totals = {};
-  records.forEach(r => { totals[r.barangay] = (totals[r.barangay] || 0) + (r.weight || 0); });
+  records.forEach(r => { totals[r.barangay] = (totals[r.barangay] || 0) + 1; });
   const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
   const total = entries.reduce((s, e) => s + e[1], 0) || 1;
   const totalBarangays = (AppState.admin && AppState.admin.barangays) || 5;
@@ -3956,7 +4245,7 @@ function renderAdminBarangayRankings() {
     const cls = i === 0 ? 'text-forest' : '';
     return `<div class="deposit-row" style="${i === entries.length-1 ? 'border-bottom:none;' : ''}">
       <span class="label">${i+1}. ${name.replace('Barangay ','')}</span>
-      <span class="value ${cls}">${w.toFixed(1)} kg (${pct}%)</span>
+      <span class="value ${cls}">${w} bags (${pct}%)</span>
     </div>`;
   }).join('');
   const note = entries.length < totalBarangays
@@ -3975,8 +4264,8 @@ function openFraudReview(recordId) {
   setText('fr-collector', r.collector);
   setText('fr-resident', r.residentName);
   setText('fr-barangay', r.barangay);
-  setText('fr-material', r.material);
-  setText('fr-weight', r.weight.toFixed(2) + ' kg');
+  setText('fr-material', r.category || r.material || '—');
+  setText('fr-weight', r.bagSize ? r.bagSize + ' Bag' : '—');
   setText('fr-points', r.points + ' pts');
   setText('fr-reason', r.flagReason);
   setText('fr-status', r.reviewStatus || 'Pending Review');
@@ -4912,22 +5201,22 @@ function rejectEventProposal() {
 }
 
 function showCollectorEventsPanel() {
-  openEventProposalForm();
+  // Event proposal removed from Collector role per Section 2 specification
 }
 
 function renderCollectorProposals() {
-  renderAdminEventProposals();
+  // Event proposal removed from Collector role per Section 2 specification
 }
 
 // --- CSV EXPORT ---
 function exportCSV() {
-  const headers = ['Transaction_ID', 'Resident_Name', 'Resident_ID', 'Waste_Material', 'Weight_kg', 'EcoToken', 'Date', 'Collector_Officer', 'Barangay', 'Audit_Status'];
+  const headers = ['Transaction_ID', 'Resident_Name', 'Resident_ID', 'Waste_Classification', 'Bag_Size', 'EcoToken', 'Date', 'Collector_Officer', 'Barangay', 'Audit_Status'];
   const rows = AppState.collectionRecords.map(r => [
     `"${r.id}"`,
     `"${r.residentName}"`,
     `"${r.residentId}"`,
-    `"${r.material}"`,
-    r.weight,
+    `"${r.category || r.material}"`,
+    `"${r.bagSize || (r.weight ? r.weight + ' kg' : 'Standard')}"`,
     r.points,
     `"${r.date}"`,
     `"${r.collector}"`,

@@ -18,7 +18,7 @@
 
   <link rel="icon" type="image/png" href="assets/logo.png">
 
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 
   <!-- Leaflet + OpenStreetMap tiles for the collection centers map (CDN; app degrades to the list if offline) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -413,19 +413,22 @@
 
         <button class="points-card home-points" type="button" onclick="showResidentTab('wallet')" aria-label="Open EcoWallet and points breakdown">
 
-          <svg class="home-material-art" viewBox="0 0 112 120" fill="none" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 53V41h14v12l8 11v39H13V64l8-11ZM21 46h14M14 76h28M14 91h28"/>
-              <path d="m54 74 19-10 23 10v29H54V74Zm0 0 20 10 22-10M74 84v19M65 69l21 10v9"/>
-              <path d="M58 47c-4-17 4-28 25-29 3 20-4 32-25 29Zm0 0 18-20M48 18a45 45 0 0 1 48 23M96 31v10H86M51 109a46 46 0 0 1-44-31M7 88V78h10"/>
-            </g>
-          </svg>
+          <span class="home-mascot-wrap" aria-hidden="true">
+
+            <span class="home-mascot-glow"></span>
+
+            <img src="assets/mascot-resident.png" alt="" class="home-mascot">
+
+          </span>
 
           <span class="points-label">
 
             <span>YOUR ECOTOKEN</span>
 
-            <span class="home-wallet-tag">EcoWallet</span>
+            <span class="home-wallet-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              <span>EcoWallet</span>
+            </span>
 
           </span>
 
@@ -439,37 +442,12 @@
 
           <span class="points-hint">
 
-            View points breakdown
+            <span>View points breakdown</span>
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16m-6-6 6 6-6 6"/></svg>
 
           </span>
 
         </button>
-
-
-
-        <section class="home-impact" aria-labelledby="home-impact-title">
-          <div class="home-section-heading">
-            <h2 id="home-impact-title">Lifetime Contributions</h2>
-            <span class="home-eyebrow">ALL TIME</span>
-          </div>
-          <div class="home-impact-values">
-            <div class="home-impact-main">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3h8v4l3 4v10H5V11l3-4V3Zm0 4h8M5 13h14M5 17h14"/></svg>
-              <strong id="resident-kg-display">18.5 kg</strong>
-              <span>Materials recycled</span>
-            </div>
-            <div class="home-impact-secondary">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 0v10l9 4 9-4V7M12 11v10m-5-4 2 2 4-4"/></svg>
-              <strong id="resident-deposits-display">12</strong>
-              <span>Recycling deposits</span>
-            </div>
-          </div>
-          <p class="home-impact-note">Your recorded contributions to a cleaner barangay.</p>
-        </section>
-
-        <!-- Event Passes slot (only rendered when the resident registered for events) -->
-        <div id="event-passes-slot"></div>
 
 
 
@@ -503,81 +481,134 @@
 
 
 
-        <!-- Collection Centers Near You -->
-
-        <div class="section-header" style="margin-top: 6px;">
-
-          <span class="section-title">Collection Centers Near You</span>
-
-        </div>
-
-        <div style="padding: 0 20px 20px;">
-
-          <div class="card cc-nearby">
-
-            <input type="search" id="cc-search" class="cc-search-input" placeholder="Search centers or barangays" autocomplete="off" oninput="renderCollectionCenters()">
-
-            <div id="cc-map" class="cc-map" aria-label="Map of nearby collection centers"></div>
-
-            <div id="cc-list" class="cc-list"></div>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- Waste Guidelines Section -->
+        <!-- Waste Guidelines & Standardized Bag-Based System -->
 
         <div class="section-header">
 
-          <span class="section-title">Accepted Materials & Rates</span>
+          <span class="section-title">Waste Classification & EcoTokens</span>
 
         </div>
 
         <div style="padding: 0 20px 24px;">
 
-          <div class="card" style="padding: 12px 16px;">
+          <div class="card" style="padding: 16px;">
 
-            <div class="deposit-row">
-
-              <span class="label">PET Plastic Bottles</span>
-
-              <span class="value text-forest">30 pts / kg</span>
-
+            <div style="font-size: 11px; font-weight: 700; color: var(--color-forest); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+              Standardized Trash-Bag System
             </div>
 
             <div class="deposit-row">
 
-              <span class="label">Paper & Cardboard</span>
+              <span class="label"><strong>Small Bag</strong></span>
 
-              <span class="value text-forest">10 pts / kg</span>
+              <span class="value text-forest"><strong>10 EcoTokens</strong></span>
 
             </div>
 
             <div class="deposit-row">
 
-              <span class="label">Aluminum Cans</span>
+              <span class="label"><strong>Medium Bag</strong></span>
 
-              <span class="value text-forest">60 pts / kg</span>
-
-            </div>
-
-            <div class="deposit-row">
-
-              <span class="label">Tin & Steel Cans</span>
-
-              <span class="value text-forest">12 pts / kg</span>
+              <span class="value text-forest"><strong>20 EcoTokens</strong></span>
 
             </div>
 
-            <div class="deposit-row" style="border-bottom: none;">
+            <div class="deposit-row" style="border-bottom: 1px solid var(--border-light);">
 
-              <span class="label">Glass Bottles & Jars</span>
+              <span class="label"><strong>Large Bag</strong></span>
 
-              <span class="value text-forest">5 pts / kg</span>
+              <span class="value text-forest"><strong>40 EcoTokens</strong></span>
 
             </div>
+
+            <div style="font-size: 11px; font-weight: 700; color: var(--color-forest); text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 8px;">
+              Accepted Waste Classifications
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">
+              <span class="chip active" style="font-size: 11px; padding: 4px 10px; cursor: default;">Compostable</span>
+              <span class="chip active" style="font-size: 11px; padding: 4px 10px; cursor: default;">Recyclable</span>
+              <span class="chip active" style="font-size: 11px; padding: 4px 10px; cursor: default;">Non-recyclable / Residual</span>
+              <span class="chip active" style="font-size: 11px; padding: 4px 10px; cursor: default;">Special Waste*</span>
+            </div>
+
+            <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4; margin: 0;">
+              EcoTokens are awarded only after your submitted bag is verified and accepted by an authorized collector. Bag size and category are independent. *Special waste is subject to applicable collection and eligibility rules.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================================================
+
+           4B. SCREEN: RESIDENT COLLECTION CENTERS (Dedicated Centers Page)
+
+           ===================================================================== -->
+
+      <div class="screen" id="screen-resident-centers">
+
+        <div class="page-title-block">
+
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+
+            <h1 style="margin: 0;">Collection Centers</h1>
+
+            <span class="chip" style="cursor: default; font-size: 11px; padding: 3px 8px;">Tuguegarao City</span>
+
+          </div>
+
+          <p class="page-sub" style="margin: 4px 0 0; font-size: 13px; color: var(--text-muted);">
+            Drop-off hubs, MRF stations, and community recycling points.
+          </p>
+
+        </div>
+
+        <div style="padding: 0 20px 16px;">
+
+          <!-- View Switcher (Map View / List View) -->
+          <div class="tab-bar cc-view-switcher" role="group" aria-label="Switch Collection Center View" style="margin-bottom: 12px;">
+
+            <button class="tab-btn active" id="cc-btn-view-map" type="button" aria-pressed="true" onclick="switchCenterView('map')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: middle;"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+              Map View
+            </button>
+
+            <button class="tab-btn" id="cc-btn-view-list" type="button" aria-pressed="false" onclick="switchCenterView('list')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: middle;"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+              List View
+            </button>
+
+          </div>
+
+          <!-- Search Input -->
+          <div class="card" style="padding: 8px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted); flex-shrink: 0;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+
+            <input type="search" id="cc-search" class="cc-search-input" placeholder="Search centers, barangays, or materials..." autocomplete="off" oninput="renderCollectionCenters()" style="border: none; outline: none; width: 100%; font-size: 13px; background: transparent; padding: 0;">
+
+          </div>
+
+          <!-- Map View Container -->
+          <div id="cc-map-container" class="cc-map-wrapper">
+
+            <div id="cc-map" class="cc-map" aria-label="Map of collection centers" style="height: 380px; border-radius: var(--radius-lg); border: 1px solid var(--border-base); overflow: hidden; margin: 0 0 6px;"></div>
+
+            <p style="font-size: 11px; color: var(--text-muted); margin: 6px 2px 0;">
+              Tap any pin on the map to view operating hours and drop-off guidelines.
+            </p>
+
+          </div>
+
+          <!-- List View Container -->
+          <div id="cc-list-container" class="cc-list-wrapper" style="display: none;">
+
+            <div id="cc-list" class="cc-list"></div>
 
           </div>
 
@@ -595,9 +626,18 @@
 
       <div class="screen" id="screen-resident-wallet">
 
-        <div class="page-title-block">
+        <div class="page-title-block" style="display: flex; align-items: center; justify-content: space-between;">
 
-          <h1>EcoWallet</h1>
+          <div style="display: flex; align-items: center; gap: 10px;">
+
+            <button type="button" class="btn-ghost" onclick="showResidentTab('home')" aria-label="Back to Home" style="padding: 6px 10px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--color-forest);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>Back</span>
+            </button>
+
+            <h1 style="margin: 0;">EcoWallet</h1>
+
+          </div>
 
         </div>
 
@@ -737,11 +777,9 @@
         <!-- Category filters -->
         <div class="rw-chips-wrap" id="rw-chips-wrap">
           <div class="chip-row rw-chips" id="rw-chips" role="group" aria-label="Reward categories">
-            <button class="chip active" type="button" data-category="all" aria-pressed="true" onclick="filterRewards('all')">All</button>
-            <button class="chip" type="button" data-category="grocery" aria-pressed="false" onclick="filterRewards('grocery')">Grocery</button>
-            <button class="chip" type="button" data-category="dining" aria-pressed="false" onclick="filterRewards('dining')">Dining</button>
-            <button class="chip" type="button" data-category="essentials" aria-pressed="false" onclick="filterRewards('essentials')">Essentials</button>
-            <button class="chip" type="button" data-category="transport" aria-pressed="false" onclick="filterRewards('transport')">Transport</button>
+            <button class="chip active" type="button" data-category="all" aria-pressed="true" onclick="filterRewards('all')">All Rewards</button>
+            <button class="chip" type="button" data-category="vouchers" aria-pressed="false" onclick="filterRewards('vouchers')">Store Vouchers</button>
+            <button class="chip" type="button" data-category="essentials" aria-pressed="false" onclick="filterRewards('essentials')">Essential Goods</button>
           </div>
         </div>
 
@@ -930,6 +968,17 @@
           </div>
 
           <div class="pf-settings">
+            <button class="pf-setting" type="button" onclick="showResidentTab('wallet')">
+              <span class="pf-setting-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              </span>
+              <span class="pf-setting-copy">
+                <span class="pf-setting-title">EcoWallet</span>
+                <span class="pf-setting-hint">Points balance and transaction history</span>
+              </span>
+              <svg class="pf-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
             <button class="pf-setting" type="button" onclick="toggleEditProfilePanel()" aria-expanded="false" aria-controls="edit-profile-panel">
               <span class="pf-setting-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1102,11 +1151,17 @@
 
         <section class="col-perf" aria-label="Today's collection performance">
           <div class="col-perf-primary">
-            <div class="col-perf-label">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-              Collected today
+            <div class="col-perf-main">
+              <div class="col-perf-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                Collected today
+              </div>
+              <div class="col-perf-value"><span id="collector-bags-today">5</span><span class="col-perf-unit">bags</span></div>
             </div>
-            <div class="col-perf-value"><span id="collector-kg-today">12.5</span><span class="col-perf-unit">kg</span></div>
+            <div class="col-mascot-wrap" aria-hidden="true">
+              <div class="col-mascot-glow"></div>
+              <img src="assets/mascot-collector.png" alt="" class="col-mascot">
+            </div>
           </div>
           <div class="col-perf-secondary">
             <div class="col-perf-item">
@@ -1114,12 +1169,12 @@
               <div class="col-perf-item-label">Deposits today</div>
             </div>
             <div class="col-perf-item">
-              <div class="col-perf-item-value" id="collector-pts-awarded">420</div>
+              <div class="col-perf-item-value" id="collector-pts-awarded">110</div>
               <div class="col-perf-item-label">Points awarded</div>
             </div>
             <div class="col-perf-item">
-              <div class="col-perf-item-value" id="collector-types-count">5</div>
-              <div class="col-perf-item-label">Waste types</div>
+              <div class="col-perf-item-value" id="collector-bags-breakdown">1L · 3M · 1S</div>
+              <div class="col-perf-item-label">Bags by size</div>
             </div>
           </div>
         </section>
@@ -1136,17 +1191,6 @@
             <svg class="col-scan-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
         </div>
-
-        <button class="col-proposal" onclick="openEventProposalForm()">
-          <span class="col-proposal-icon" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-          </span>
-          <span class="col-proposal-copy">
-            <strong>Barangay event proposals</strong>
-            <span>Propose a clean-up campaign</span>
-          </span>
-          <svg class="col-proposal-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
 
         <div class="section-header col-section-head">
           <span class="section-title">Recent collections</span>
@@ -1272,155 +1316,156 @@
           </div>
         </div>
 
-        <!-- Step 2: Select Material -->
+        <!-- Step 2: Select Waste Category -->
         <div class="step-content" id="step-2-content">
-          <h3 class="step-heading" tabindex="-1">Select waste material</h3>
-          <p class="step-sub">Five accepted materials. Rates are per kilogram.</p>
+          <h3 class="step-heading" tabindex="-1">Select waste category</h3>
+          <p class="step-sub">Select the waste classification for the submitted trash bag.</p>
 
-          <div class="material-options-grid" role="radiogroup" aria-label="Waste material">
-            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-id="PET" onclick="selectMaterial('PET')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectMaterial('PET');}">
+          <div class="material-options-grid" role="radiogroup" aria-label="Waste classification">
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Compostable" onclick="selectWasteCategory('Compostable')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Compostable');}">
+              <span class="material-option-icon" style="background: rgba(60, 141, 112, 0.14); color: #2D6A4F;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m12 6 3 6h-6l3-6z"></path><path d="M8 17h8"></path></svg>
+              </span>
+              <span class="material-option-copy">
+                <span class="material-option-name">Compostable</span>
+                <span class="material-option-desc">Food waste, fruit/veg peelings, leaves &amp; organic garden scrap</span>
+              </span>
+              <span class="material-option-rate" style="color: #2D6A4F;">Standard<span>waste</span></span>
+            </div>
+
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Recyclable" onclick="selectWasteCategory('Recyclable')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Recyclable');}">
               <span class="material-option-icon" style="background: rgba(20, 99, 117, 0.12); color: #146375;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
               </span>
               <span class="material-option-copy">
-                <span class="material-option-name">PET Plastic</span>
-                <span class="material-option-desc">Clean bottles &amp; clear food tubs</span>
+                <span class="material-option-name">Recyclable</span>
+                <span class="material-option-desc">Clean plastics, bottles, cans, paper, cardboard &amp; glass jars</span>
               </span>
-              <span class="material-option-rate">30<span>pts/kg</span></span>
+              <span class="material-option-rate" style="color: #146375;">Standard<span>waste</span></span>
             </div>
 
-            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-id="PAPER" onclick="selectMaterial('PAPER')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectMaterial('PAPER');}">
-              <span class="material-option-icon" style="background: rgba(60, 141, 112, 0.12); color: #3C8D70;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Non-recyclable / Residual" onclick="selectWasteCategory('Non-recyclable / Residual')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Non-recyclable / Residual');}">
+              <span class="material-option-icon" style="background: rgba(100, 116, 139, 0.14); color: #475569;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
               </span>
               <span class="material-option-copy">
-                <span class="material-option-name">Paper / Cardboard</span>
-                <span class="material-option-desc">Cartons, sheets, clean boxes</span>
+                <span class="material-option-name">Non-recyclable / Residual</span>
+                <span class="material-option-desc">Sanitary waste, broken ceramics, wrappers, single-use soiled items</span>
               </span>
-              <span class="material-option-rate">10<span>pts/kg</span></span>
+              <span class="material-option-rate" style="color: #475569;">Standard<span>waste</span></span>
             </div>
 
-            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-id="ALUM" onclick="selectMaterial('ALUM')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectMaterial('ALUM');}">
-              <span class="material-option-icon" style="background: rgba(153, 203, 91, 0.18); color: #7fa844;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Special Waste" onclick="selectWasteCategory('Special Waste')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Special Waste');}">
+              <span class="material-option-icon" style="background: rgba(220, 38, 38, 0.12); color: #DC2626;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
               </span>
               <span class="material-option-copy">
-                <span class="material-option-name">Aluminum</span>
-                <span class="material-option-desc">Soda cans, clean foils &amp; trays</span>
+                <span class="material-option-name">Special Waste</span>
+                <span class="material-option-desc">Household hazardous waste, consumer electronics, batteries &amp; chemicals</span>
               </span>
-              <span class="material-option-rate">60<span>pts/kg</span></span>
-            </div>
-
-            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-id="TIN" onclick="selectMaterial('TIN')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectMaterial('TIN');}">
-              <span class="material-option-icon" style="background: rgba(212, 234, 80, 0.22); color: #6b7a10;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line></svg>
-              </span>
-              <span class="material-option-copy">
-                <span class="material-option-name">Tin / Steel</span>
-                <span class="material-option-desc">Canned goods tins, metal lids</span>
-              </span>
-              <span class="material-option-rate">12<span>pts/kg</span></span>
-            </div>
-
-            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-id="GLASS" onclick="selectMaterial('GLASS')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectMaterial('GLASS');}">
-              <span class="material-option-icon" style="background: rgba(73, 99, 92, 0.10); color: #49635C;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l2 6v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8l2-6z"></path><line x1="6" y1="8" x2="18" y2="8"></line></svg>
-              </span>
-              <span class="material-option-copy">
-                <span class="material-option-name">Glass</span>
-                <span class="material-option-desc">Bottles &amp; glass jars</span>
-              </span>
-              <span class="material-option-rate">5<span>pts/kg</span></span>
+              <span class="material-option-rate" style="color: #DC2626;">Rule-check<span>required</span></span>
             </div>
           </div>
         </div>
 
-        <!-- Step 3: Weight & Documentation -->
+        <!-- Step 3: Select Trash Bag Size -->
         <div class="step-content" id="step-3-content">
-          <h3 class="step-heading" tabindex="-1">Weight &amp; documentation</h3>
-          <p class="step-sub">Record the scale reading and attach the required photo.</p>
+          <h3 class="step-heading" tabindex="-1">Select trash bag size</h3>
+          <p class="step-sub">Standardized trash bag size determines the EcoToken award.</p>
 
-          <div class="field-group" id="weight-field">
-            <label for="manual-weight-input">Weight</label>
-            <div class="weight-input-wrap">
-              <input type="number" step="0.01" min="0.01" inputmode="decimal" autocomplete="off" id="manual-weight-input" placeholder="0.00" value="2.50" oninput="clearWizardError('weight')">
-              <span class="weight-unit" aria-hidden="true">kg</span>
+          <div class="material-options-grid" role="radiogroup" aria-label="Trash bag size">
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-size="Small" onclick="selectBagSize('Small')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectBagSize('Small');}">
+              <span class="material-option-icon" style="background: rgba(153, 203, 91, 0.18); color: #5B8C2A;" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              </span>
+              <span class="material-option-copy">
+                <span class="material-option-name">Small Bag</span>
+                <span class="material-option-desc">Small household bag (up to ~10 liters)</span>
+              </span>
+              <span class="material-option-rate">+10<span>EcoTokens</span></span>
             </div>
-            <div class="field-error" id="weight-error" role="alert" hidden>Enter a weight greater than 0 kg.</div>
+
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-size="Medium" onclick="selectBagSize('Medium')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectBagSize('Medium');}">
+              <span class="material-option-icon" style="background: rgba(60, 141, 112, 0.18); color: #3C8D70;" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              </span>
+              <span class="material-option-copy">
+                <span class="material-option-name">Medium Bag</span>
+                <span class="material-option-desc">Standard medium garbage bag (~20-30 liters)</span>
+              </span>
+              <span class="material-option-rate">+20<span>EcoTokens</span></span>
+            </div>
+
+            <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-size="Large" onclick="selectBagSize('Large')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectBagSize('Large');}">
+              <span class="material-option-icon" style="background: rgba(20, 99, 117, 0.18); color: #146375;" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              </span>
+              <span class="material-option-copy">
+                <span class="material-option-name">Large Bag</span>
+                <span class="material-option-desc">Heavy-duty sack or large garbage bag (~50+ liters)</span>
+              </span>
+              <span class="material-option-rate">+40<span>EcoTokens</span></span>
+            </div>
           </div>
 
-          <div class="field-group">
-            <label for="deposit-remarks">Remarks <span class="field-optional">Optional</span></label>
-            <textarea id="deposit-remarks" rows="2" placeholder="Condition, bundle count, or observations"></textarea>
+          <div class="field-group" style="margin-top: 14px;">
+            <label for="deposit-remarks">Collector Observations / Remarks <span class="field-optional">Optional</span></label>
+            <textarea id="deposit-remarks" rows="2" placeholder="Condition, cleanliness, bundle notes, or remarks"></textarea>
+          </div>
+        </div>
+
+        <!-- Step 4: Bag Inspection & Photographic Evidence -->
+        <div class="step-content" id="step-4-content">
+          <h3 class="step-heading" tabindex="-1">Inspection &amp; photo evidence</h3>
+          <p class="step-sub">Inspect contents, check segregation, and capture mandatory photo evidence.</p>
+
+          <div class="card" style="padding: 12px 14px; margin-bottom: 12px; background: #F8FAFC; border: 1px solid var(--border-base);">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin: 0; font-size: 13px; font-weight: 600; color: var(--text-dark);">
+              <input type="checkbox" id="bag-inspected-check" checked onchange="toggleBagInspection(this.checked)" style="width: 18px; height: 18px; accent-color: var(--color-forest);">
+              <span>Bag contents inspected &amp; segregation verified</span>
+            </label>
           </div>
 
           <div class="doc-panel" id="doc-panel">
             <div class="doc-head">
               <div class="doc-head-copy">
-                <h4>Documentation photo</h4>
-                <p>Capture recyclables and the scale reading in one photo.</p>
+                <h4>Supporting Photograph</h4>
+                <p>Photographic evidence is mandatory for accepted waste submissions.</p>
               </div>
-              <span class="status-pill status-required" id="photo-status">Required</span>
+              <span class="status-pill status-required" id="photo-status">Mandatory</span>
             </div>
 
             <input type="file" id="photo-upload-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
 
             <div class="doc-actions" id="doc-actions">
-              <button class="btn-primary doc-btn" type="button" onclick="document.getElementById('photo-upload-input').click()">
+              <button class="btn-primary doc-btn" type="button" onclick="snapWastePhoto()">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                Take photo
+                Snap Photo Evidence
               </button>
               <button class="btn-secondary doc-btn" type="button" onclick="document.getElementById('photo-upload-input').click()">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                Upload
+                Upload File
               </button>
             </div>
 
             <div class="doc-attachment" id="photo-preview-area">
-              <img id="photo-preview-img" src="" alt="Deposit documentation">
+              <img id="photo-preview-img" src="" alt="Trash bag documentation photo">
               <div class="doc-attachment-copy">
-                <strong>Photo attached</strong>
+                <strong>Photo Attached ✓</strong>
                 <span id="photo-file-name">No file selected</span>
               </div>
-              <button class="text-action" type="button" onclick="document.getElementById('photo-upload-input').click()">Replace</button>
+              <button class="text-action" type="button" onclick="snapWastePhoto()">Retake</button>
               <button class="text-action text-danger" type="button" onclick="removePhoto()">Remove</button>
             </div>
 
-            <div class="field-error" id="photo-error" role="alert" hidden>Attach a documentation photo to continue.</div>
+            <div class="field-error" id="photo-error" role="alert" hidden>Supporting photograph of the trash bag is mandatory.</div>
           </div>
         </div>
 
-        <!-- Step 4: Calculated EcoToken -->
-        <div class="step-content" id="step-4-content">
-          <h3 class="step-heading" tabindex="-1">Calculated EcoToken</h3>
-          <p class="step-sub">Review the conversion before continuing.</p>
-
-          <div class="calc-card">
-            <div class="calc-rows">
-              <div class="calc-line"><span>Material</span><strong id="calc-material">PET Plastic</strong></div>
-              <div class="calc-line"><span>Weight</span><strong class="num" id="calc-weight">2.50 kg</strong></div>
-              <div class="calc-line"><span>Rate</span><strong class="num" id="calc-rate">30 pts/kg</strong></div>
-            </div>
-            <div class="calc-total">
-              <div class="calc-total-label">Calculated EcoToken</div>
-              <div class="calc-total-value"><span id="calc-points-val">75</span><span class="calc-unit">pts</span></div>
-              <div class="calc-formula" id="calc-formula">2.50 kg &times; 30 pts/kg</div>
-            </div>
-          </div>
-
-          <div class="calc-warning" id="calc-weight-warning" role="status" hidden>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            <div>
-              <strong>Confirm the recorded weight</strong>
-              <span id="calc-weight-warning-text">This deposit will be flagged for admin review.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 5: Confirm Deposit -->
+        <!-- Step 5: Verification & Confirmation -->
         <div class="step-content" id="step-5-content">
-          <h3 class="step-heading" tabindex="-1">Confirm deposit</h3>
-          <p class="step-sub">Check the details before crediting EcoToken.</p>
+          <h3 class="step-heading" tabindex="-1">Confirm collection</h3>
+          <p class="step-sub">Confirm whether this trash bag submission is accepted or rejected.</p>
 
           <div class="review-card">
             <div class="review-section">
@@ -1429,32 +1474,55 @@
               <div class="review-line"><span>Resident ID</span><strong class="num" id="summary-resident-id">RES-2024-001</strong></div>
             </div>
             <div class="review-section">
-              <div class="review-section-title">Deposit</div>
-              <div class="review-line"><span>Material</span><strong id="summary-material">PET Plastic</strong></div>
-              <div class="review-line"><span>Net weight</span><strong class="num" id="summary-weight">2.50 kg</strong></div>
-              <div class="review-line"><span>Conversion rate</span><strong class="num" id="summary-rate">30 pts/kg</strong></div>
+              <div class="review-section-title">Submitted Waste Bag</div>
+              <div class="review-line"><span>Classification</span><strong id="summary-category">Recyclable</strong></div>
+              <div class="review-line"><span>Trash Bag Size</span><strong id="summary-bag-size">Medium Bag</strong></div>
+              <div class="review-line"><span>Inspection</span><strong style="color: var(--color-forest);" id="summary-inspected">Inspected &amp; Segregated ✓</strong></div>
             </div>
             <div class="review-section">
-              <div class="review-section-title">Verification</div>
-              <div class="review-line"><span>Collector</span><strong id="summary-collector">Rodel Aguila</strong></div>
+              <div class="review-section-title">Verification Evidence</div>
+              <div class="review-line"><span>Collector Officer</span><strong id="summary-collector">Rodel Aguila</strong></div>
               <div class="review-line"><span>Remarks</span><strong id="summary-remarks">None</strong></div>
               <div class="review-line">
-                <span>Documentation</span>
+                <span>Documentation Photo</span>
                 <span class="review-doc">
-                  <img id="confirm-photo-thumb" src="" alt="Documentation thumbnail" onclick="openModal('modal-photo-preview')">
-                  <strong id="confirm-photo-status">Attached</strong>
+                  <img id="confirm-photo-thumb" src="" alt="Bag photo thumbnail" onclick="openModal('modal-photo-preview')">
+                  <strong id="confirm-photo-status">Attached ✓</strong>
                 </span>
               </div>
             </div>
-            <div class="review-total">
-              <span>Total EcoToken</span>
-              <strong id="summary-total-pts">+75 pts</strong>
-            </div>
-          </div>
 
-          <div class="review-notice" id="summary-flag-note" role="status" hidden>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            <span>Above 15 kg &mdash; this deposit will be flagged for admin review.</span>
+            <!-- Decision Selector -->
+            <div style="padding: 12px 14px 6px; border-top: 1px solid var(--border-light); background: #FAFDFB;">
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 8px;">
+                Collection Decision
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;" role="radiogroup" aria-label="Verification decision">
+                <button type="button" class="tab-btn active" id="btn-decision-accept" onclick="setDepositDecision('accept')" style="padding: 8px; border-radius: var(--radius-md); font-weight: 700; font-size: 12.5px; border: 1.5px solid var(--color-forest); background: var(--color-forest-light); color: var(--color-forest-dark);">
+                  ✓ Accept Bag
+                </button>
+                <button type="button" class="tab-btn" id="btn-decision-reject" onclick="setDepositDecision('reject')" style="padding: 8px; border-radius: var(--radius-md); font-weight: 700; font-size: 12.5px; border: 1.5px solid var(--border-base); background: var(--bg-card); color: var(--text-muted);">
+                  ✕ Reject Bag
+                </button>
+              </div>
+
+              <!-- Rejection Reason Panel -->
+              <div id="decision-reject-panel" style="display: none; margin-top: 10px; padding: 10px; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px;">
+                <label for="reject-reason-select" style="font-size: 11px; font-weight: 700; color: #991B1B; display: block; margin-bottom: 4px;">Rejection Reason</label>
+                <select id="reject-reason-select" class="form-input" style="font-size: 12px; padding: 6px; border-color: #F87171;">
+                  <option value="Improper waste segregation">Improper waste segregation</option>
+                  <option value="Contaminated or soiled contents">Contaminated or soiled contents</option>
+                  <option value="Prohibited or hazardous non-conforming items">Prohibited or hazardous non-conforming items</option>
+                  <option value="Severe bag tear or excessive leakage">Severe bag tear or excessive leakage</option>
+                  <option value="Other non-compliance">Other non-compliance</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="review-total" id="summary-total-pts-row">
+              <span id="summary-total-pts-label">Total EcoToken to Credit</span>
+              <strong id="summary-total-pts" style="color: var(--color-forest-dark);">+20 pts</strong>
+            </div>
           </div>
         </div>
 
@@ -1506,21 +1574,19 @@
 
 
 
-        <!-- Material Filter Chips -->
+        <!-- Waste Category Filter Chips -->
 
-        <div class="chip-row" id="records-material-chips" role="group" aria-label="Filter by material">
+        <div class="chip-row" id="records-category-chips" role="group" aria-label="Filter by waste category">
 
-          <button class="chip active" data-mat="all" aria-pressed="true" onclick="setRecordMaterialFilter('all', this)">All</button>
+          <button class="chip active" data-cat="all" aria-pressed="true" onclick="setRecordCategoryFilter('all', this)">All</button>
 
-          <button class="chip" data-mat="PET Plastic" onclick="setRecordMaterialFilter('PET Plastic', this)">PET</button>
+          <button class="chip" data-cat="Compostable" onclick="setRecordCategoryFilter('Compostable', this)">Compostable</button>
 
-          <button class="chip" data-mat="Paper/Cardboard" onclick="setRecordMaterialFilter('Paper/Cardboard', this)">Paper</button>
+          <button class="chip" data-cat="Recyclable" onclick="setRecordCategoryFilter('Recyclable', this)">Recyclable</button>
 
-          <button class="chip" data-mat="Aluminum" onclick="setRecordMaterialFilter('Aluminum', this)">Aluminum</button>
+          <button class="chip" data-cat="Non-recyclable / Residual" onclick="setRecordCategoryFilter('Non-recyclable / Residual', this)">Residual</button>
 
-          <button class="chip" data-mat="Tin/Steel" onclick="setRecordMaterialFilter('Tin/Steel', this)">Tin/Steel</button>
-
-          <button class="chip" data-mat="Glass" onclick="setRecordMaterialFilter('Glass', this)">Glass</button>
+          <button class="chip" data-cat="Special Waste" onclick="setRecordCategoryFilter('Special Waste', this)">Special Waste</button>
 
         </div>
 
@@ -1547,7 +1613,7 @@
 
         <div class="section-header" style="margin-top: 14px;">
 
-          <span class="section-title">Material inventory · All time</span>
+          <span class="section-title">Collection Summary · Bags & Categories</span>
 
         </div>
 
@@ -2289,8 +2355,8 @@
           <div class="pf-impact">
             <div class="pf-impact-item">
               <span class="pf-impact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-13 0 9-5 14-14 13Z"/><path d="M5 19 15 9"/></svg></span>
-              <p class="pf-impact-value"><strong id="collector-profile-total-kg">—</strong><span>kg</span></p>
-              <p class="pf-impact-label">Total waste collected</p>
+              <p class="pf-impact-value"><strong id="collector-profile-total-bags">—</strong><span>bags</span></p>
+              <p class="pf-impact-label">Total bags collected</p>
             </div>
             <div class="pf-impact-item">
               <span class="pf-impact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4Z"/><path d="M3 7l9 4 9-4M12 21V11"/></svg></span>
@@ -2446,11 +2512,11 @@
 
         </button>
 
-        <button class="nav-item" id="navbtn-resident-wallet" onclick="showResidentTab('wallet')">
+        <button class="nav-item" id="navbtn-resident-centers" onclick="showResidentTab('centers')">
 
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
 
-          <span>EcoWallet</span>
+          <span>Centers</span>
 
         </button>
 
@@ -2649,7 +2715,7 @@
 
               <div class="deposit-row">
 
-                <span class="label">Material Category</span>
+                <span class="label">Material</span>
 
                 <span class="value" id="tx-detail-type">PET Plastic</span>
 
@@ -2768,6 +2834,8 @@
             </p>
 
             <button class="btn-primary" id="event-detail-register">I'm Interested</button>
+
+            <div id="event-detail-pass-slot" style="display: none; margin-top: 18px; border-top: 1px solid var(--border-base); padding-top: 14px;"></div>
 
           </div>
 
@@ -3041,8 +3109,8 @@
             <div class="success-meta">
               <div class="success-line"><span>Deposit ID</span><strong id="ds-txid">DEP007</strong></div>
               <div class="success-line"><span>Resident</span><strong id="ds-resident">Maria Santos</strong></div>
-              <div class="success-line"><span>Material</span><strong id="ds-material">PET Plastic</strong></div>
-              <div class="success-line"><span>Weight</span><strong class="num" id="ds-weight">2.50 kg</strong></div>
+              <div class="success-line"><span>Waste Category</span><strong id="ds-category">Recyclable</strong></div>
+              <div class="success-line"><span>Bag Size</span><strong class="num" id="ds-bag-size">Medium Bag</strong></div>
             </div>
 
             <div class="success-actions">
@@ -3105,7 +3173,7 @@
 
               <div class="deposit-row">
 
-                <span class="label">Material</span>
+                <span class="label">Category</span>
 
                 <span class="value" id="fr-material">PET Plastic</span>
 
@@ -3113,7 +3181,7 @@
 
               <div class="deposit-row">
 
-                <span class="label">Recorded Weight</span>
+                <span class="label">Bag Size</span>
 
                 <span class="value" style="color: var(--danger); font-weight:700;" id="fr-weight">25.0 kg</span>
 
@@ -3813,162 +3881,6 @@
 
 
 
-      <!-- 19. modal-event-proposal (NEW: Collector Creates Proposal) -->
-
-      <div class="modal-overlay" id="modal-event-proposal" onclick="closeModalOutside(event)">
-
-        <div class="modal-content modal-tall">
-
-          <div class="modal-header">
-
-            <h3>Propose Barangay Event</h3>
-
-            <button class="modal-close" onclick="closeModal('modal-event-proposal')">✕</button>
-
-          </div>
-
-          <div class="modal-body">
-
-            <p style="font-size: 13px; color: #6B7280; margin-bottom: 14px;">
-
-              Submit an environmental initiative proposal to LGU Admin for budget, logistics, and EcoToken allocation approval.
-
-            </p>
-
-            <form onsubmit="submitEventProposal(event)">
-
-              <div class="form-group">
-
-                <label>Event Title</label>
-
-                <input type="text" id="prop-title" placeholder="e.g. Riverside Plastic Interception Campaign" required>
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Campaign Category</label>
-
-                <select id="prop-category" required>
-
-                  <option value="Cleanup">Barangay Clean-Up</option>
-
-                  <option value="Recycling Campaign">Recycling Collection Campaign</option>
-
-                  <option value="Tree Planting">Tree Planting & Greening</option>
-
-                  <option value="Seminar">Community Education & Seminar</option>
-
-                  <option value="Workshop">Zero-Waste Upcycling Workshop</option>
-
-                </select>
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Barangay</label>
-
-                <input type="text" id="prop-barangay" value="Barangay San Gabriel" readonly style="background:#EDF2F7;">
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Proposed Location</label>
-
-                <input type="text" id="prop-location" placeholder="Specific street, park, or riverbank" required>
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Target Date</label>
-
-                <input type="date" id="prop-date" required>
-
-              </div>
-
-              <div style="display:flex; gap: 8px;">
-
-                <div class="form-group" style="flex:1;">
-
-                  <label>Start Time</label>
-
-                  <input type="time" id="prop-start-time" value="07:00" required>
-
-                </div>
-
-                <div class="form-group" style="flex:1;">
-
-                  <label>End Time</label>
-
-                  <input type="time" id="prop-end-time" value="11:00" required>
-
-                </div>
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Expected Resident Participants</label>
-
-                <input type="number" id="prop-participants" placeholder="e.g. 50" min="5" required>
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Proposed EcoToken Reward (per attendee)</label>
-
-                <input type="number" id="prop-points" placeholder="e.g. 50" min="10" value="50">
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Description & Scope</label>
-
-                <textarea id="prop-desc" placeholder="Scope of the activity, necessary barangay supplies, and community impact..." required></textarea>
-
-              </div>
-
-              <div class="form-group">
-
-                <label>Logistics Remarks (Optional)</label>
-
-                <textarea id="prop-remarks" placeholder="Notes for hauling truck, refreshments, or gloves..."></textarea>
-
-              </div>
-
-
-              <!-- Supporting Documents Upload Section -->
-              <div class="form-group">
-                <label>Supporting Documents (Optional)</label>
-                <p style="font-size: 12px; color: #6B7280; margin-bottom: 8px;">Upload relevant documents such as budget estimates, site plans, or permits</p>
-                <input type="file" id="prop-documents" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple style="display:none;" onchange="handleProposalDocuments(event)">
-                <button type="button" class="btn-secondary" onclick="document.getElementById('prop-documents').click()" style="width: 100%; margin-bottom: 8px;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                  Choose Files
-                </button>
-                <div id="prop-documents-list" style="display:none; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px; margin-top: 8px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #64748B; margin-bottom: 6px;">Selected Documents:</div>
-                  <div id="prop-documents-items"></div>
-                </div>
-              </div>
-
-              <button class="btn-primary" type="submit">Submit Proposal to Admin</button>
-
-            </form>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-
       <!-- 20. modal-event-proposal-review (Admin Reviews Proposal) -->
       <div class="modal-overlay" id="modal-event-proposal-review" onclick="closeModalOutside(event)">
         <div class="modal-content modal-tall">
@@ -4222,7 +4134,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 
 
 
@@ -5002,27 +4914,7 @@
 
 
 
-    // Event Proposal Workflows
-
-    function openEventProposalForm() {
-
-      openModal('modal-event-proposal');
-
-    }
-
-
-
-    function submitEventProposal(e) {
-
-      if (e && e.preventDefault) e.preventDefault();
-
-      const title = document.getElementById('prop-title').value;
-
-      closeModal('modal-event-proposal');
-
-      showToast(`Proposal "${title}" submitted to LGU Admin!`, 'success');
-
-    }
+    // Event Proposal Workflows (Collector proposal removed per Section 2 specification)
 
 
 
