@@ -18,7 +18,7 @@
 
   <link rel="icon" type="image/png" href="assets/logo.png">
 
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
 
   <!-- Leaflet + OpenStreetMap tiles for the collection centers map (CDN; app degrades to the list if offline) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -1324,46 +1324,46 @@
           <div class="material-options-grid" role="radiogroup" aria-label="Waste classification">
             <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Compostable" onclick="selectWasteCategory('Compostable')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Compostable');}">
               <span class="material-option-icon" style="background: rgba(60, 141, 112, 0.14); color: #2D6A4F;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m12 6 3 6h-6l3-6z"></path><path d="M8 17h8"></path></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m12 6 3 6h-6l3-6z"></path><path d="M8 17h8"></path></svg>
               </span>
               <span class="material-option-copy">
                 <span class="material-option-name">Compostable</span>
                 <span class="material-option-desc">Food waste, fruit/veg peelings, leaves &amp; organic garden scrap</span>
               </span>
-              <span class="material-option-rate" style="color: #2D6A4F;">Standard<span>waste</span></span>
+              <span class="material-option-tag tag-standard"><strong class="tag-title">Standard</strong><span class="tag-sub">waste</span></span>
             </div>
 
             <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Recyclable" onclick="selectWasteCategory('Recyclable')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Recyclable');}">
               <span class="material-option-icon" style="background: rgba(20, 99, 117, 0.12); color: #146375;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
               </span>
               <span class="material-option-copy">
                 <span class="material-option-name">Recyclable</span>
                 <span class="material-option-desc">Clean plastics, bottles, cans, paper, cardboard &amp; glass jars</span>
               </span>
-              <span class="material-option-rate" style="color: #146375;">Standard<span>waste</span></span>
+              <span class="material-option-tag tag-standard"><strong class="tag-title">Standard</strong><span class="tag-sub">waste</span></span>
             </div>
 
             <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Non-recyclable / Residual" onclick="selectWasteCategory('Non-recyclable / Residual')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Non-recyclable / Residual');}">
               <span class="material-option-icon" style="background: rgba(100, 116, 139, 0.14); color: #475569;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
               </span>
               <span class="material-option-copy">
                 <span class="material-option-name">Non-recyclable / Residual</span>
                 <span class="material-option-desc">Sanitary waste, broken ceramics, wrappers, single-use soiled items</span>
               </span>
-              <span class="material-option-rate" style="color: #475569;">Standard<span>waste</span></span>
+              <span class="material-option-tag tag-standard"><strong class="tag-title">Standard</strong><span class="tag-sub">waste</span></span>
             </div>
 
             <div class="material-option" role="radio" aria-checked="false" tabindex="0" data-cat="Special Waste" onclick="selectWasteCategory('Special Waste')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectWasteCategory('Special Waste');}">
               <span class="material-option-icon" style="background: rgba(220, 38, 38, 0.12); color: #DC2626;" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
               </span>
               <span class="material-option-copy">
                 <span class="material-option-name">Special Waste</span>
                 <span class="material-option-desc">Household hazardous waste, consumer electronics, batteries &amp; chemicals</span>
               </span>
-              <span class="material-option-rate" style="color: #DC2626;">Rule-check<span>required</span></span>
+              <span class="material-option-tag tag-rule"><strong class="tag-title">Rule-check</strong><span class="tag-sub">required</span></span>
             </div>
           </div>
         </div>
@@ -4080,7 +4080,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script src="script.js?v=7"></script>
+  <script src="script.js?v=8"></script>
 
 
 

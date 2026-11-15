@@ -12,12 +12,54 @@ const BAG_RATES = Object.freeze({
   Large: 40
 });
 
-const WASTE_CATEGORIES = Object.freeze([
-  'Compostable',
-  'Recyclable',
-  'Non-recyclable / Residual',
-  'Special Waste'
+const WASTE_CATEGORIES_CONFIG = Object.freeze([
+  {
+    id: 'compostable',
+    name: 'Compostable',
+    description: 'Food waste, fruit/veg peelings, leaves & organic garden scrap',
+    tag: 'Standard waste',
+    tagType: 'standard',
+    requiresRuleCheck: false,
+    earnsTokens: true,
+    status: 'Verified'
+  },
+  {
+    id: 'recyclable',
+    name: 'Recyclable',
+    description: 'Clean plastics, bottles, cans, paper, cardboard & glass jars',
+    tag: 'Standard waste',
+    tagType: 'standard',
+    requiresRuleCheck: false,
+    earnsTokens: true,
+    status: 'Verified'
+  },
+  {
+    id: 'residual',
+    name: 'Non-recyclable / Residual',
+    description: 'Sanitary waste, broken ceramics, wrappers, single-use soiled items',
+    tag: 'Standard waste',
+    tagType: 'standard',
+    requiresRuleCheck: false,
+    earnsTokens: false,
+    status: 'Verified'
+  },
+  {
+    id: 'special',
+    name: 'Special Waste',
+    description: 'Household hazardous waste, consumer electronics, batteries & chemicals',
+    tag: 'Rule-check required',
+    tagType: 'rule',
+    requiresRuleCheck: true,
+    earnsTokens: false,
+    status: 'Rule-Check Required'
+  }
 ]);
+
+const WASTE_CATEGORIES = Object.freeze(WASTE_CATEGORIES_CONFIG.map(c => c.name));
+
+function getWasteCategoryConfig(categoryName) {
+  return WASTE_CATEGORIES_CONFIG.find(c => (c.name || '').toLowerCase() === (categoryName || '').toLowerCase()) || null;
+}
 
 // --- INITIAL STATE TEMPLATE ---
 const INITIAL_STATE = {
@@ -31,13 +73,14 @@ const INITIAL_STATE = {
     points: 400, pendingPoints: 0, lifetimePoints: 1240, kgRecycled: 18.5, deposits: 12,
     registeredEvents: [],
     transactions: [
+      { id: 'TXN000', type: 'spent', label: 'Iodized Salt & Sugar Bundle', points: -40, date: '2026-11-15', status: 'redeemed', merchant: 'Barangay Food Pantry' },
       { id: 'TXN001', type: 'earned', label: 'Recyclable Waste Deposit', points: 40, date: '2026-11-05', bagSize: 'Large', category: 'Recyclable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Verified large sack of sorted clean plastics & bottles' },
       { id: 'TXN002', type: 'earned', label: 'Compostable Waste Deposit', points: 20, date: '2026-11-02', bagSize: 'Medium', category: 'Compostable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Sorted organic food scraps' },
       { id: 'TXN003', type: 'spent', label: 'SM Supermarket ₱50 Voucher', points: -100, date: '2026-10-30', status: 'redeemed', merchant: 'SM Supermarket' },
       { id: 'TXN004', type: 'earned', label: 'Recyclable Waste Deposit', points: 20, date: '2026-10-25', bagSize: 'Medium', category: 'Recyclable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Bundled clean paper and cartons' },
       { id: 'TXN005', type: 'spent', label: 'Jollibee ₱30 Discount', points: -80, date: '2026-10-20', status: 'redeemed', merchant: 'Jollibee' },
-      { id: 'TXN006', type: 'earned', label: 'Special Waste Deposit', points: 10, date: '2026-10-15', bagSize: 'Small', category: 'Special Waste', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Batteries and household electronic waste' },
-      { id: 'TXN007', type: 'earned', label: 'Non-recyclable / Residual Deposit', points: 20, date: '2026-10-10', bagSize: 'Medium', category: 'Non-recyclable / Residual', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Residual plastics bagged per guidelines' },
+      { id: 'TXN006', type: 'earned', label: 'Special Waste Deposit', points: 0, date: '2026-10-15', bagSize: 'Small', category: 'Special Waste', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'Rule-Check Required', photo: null, remarks: 'Batteries and household electronic scrap · Pending rule-based verification' },
+      { id: 'TXN007', type: 'earned', label: 'Non-recyclable / Residual Waste Deposit', points: 0, date: '2026-10-10', bagSize: 'Medium', category: 'Non-recyclable / Residual', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Sanitary & single-use soiled items bagged per guidelines' },
       { id: 'TXN008', type: 'earned', label: 'Recyclable Waste Deposit', points: 40, date: '2026-10-05', bagSize: 'Large', category: 'Recyclable', collector: 'Rodel Aguila', barangay: 'Barangay San Gabriel', status: 'verified', photo: null, remarks: 'Clean metal cans and bottles' }
     ],
     vouchers: [
@@ -74,8 +117,8 @@ const INITIAL_STATE = {
     { id: 'DEP001', residentName: 'Maria Santos', residentId: 'RES-2024-001', category: 'Recyclable', bagSize: 'Large', points: 40, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Clean bottles and recyclable plastics', flagged: false },
     { id: 'DEP002', residentName: 'Jose Reyes', residentId: 'RES-2024-002', category: 'Compostable', bagSize: 'Medium', points: 20, date: '2026-11-05', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Sorted organic food scraps', flagged: false },
     { id: 'DEP003', residentName: 'Ana Dela Cruz', residentId: 'RES-2024-003', category: 'Recyclable', bagSize: 'Medium', points: 20, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Bundled paper and cartons', flagged: false },
-    { id: 'DEP004', residentName: 'Pedro Lim', residentId: 'RES-2024-004', category: 'Special Waste', bagSize: 'Small', points: 10, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Batteries and household electronic scrap', flagged: false },
-    { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', category: 'Non-recyclable / Residual', bagSize: 'Medium', points: 20, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Residual plastics bagged per guidelines', flagged: false }
+    { id: 'DEP004', residentName: 'Pedro Lim', residentId: 'RES-2024-004', category: 'Special Waste', bagSize: 'Small', points: 0, date: '2026-11-04', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'Rule-Check Required', photoDataUrl: null, remarks: 'Batteries and household electronic scrap · Pending rule-based verification', flagged: true, flagReason: 'Special waste requires rule-based safety review', reviewStatus: 'pending' },
+    { id: 'DEP005', residentName: 'Carmen Bautista', residentId: 'RES-2024-005', category: 'Non-recyclable / Residual', bagSize: 'Medium', points: 0, date: '2026-11-03', collector: 'Rodel Aguila', collectorId: 'COL-2024-007', barangay: 'Barangay San Gabriel', status: 'verified', photoDataUrl: null, remarks: 'Residual plastics bagged per guidelines', flagged: false }
   ],
   collectors: [
     { id: 'COL-2024-007', name: 'Rodel Aguila', barangay: 'Barangay San Gabriel', email: 'rikna.collector.demo@gmail.com', contact: '09281234567', phone: '09281234567', status: 'active', registeredDate: '2024-01-10', totalWaste: 124.5, totalBags: 48, totalDeposits: 48, totalPoints: 3240, restrictionReason: null, restrictionDate: null, restrictionHistory: [] },
@@ -176,6 +219,10 @@ function loadState() {
       if (AppState.collector && (AppState.collector.bagsToday === undefined || (Array.isArray(AppState.collectionRecords) && AppState.collectionRecords.some(r => !r.bagSize)))) {
         AppState.collector = JSON.parse(JSON.stringify(INITIAL_STATE.collector));
         AppState.collectionRecords = JSON.parse(JSON.stringify(INITIAL_STATE.collectionRecords));
+      }
+      // Ensure resident transactions reflect updated 4-tier classification and seed items
+      if (!Array.isArray(AppState.resident?.transactions) || !AppState.resident.transactions.some(t => t.id === 'TXN000')) {
+        AppState.resident.transactions = JSON.parse(JSON.stringify(INITIAL_STATE.resident.transactions));
       }
     }
   } catch(e) {
@@ -1341,45 +1388,96 @@ function renderHomeRecentTransactions() {
 
 // Shared by Home and EcoWallet; data is inserted as text, never markup.
 function createActivityRow(tx) {
-    const row = document.createElement('button');
-    row.type = 'button';
-    const state = tx.status === 'verified' ? 'earned' : tx.status === 'redeemed' ? 'spent' : 'pending';
-    row.className = `activity-row activity-${state}`;
-    row.innerHTML = `${homeMaterialIcon(tx.material, tx.type)}
-      <span class="activity-copy"><strong></strong><span class="activity-meta"></span><span class="activity-status"></span></span>
-      <span class="activity-amount"><strong></strong><small>EcoToken</small></span>`;
-    row.querySelector('.activity-copy strong').textContent = tx.label;
+  const row = document.createElement('button');
+  row.type = 'button';
+
+  const isRuleCheck = tx.status === 'Rule-Check Required' ||
+                      tx.status === 'rule-check-required' ||
+                      tx.status === 'Pending Review' ||
+                      (tx.category === 'Special Waste' && tx.status !== 'verified');
+  let state = 'earned';
+  let statusText = 'Verified';
+
+  if (isRuleCheck) {
+    state = 'rule-check';
+    statusText = 'Rule-Check Required';
+  } else if (tx.status === 'redeemed' || tx.type === 'spent') {
+    state = 'spent';
+    statusText = 'Redeemed';
+  } else if (tx.status === 'verified') {
+    state = 'earned';
+    statusText = 'Verified';
+  } else if (tx.status === 'rejected') {
+    state = 'rejected';
+    statusText = 'Rejected';
+  } else if (tx.status) {
+    statusText = tx.status;
+  }
+
+  row.className = `activity-row activity-${state}`;
+  row.innerHTML = `${homeMaterialIcon(tx.category || tx.material, tx.type)}
+    <span class="activity-copy">
+      <strong></strong>
+      <span class="activity-meta"></span>
+      <span class="activity-status status-${state}"></span>
+    </span>
+    <span class="activity-amount"><strong></strong><small>EcoToken</small></span>`;
+
+  // Title: [Category Name] Waste Deposit
+  const isWasteDeposit = tx.category || tx.bagSize || tx.type === 'earned';
+  let title = tx.label;
+  if (isWasteDeposit && tx.category) {
+    title = `${tx.category} Waste Deposit`;
+  }
+  row.querySelector('.activity-copy strong').textContent = title || 'Waste Deposit';
+
+  // Subtitle: [Date] · [Bag Size] · [Category Name]
+  let subtitle = formatDate(tx.date);
+  if (isWasteDeposit && (tx.bagSize || tx.category || tx.material)) {
     const metaParts = [formatDate(tx.date)];
-    if (tx.bagSize) metaParts.push(tx.bagSize + ' Bag');
-    if (tx.category || tx.material) metaParts.push(tx.category || tx.material);
-    else if (tx.kg != null) metaParts.push(tx.kg + ' kg');
-    row.querySelector('.activity-meta').textContent = metaParts.join(' · ');
-    row.querySelector('.activity-status').textContent = tx.status || 'Status unavailable';
-    row.querySelector('.activity-amount strong').textContent = (tx.points > 0 ? '+' : '') + tx.points.toLocaleString();
-    row.addEventListener('click', () => openTransactionDetail(tx.id));
-    return row;
+    if (tx.bagSize) {
+      const bagStr = String(tx.bagSize).toLowerCase().includes('bag') ? tx.bagSize : `${tx.bagSize} Bag`;
+      metaParts.push(bagStr);
+    }
+    if (tx.category || tx.material) {
+      metaParts.push(tx.category || tx.material);
+    }
+    subtitle = metaParts.join(' · ');
+  }
+  row.querySelector('.activity-meta').textContent = subtitle;
+
+  // Status text
+  row.querySelector('.activity-status').textContent = statusText;
+
+  // Right-aligned EcoToken counter
+  let amountStr = '';
+  if (tx.type === 'spent') {
+    amountStr = `${tx.points}`;
+  } else if (tx.points > 0) {
+    amountStr = `+${tx.points.toLocaleString()}`;
+  } else {
+    amountStr = '+0';
+  }
+  row.querySelector('.activity-amount strong').textContent = amountStr;
+
+  row.addEventListener('click', () => openTransactionDetail(tx.id));
+  return row;
 }
 
-// Static outline paths share the dashboard's existing 24px icon vocabulary.
-function homeMaterialIcon(material = '', type = 'earned') {
-  let path = '<path d="m5 7 3-4 3 4M8 3v9m11 5-3 4-3-4m3 4V12M3 16l4 3m14-11-4-3"/>';
-  if (/compost/i.test(material)) {
-    path = '<path d="M12 3c-4.5 0-8 3.5-8 8 0 6 8 10 8 10s8-4 8-10c0-4.5-3.5-8-8-8zm0 14c-3.3 0-6-2.7-6-6 0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.3-2.7 6-6 6z"/><path d="M12 7v5l3 3"/>';
-  } else if (/special/i.test(material)) {
-    path = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>';
-  } else if (/plastic|glass|recycl/i.test(material)) {
-    path = '<path d="M9 3h6v4l3 5v9H6v-9l3-5V3Zm0 4h6M6 13h12M6 17h12"/>';
-  } else if (/alum|tin|steel/i.test(material)) {
-    path = '<ellipse cx="12" cy="5" rx="6" ry="2"/><path d="M6 5v14c0 3 12 3 12 0V5M9 9v8m6-8v8"/>';
-  } else if (/paper|cardboard/i.test(material)) {
-    path = '<path d="M5 3h11l3 3v15H5V3Zm10 0v5h4M8 12h8m-8 4h6"/>';
-  } else if (/residual/i.test(material)) {
-    path = '<path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-  }
+// Static outline paths matching the design system and mockup vocabulary
+function homeMaterialIcon(category = '', type = 'earned') {
   if (type === 'spent') {
-    path = '<path d="M3 6h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V6Zm12 0v3m0 2v2m0 2v3"/>';
+    return `<span class="activity-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V6Zm12 0v3m0 2v2m0 2v3"/></svg></span>`;
   }
-  return `<span class="activity-icon"><svg viewBox="0 0 24 24" aria-hidden="true">${path}</svg></span>`;
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('special')) {
+    return `<span class="activity-icon" style="background: rgba(220, 38, 38, 0.12); color: #DC2626;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>`;
+  }
+  if (cat.includes('residual') || cat.includes('non-recyclable')) {
+    return `<span class="activity-icon" style="background: rgba(100, 116, 139, 0.14); color: #475569;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></span>`;
+  }
+  // Standard waste (Compostable / Recyclable): opposing deposit arrows per mockup
+  return `<span class="activity-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 7 3-4 3 4M8 3v9m11 5-3 4-3-4m3 4V12M3 16l4 3m14-11-4-3"/></svg></span>`;
 }
 
 function renderHomeActivities() {
@@ -2900,6 +2998,12 @@ function selectWasteCategory(cat) {
   selectedWasteCategory = cat;
   AppState.collector.currentDeposit.category = cat;
 
+  const catConfig = getWasteCategoryConfig(cat);
+  if (selectedBagSize) {
+    const pts = (!catConfig || catConfig.earnsTokens) ? (BAG_RATES[selectedBagSize] || 20) : 0;
+    AppState.collector.currentDeposit.points = pts;
+  }
+
   document.querySelectorAll('#step-2-content .material-option').forEach(opt => {
     const isSelected = opt.getAttribute('data-cat') === cat;
     opt.classList.toggle('selected', isSelected);
@@ -2911,7 +3015,8 @@ function selectWasteCategory(cat) {
 
 function selectBagSize(size) {
   selectedBagSize = size;
-  const pts = BAG_RATES[size] || 20;
+  const catConfig = getWasteCategoryConfig(selectedWasteCategory);
+  const pts = (!catConfig || catConfig.earnsTokens) ? (BAG_RATES[size] || 20) : 0;
   AppState.collector.currentDeposit.bagSize = size;
   AppState.collector.currentDeposit.points = pts;
 
@@ -3106,16 +3211,31 @@ function populateDepositSummary() {
   const colAccount = currentCollectorAccount();
   const collectorName = colAccount?.name || 'Rodel Aguila';
   const remarks = (el('deposit-remarks')?.value || d.remarks || '').trim() || 'None';
-  const pts = BAG_RATES[selectedBagSize] || 20;
+  const catConfig = getWasteCategoryConfig(selectedWasteCategory);
+  const isSpecialWaste = selectedWasteCategory === 'Special Waste' || (catConfig && catConfig.requiresRuleCheck);
+  const isResidual = selectedWasteCategory === 'Non-recyclable / Residual';
+  const basePts = BAG_RATES[selectedBagSize] || 20;
+  const pts = (!catConfig || catConfig.earnsTokens) ? basePts : 0;
 
   setText('summary-resident', d.resident?.name || 'Maria Santos');
   setText('summary-resident-id', d.resident?.id || 'RES-2024-001');
   setText('summary-category', selectedWasteCategory || 'Recyclable');
-  setText('summary-bag-size', (selectedBagSize || 'Medium') + ' Bag (' + pts + ' EcoTokens)');
+  setText('summary-bag-size', (selectedBagSize || 'Medium') + ' Bag' + (pts > 0 ? ' (' + pts + ' EcoTokens)' : ''));
   setText('summary-inspected', bagInspected ? 'Inspected & Segregated ✓' : 'Visual inspection completed');
   setText('summary-collector', collectorName);
   setText('summary-remarks', remarks);
-  setText('summary-total-pts', (depositDecision === 'accept' ? '+' + pts + ' pts' : '0 pts (Rejected)'));
+
+  let totalPtsText = '0 pts (Rejected)';
+  if (depositDecision === 'accept') {
+    if (isSpecialWaste) {
+      totalPtsText = 'Pending (Rule-Check Required)';
+    } else if (isResidual) {
+      totalPtsText = '0 EcoTokens (Standard Waste)';
+    } else {
+      totalPtsText = '+' + pts + ' EcoTokens';
+    }
+  }
+  setText('summary-total-pts', totalPtsText);
 
   const thumb = el('confirm-photo-thumb');
   if (thumb) {
@@ -3172,7 +3292,26 @@ function _commitDeposit() {
   const colRecord = AppState.collectors.find(c => c.id === 'COL-2024-007' || c.email === colAccount?.email);
   const d = AppState.collector.currentDeposit;
   const isAccepted = (depositDecision === 'accept');
-  const pts = isAccepted ? (BAG_RATES[selectedBagSize] || 20) : 0;
+  const catConfig = getWasteCategoryConfig(selectedWasteCategory);
+  const isSpecialWaste = selectedWasteCategory === 'Special Waste' || (catConfig && catConfig.requiresRuleCheck);
+  const isResidual = selectedWasteCategory === 'Non-recyclable / Residual';
+
+  let pts = 0;
+  let depositStatus = 'rejected';
+
+  if (isAccepted) {
+    if (isSpecialWaste) {
+      depositStatus = 'Rule-Check Required';
+      pts = 0; // Requires rule-based verification before awarding EcoTokens
+    } else if (isResidual) {
+      depositStatus = 'verified';
+      pts = 0; // Standard waste logging, 0 EcoTokens
+    } else {
+      depositStatus = 'verified';
+      pts = BAG_RATES[selectedBagSize] || 20;
+    }
+  }
+
   const txId = 'DEP' + uid().substring(0, 6);
   const dateStr = collectorLocalDateKey(new Date());
   const colName = colAccount?.name || 'Rodel Aguila';
@@ -3190,13 +3329,13 @@ function _commitDeposit() {
     collector: colName,
     collectorId: 'COL-2024-007',
     barangay: d.resident.barangay,
-    status: isAccepted ? 'verified' : 'rejected',
+    status: isAccepted ? depositStatus : 'rejected',
     photoDataUrl: depositPhotoDataUrl,
     remarks: isAccepted ? remarks : `REJECTED: ${rejectReason}${remarks ? ' · ' + remarks : ''}`,
     rejectionReason: rejectReason || null,
-    flagged: false,
-    flagReason: '',
-    reviewStatus: null,
+    flagged: isSpecialWaste,
+    flagReason: isSpecialWaste ? 'Special waste requires rule-based safety review' : '',
+    reviewStatus: isSpecialWaste ? 'pending' : null,
     reviewNotes: null,
     reviewOutcome: null
   };
@@ -3210,16 +3349,16 @@ function _commitDeposit() {
     AppState.resident.transactions.unshift({
       id: txId,
       type: 'earned',
-      label: `${selectedBagSize} Bag ${selectedWasteCategory} Deposit`,
+      label: `${selectedWasteCategory} Waste Deposit`,
       points: pts,
       date: dateStr,
       bagSize: selectedBagSize,
       category: selectedWasteCategory,
       collector: colName,
       barangay: d.resident.barangay,
-      status: 'verified',
+      status: depositStatus,
       photoDataUrl: depositPhotoDataUrl,
-      remarks: remarks
+      remarks: isSpecialWaste ? (remarks ? remarks + ' · Flagged for rule check' : 'Flagged for rule-based verification') : remarks
     });
 
     // Update collector statistics
@@ -3237,18 +3376,38 @@ function _commitDeposit() {
     AppState.admin.totalBags = (AppState.admin.totalBags || 0) + 1;
 
     // Add notifications
-    AppState.notifications.resident.unshift({
-      id: 'RNOTIF' + uid(),
-      title: 'EcoTokens Awarded!',
-      body: `You received +${pts} EcoTokens for your ${selectedBagSize} Bag of ${selectedWasteCategory} waste.`,
-      time: nowStr(),
-      read: false,
-      link: 'wallet'
-    });
+    if (isSpecialWaste) {
+      AppState.notifications.resident.unshift({
+        id: 'RNOTIF' + uid(),
+        title: 'Special Waste Under Review',
+        body: `Your ${selectedBagSize} Bag of Special Waste deposit was logged. EcoTokens will be awarded upon rule-check verification.`,
+        time: nowStr(),
+        read: false,
+        link: 'wallet'
+      });
+    } else if (isResidual) {
+      AppState.notifications.resident.unshift({
+        id: 'RNOTIF' + uid(),
+        title: 'Waste Collection Verified',
+        body: `Your ${selectedBagSize} Bag of Non-recyclable / Residual waste has been collected and logged.`,
+        time: nowStr(),
+        read: false,
+        link: 'wallet'
+      });
+    } else {
+      AppState.notifications.resident.unshift({
+        id: 'RNOTIF' + uid(),
+        title: 'EcoTokens Awarded!',
+        body: `You received +${pts} EcoTokens for your ${selectedBagSize} Bag of ${selectedWasteCategory} waste.`,
+        time: nowStr(),
+        read: false,
+        link: 'wallet'
+      });
+    }
 
     AppState.notifications.collector.unshift({
       id: 'CNOTIF' + uid(),
-      title: 'Collection Verified',
+      title: isSpecialWaste ? 'Special Waste Logged (Rule-Check)' : 'Collection Verified',
       body: `Collection ${txId} for ${d.resident.name} (${selectedBagSize} Bag ${selectedWasteCategory}) confirmed.`,
       time: nowStr(),
       read: false,
@@ -3257,8 +3416,8 @@ function _commitDeposit() {
 
     AppState.auditLog.unshift({
       timestamp: nowStr(),
-      action: 'Collection accepted',
-      detail: `${txId} — ${d.resident.name} — ${selectedBagSize} Bag ${selectedWasteCategory} — ${pts} pts`
+      action: isSpecialWaste ? 'Special waste collection logged' : 'Collection accepted',
+      detail: `${txId} — ${d.resident.name} — ${selectedBagSize} Bag ${selectedWasteCategory} — ${isSpecialWaste ? 'Rule-Check Required' : pts + ' pts'}`
     });
 
     saveState();
@@ -3270,7 +3429,19 @@ function _commitDeposit() {
     setText('ds-resident', d.resident.name);
     setText('ds-category', selectedWasteCategory);
     setText('ds-bag-size', selectedBagSize + ' Bag');
-    setText('ds-points', '+' + pts);
+    if (isSpecialWaste) {
+      setText('deposit-success-title', 'Special waste logged');
+      setText('deposit-success-sub', 'Rule-check verification required before EcoTokens are awarded');
+      setText('ds-points', '0');
+    } else if (isResidual) {
+      setText('deposit-success-title', 'Deposit verified');
+      setText('deposit-success-sub', 'Standard waste collection logged successfully');
+      setText('ds-points', '0');
+    } else {
+      setText('deposit-success-title', 'Deposit confirmed');
+      setText('deposit-success-sub', 'EcoToken credited to the resident');
+      setText('ds-points', '+' + pts);
+    }
 
     document.body.classList.add('deposit-success-open');
     openModal('modal-deposit-success');
@@ -3280,7 +3451,7 @@ function _commitDeposit() {
     AppState.resident.transactions.unshift({
       id: txId,
       type: 'earned',
-      label: `${selectedBagSize} Bag ${selectedWasteCategory} (Rejected)`,
+      label: `${selectedWasteCategory} Waste Deposit (Rejected)`,
       points: 0,
       date: dateStr,
       bagSize: selectedBagSize,
